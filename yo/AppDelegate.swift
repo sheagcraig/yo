@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Foundation
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -16,17 +17,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
-        notification.title = "Taco Emergency"
 
-        for argument in Process.arguments {
-            println(argument)
-        }
-        
-        notification.subtitle = "There are not enough tacos to sustain life."
-        notification.informativeText = "In girum imus nocte et consumimur igni."
-        notification.contentImage = NSImage(contentsOfFile: "/Users/scraig/Desktop/Lo-Pan.jpg")
+        // For now, cmdline arg processing is VERY unfinished. Expects
+        // arguments in order: title, subtitle, informativeText, actionButtonTitle
+        notification.title = Process.arguments[1]
+        notification.subtitle = Process.arguments[2]
+        notification.informativeText = Process.arguments[3]
+        //notification.contentImage = NSImage(contentsOfFile: "/Users/scraig/Desktop/Lo-Pan.jpg")
         notification.hasActionButton = true
-        notification.actionButtonTitle = "Buy Tacos"
+        notification.actionButtonTitle = Process.arguments[4]
         
         // Set delivery time in the future and configure notification.
         let deliveryTime = NSDate().dateByAddingTimeInterval(5)
@@ -34,6 +33,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Schedule notification with the notification center.
         NSUserNotificationCenter.defaultUserNotificationCenter().scheduleNotification(notification)
+
+        // Wait, prior to exiting the app, so only the notification is visible.
+        sleep(5)
+        exit(0)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

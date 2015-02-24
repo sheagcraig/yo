@@ -10,8 +10,7 @@ import Cocoa
 import Foundation
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
+class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
 
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
@@ -32,17 +31,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         notification.deliveryDate = deliveryTime
         
         // Schedule notification with the notification center.
-        NSUserNotificationCenter.defaultUserNotificationCenter().scheduleNotification(notification)
+        let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+        nc.delegate = self
+        nc.scheduleNotification(notification)
 
-        // Wait, prior to exiting the app, so only the notification is visible.
-        sleep(5)
-        exit(0)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
 
-
+    func userNotificationCenter(center: NSUserNotificationCenter!, didActivateNotification notification: NSUserNotification!) {
+        // At the moment, just quit.
+        exit(0)
+    }
+    func userNotificationCenter(center: NSUserNotificationCenter!, didDeliverNotification notification: NSUserNotification!) {
+        // Pass
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter!, shouldPresentNotification notification: NSUserNotification!) -> Bool {
+        // Ensure that notification is shown, even if app is active.
+        return true
+    }
 }
 

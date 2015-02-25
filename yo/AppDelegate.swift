@@ -8,23 +8,31 @@
 
 import Cocoa
 import Foundation
+import CommandLine
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
 
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        // Handle commandline arguments to fill our notification
+        let cli = CommandLine()
+        
+        let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
+        
+        cli.addOptions(title)
+        let (success, error) = cli.parse()
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
 
         // For now, cmdline arg processing is VERY unfinished. Expects
         // arguments in order: title, subtitle, informativeText, actionButtonTitle
-        notification.title = Process.arguments[1]
-        notification.subtitle = Process.arguments[2]
-        notification.informativeText = Process.arguments[3]
+        notification.title = title.value
+        notification.subtitle = "Test"
+        notification.informativeText = "Test"
         //notification.contentImage = NSImage(contentsOfFile: "/Users/scraig/Desktop/Lo-Pan.jpg")
         notification.hasActionButton = true
-        notification.actionButtonTitle = Process.arguments[4]
+        notification.actionButtonTitle = "Test"
         
         // Set delivery time in the future and configure notification.
         let deliveryTime = NSDate().dateByAddingTimeInterval(5)

@@ -12,6 +12,7 @@
 		9A95F6281A9D18300080D5B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A95F6271A9D18300080D5B4 /* Images.xcassets */; };
 		9A95F62B1A9D18300080D5B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A95F6291A9D18300080D5B4 /* Main.storyboard */; };
 		9A95F6371A9D18300080D5B4 /* yoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6361A9D18300080D5B4 /* yoTests.swift */; };
+		9AAC16A71A9E205800A9E18E /* yo.psd in Resources */ = {isa = PBXBuildFile; fileRef = 9AAC16A61A9E205800A9E18E /* yo.psd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		9A95F6301A9D18300080D5B4 /* yoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = yoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A95F6351A9D18300080D5B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A95F6361A9D18300080D5B4 /* yoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = yoTests.swift; sourceTree = "<group>"; };
+		9AAC16A61A9E205800A9E18E /* yo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = yo.psd; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				9A95F6201A9D18300080D5B4 /* yo */,
 				9A95F6331A9D18300080D5B4 /* yoTests */,
 				9A95F61F1A9D18300080D5B4 /* Products */,
+				9AAC16A51A9E205800A9E18E /* art */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +110,14 @@
 				9A95F6351A9D18300080D5B4 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9AAC16A51A9E205800A9E18E /* art */ = {
+			isa = PBXGroup;
+			children = (
+				9AAC16A61A9E205800A9E18E /* yo.psd */,
+			);
+			path = art;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A95F6281A9D18300080D5B4 /* Images.xcassets in Resources */,
+				9AAC16A71A9E205800A9E18E /* yo.psd in Resources */,
 				9A95F62B1A9D18300080D5B4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,6 +409,7 @@
 				9A95F63C1A9D18300080D5B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9A95F63D1A9D18300080D5B4 /* Build configuration list for PBXNativeTarget "yoTests" */ = {
 			isa = XCConfigurationList;
@@ -405,6 +418,7 @@
 				9A95F63F1A9D18300080D5B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A66BB621A9E26C600CFCF90 /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; };
+		9A66BB631A9E2F4D00CFCF90 /* CommandLine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A95F6241A9D18300080D5B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6231A9D18300080D5B4 /* AppDelegate.swift */; };
 		9A95F6261A9D18300080D5B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6251A9D18300080D5B4 /* ViewController.swift */; };
 		9A95F6281A9D18300080D5B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A95F6271A9D18300080D5B4 /* Images.xcassets */; };
@@ -25,7 +27,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9A66BB581A9E217900CFCF90 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9A66BB631A9E2F4D00CFCF90 /* CommandLine.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9A66BB611A9E26C600CFCF90 /* CommandLine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CommandLine.framework; sourceTree = "<group>"; };
 		9A95F61E1A9D18300080D5B4 /* yo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A95F6221A9D18300080D5B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A95F6231A9D18300080D5B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A66BB621A9E26C600CFCF90 /* CommandLine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +77,7 @@
 		9A95F6151A9D18300080D5B4 = {
 			isa = PBXGroup;
 			children = (
+				9A66BB611A9E26C600CFCF90 /* CommandLine.framework */,
 				9A95F6201A9D18300080D5B4 /* yo */,
 				9A95F6331A9D18300080D5B4 /* yoTests */,
 				9A95F61F1A9D18300080D5B4 /* Products */,
@@ -130,6 +149,7 @@
 				9A95F61A1A9D18300080D5B4 /* Sources */,
 				9A95F61B1A9D18300080D5B4 /* Frameworks */,
 				9A95F61C1A9D18300080D5B4 /* Resources */,
+				9A66BB581A9E217900CFCF90 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,6 +357,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = yo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -348,6 +372,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = yo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

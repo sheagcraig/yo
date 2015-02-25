@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         let informative_text = StringOption(shortFlag: "i", longFlag: "itext", required: false, helpMessage: "Informative text.")
         let action_btn_text = StringOption(shortFlag: "b", longFlag: "btext", required: false, helpMessage: "Action button text.")
         
-        cli.addOptions(title)
+        cli.addOptions(title, subtitle, informative_text, action_btn_text)
         let (success, error) = cli.parse()
         
         // Create a user notification object and set it's properties.
@@ -45,16 +45,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
 
         //notification.contentImage = NSImage(contentsOfFile: "/Users/scraig/Desktop/Lo-Pan.jpg")
 
-        
-        // Set delivery time in the future and configure notification.
-        let deliveryTime = NSDate().dateByAddingTimeInterval(5)
-        notification.deliveryDate = deliveryTime
-        
         // Schedule notification with the notification center.
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self
-        nc.scheduleNotification(notification)
-
+        nc.deliverNotification(notification)
+        
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

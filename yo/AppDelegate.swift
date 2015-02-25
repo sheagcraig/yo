@@ -27,10 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         cli.addOptions(title, subtitle, informative_text, action_btn_text, other_btn_text, action)
         let (success, error) = cli.parse()
-        if success != false {
-            println(success)
+        if success == false {
             println(error!)
-            println(other_btn_text.value?)
             cli.printUsage()
             exit(EX_USAGE)
         }

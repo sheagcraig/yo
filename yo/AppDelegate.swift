@@ -12,7 +12,7 @@ import CommandLine
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
-
+    var action_path: String = ""
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Handle commandline arguments to fill our notification
@@ -22,19 +22,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         let subtitle = StringOption(shortFlag: "s", longFlag: "subtitle", required: false, helpMessage: "Subtitle for notification")
         let informative_text = StringOption(shortFlag: "i", longFlag: "itext", required: false, helpMessage: "Informative text.")
         let action_btn_text = StringOption(shortFlag: "b", longFlag: "btext", required: false, helpMessage: "Action button text.")
+        let other_btn_text = StringOption(shortFlag: "o", longFlag: "obtext", required: false, helpMessage: "Alternate label for cancel button text.")
+        let action = StringOption(shortFlag: "a", longFlag: "action", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument.")
         
-        cli.addOptions(title, subtitle, informative_text, action_btn_text)
+        cli.addOptions(title, subtitle, informative_text, action_btn_text, other_btn_text, action)
         let (success, error) = cli.parse()
         
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
-
-        // For now, cmdline arg processing is VERY unfinished. Expects
-        // arguments in order: title, subtitle, informativeText, actionButtonTitle
         notification.title = title.value
         notification.subtitle = subtitle.value?
         notification.informativeText = informative_text.value?
 
+        // Add action button and text if a value is supplied.
         if let btn_text = action_btn_text.value? {
             notification.hasActionButton = true
             notification.actionButtonTitle = btn_text
@@ -42,10 +42,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         else {
             notification.hasActionButton = false
         }
+        
+        // Optional Other button (defaults to "Cancel")
+        if let text = other_btn_text.value? {
+            notification.otherButtonTitle = text
+        }
+        
+        // Action button application
+        if let action_path = action.value? {
+            self.action_path = action_path
+        }
 
-        //notification.contentImage = NSImage(contentsOfFile: "/Users/scraig/Desktop/Lo-Pan.jpg")
-
-        // Schedule notification with the notification center.
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self
         nc.deliverNotification(notification)
@@ -57,12 +64,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
 
     func userNotificationCenter(center: NSUserNotificationCenter!, didActivateNotification notification: NSUserNotification!) {
-        // Open something
-        let task = NSTask()
-        task.launchPath = "/usr/bin/open"
-        task.arguments = ["/Applications/Self Service.app"]
-        task.launch()
+        // Open something if configured.
+        if self.action_path != "" {
+            let task = NSTask()
+            task.launchPath = "/usr/bin/open"
+            task.arguments = [self.action_path]
+            task.launch()
+        }
         
+        // Exit the program so user doesn't see it in task manager.
         exit(0)
 
     }

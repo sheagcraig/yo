@@ -57,8 +57,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
 
     func userNotificationCenter(center: NSUserNotificationCenter!, didActivateNotification notification: NSUserNotification!) {
-        // At the moment, just quit.
+        // Open something
+        let task = NSTask()
+        task.launchPath = "/usr/bin/open"
+        task.arguments = ["/Applications/Self Service.app"]
+        task.launch()
+        
         exit(0)
+
     }
     func userNotificationCenter(center: NSUserNotificationCenter!, didDeliverNotification notification: NSUserNotification!) {
         // Pass

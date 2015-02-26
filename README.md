@@ -51,3 +51,5 @@ Notification Center is picky about the icon it displays for your notification. W
 Therefore, my recommendation is to apply the icon you want before sending any notifications for the first time to avoid any hassles. If you get stuck with the wrong icon, you should be able to change the project Bundle Identifier in the project->General pane; or you can increment the build number in the same place.
 
 See [here](http://stackoverflow.com/questions/11856766/osx-notification-center-icon) for more info.
+
+To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.

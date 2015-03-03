@@ -7,31 +7,55 @@
 //
 
 import Foundation
-import CommandLine
 
-class YoNotification {
-    // Handle commandline arguments to fill our notification
-    let cli = CommandLine()
+class YoNotification: NSObject, NSUserNotificationCenterDelegate {
+    var action: String?
     
-    let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
-    let subtitle = StringOption(shortFlag: "s", longFlag: "subtitle", required: false, helpMessage: "Subtitle for notification")
-    let informativeText = StringOption(shortFlag: "i", longFlag: "info", required: false, helpMessage: "Informative text.")
-    let actionBtnText = StringOption(shortFlag: "b", longFlag: "action_btn", required: false, helpMessage: "Action button text.")
-    let otherBtnText = StringOption(shortFlag: "o", longFlag: "other_btn", required: false, helpMessage: "Alternate label for cancel button text.")
-    let action = StringOption(shortFlag: "a", longFlag: "action_path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument.")
-    let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
-    
-    init () {
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, action, help)
-        let (success, error) = cli.parse()
-        if help.value {
-            cli.printUsage()
-            exit(EX_USAGE)
+    init (arguments: YoCommandLine) {
+        super.init()
+        // Create a user notification object and set it's properties.
+        let notification = NSUserNotification()
+        notification.title = arguments.title.value
+        notification.subtitle = arguments.subtitle.value?
+        notification.informativeText = arguments.informativeText.value?
+        
+        // Add action button and text if a value is supplied.
+        if let btnText = arguments.actionBtnText.value {
+            notification.hasActionButton = true
+            notification.actionButtonTitle = btnText
         }
-        else if !success {
-            println(error!)
-            cli.printUsage()
-            exit(EX_USAGE)
+        else {
+            notification.hasActionButton = false
+        }
+        action = arguments.action.value
+        
+        // Optional Other button (defaults to "Cancel")
+        if let otherBtnTitle = arguments.otherBtnText.value {
+            notification.otherButtonTitle = otherBtnTitle
+        }
+        
+        let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+        nc.delegate = self
+        nc.deliverNotification(notification)
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter!, didActivateNotification notification: NSUserNotification!) {
+        // Open something if configured.
+        if action != nil {
+            let task = NSTask()
+            task.launchPath = "/usr/bin/open"
+            task.arguments = [action!]
+            task.launch()
         }
     }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter!, didDeliverNotification notification: NSUserNotification!) {
+        // Pass
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter!, shouldPresentNotification notification: NSUserNotification!) -> Bool {
+        // Ensure that notification is shown, even if app is active.
+        return true
+    }
+
 }

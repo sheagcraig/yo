@@ -26,9 +26,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         let action = StringOption(shortFlag: "a", longFlag: "action_path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument.")
         let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
         
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, action)
+        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, action, help)
         let (success, error) = cli.parse()
-        if !success {
+        if help.value {
+            cli.printUsage()
+            exit(EX_USAGE)
+        }
+        else if !success {
             println(error!)
             cli.printUsage()
             exit(EX_USAGE)

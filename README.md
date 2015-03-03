@@ -7,6 +7,10 @@
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent (alert, rather than banner) notifications that remain in place until clicked. Also, as an alert, it gives you the option of customizing the clickable buttons.
 
+If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page.
+
+If you want to customize the icon/app name/etc, follow the Build & Installation instructions below.
+
 ### Build & Installation
 1. Clone the project.
 2. Open the project in XCode and set the App Icon to your desired icon. See the Icon section below for more info on this.

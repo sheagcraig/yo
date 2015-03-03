@@ -11,11 +11,11 @@ It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) 
 ### Build & Installation
 1. Clone the project.
 2. Open the project in XCode and set the App Icon to your desired icon. See the Icon section below for more info on this.
-3. Build.
+3. Build. (CMD-B)
 4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although ```/Applications/Utilities``` seems like a suitable place.
 
 ### Usage
-You must call the app from commandline, from the actual binary inside. Feel free to alias or ln to this file to avoid the long filename in the future.
+You must call the app from the commandline, from the actual binary inside. Feel free to alias or ln to this file to avoid the long filename in the future.
 
 ```
 Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
@@ -31,6 +31,8 @@ Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
       Alternate label for cancel button text.
   -a, --action:  
       Application to open if user selects the action button. Provide the full path as the argument.
+  -h, --help:
+	  Show help.
 ```
 
 Notes:
@@ -44,3 +46,12 @@ Notes:
 ```
 # /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
 ```
+
+### Application Icon
+Notification Center is picky about the icon it displays for your notification. Without using a private API, the icon is set via the application's icon. However, if a notification has been sent previously, a subsequent icon change will not be detected or updated by Notification Center.
+
+Therefore, my recommendation is to apply the icon you want before sending any notifications for the first time to avoid any hassles. If you get stuck with the wrong icon, you should be able to change the project Bundle Identifier in the project->General pane; or you can increment the build number in the same place.
+
+See [here](http://stackoverflow.com/questions/11856766/osx-notification-center-icon) for more info.
+
+To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.

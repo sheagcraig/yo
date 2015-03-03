@@ -24,6 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         let actionBtnText = StringOption(shortFlag: "b", longFlag: "action_btn", required: false, helpMessage: "Action button text.")
         let otherBtnText = StringOption(shortFlag: "o", longFlag: "other_btn", required: false, helpMessage: "Alternate label for cancel button text.")
         let action = StringOption(shortFlag: "a", longFlag: "action_path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument.")
+        let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
         
         cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, action)
         let (success, error) = cli.parse()

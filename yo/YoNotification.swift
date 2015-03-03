@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 class YoNotification: NSObject, NSUserNotificationCenterDelegate {
     var action: String?
@@ -33,6 +34,10 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         if let otherBtnTitle = arguments.otherBtnText.value {
             notification.otherButtonTitle = otherBtnTitle
         }
+
+//        notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!)
+//        notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!), forKey: "_identityImage")
+//        notification.setValue(false, forKey: "_identityImageHasBorder")
         
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self

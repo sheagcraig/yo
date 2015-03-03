@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A24BD151AA6138B00713742 /* YoNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A24BD141AA6138B00713742 /* YoNotification.swift */; };
 		9A66BB621A9E26C600CFCF90 /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; };
 		9A66BB631A9E2F4D00CFCF90 /* CommandLine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A66BB651A9E5EEF00CFCF90 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 9A66BB641A9E5EEF00CFCF90 /* README.md */; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A24BD141AA6138B00713742 /* YoNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoNotification.swift; sourceTree = "<group>"; };
 		9A66BB611A9E26C600CFCF90 /* CommandLine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CommandLine.framework; sourceTree = "<group>"; };
 		9A66BB641A9E5EEF00CFCF90 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9A95F61E1A9D18300080D5B4 /* yo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				9A95F6231A9D18300080D5B4 /* AppDelegate.swift */,
+				9A24BD141AA6138B00713742 /* YoNotification.swift */,
 				9A95F6251A9D18300080D5B4 /* ViewController.swift */,
 				9A95F6271A9D18300080D5B4 /* Images.xcassets */,
 				9A95F6291A9D18300080D5B4 /* Main.storyboard */,
@@ -245,6 +248,7 @@
 			files = (
 				9A66BB651A9E5EEF00CFCF90 /* README.md in Sources */,
 				9A95F6261A9D18300080D5B4 /* ViewController.swift in Sources */,
+				9A24BD151AA6138B00713742 /* YoNotification.swift in Sources */,
 				9A95F6241A9D18300080D5B4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

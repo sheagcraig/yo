@@ -16,36 +16,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Handle commandline arguments to fill our notification
-        let cli = CommandLine()
-        
-        let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
-        let subtitle = StringOption(shortFlag: "s", longFlag: "subtitle", required: false, helpMessage: "Subtitle for notification")
-        let informativeText = StringOption(shortFlag: "i", longFlag: "info", required: false, helpMessage: "Informative text.")
-        let actionBtnText = StringOption(shortFlag: "b", longFlag: "action_btn", required: false, helpMessage: "Action button text.")
-        let otherBtnText = StringOption(shortFlag: "o", longFlag: "other_btn", required: false, helpMessage: "Alternate label for cancel button text.")
-        let action = StringOption(shortFlag: "a", longFlag: "action_path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument.")
-        let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
-        
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, action, help)
-        let (success, error) = cli.parse()
-        if help.value {
-            cli.printUsage()
-            exit(EX_USAGE)
-        }
-        else if !success {
-            println(error!)
-            cli.printUsage()
-            exit(EX_USAGE)
-        }
+        let yo = YoNotification()
         
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
-        notification.title = title.value
-        notification.subtitle = subtitle.value?
-        notification.informativeText = informativeText.value?
+        notification.title = yo.title.value
+        notification.subtitle = yo.subtitle.value?
+        notification.informativeText = yo.informativeText.value?
 
         // Add action button and text if a value is supplied.
-        if let btnText = actionBtnText.value {
+        if let btnText = yo.actionBtnText.value {
             notification.hasActionButton = true
             notification.actionButtonTitle = btnText
         }
@@ -54,12 +34,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         }
         
         // Optional Other button (defaults to "Cancel")
-        if let otherBtnTitle = otherBtnText.value {
+        if let otherBtnTitle = yo.otherBtnText.value {
             notification.otherButtonTitle = otherBtnTitle
         }
         
         // Action button application
-        self.actionPath = action.value
+        self.actionPath = yo.action.value
 
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self

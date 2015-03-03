@@ -35,7 +35,10 @@ Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
 
 Notes:
 - Title is mandatory. All other arguments are optional.
-- The action argument needs a path or ULR. yo just calls ```open```, so anything that would work there, should work here.
+- The action argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here. Default is to open nothing.
+- If you *don't* provide a -b/--btext, no action button is added.
+- Hitting the action button will perform its ```open```, and then quit the yo.app.
+	- However, hitting the Cancel button will leave the app open. Sorry.
 
 ### Example
 ```

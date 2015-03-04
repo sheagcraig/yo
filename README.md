@@ -3,19 +3,23 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-```yo``` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification.
+```yo``` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below.
 
-It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent (alert, rather than banner) notifications that remain in place until clicked. Also, as an alert, it gives you the option of customizing the clickable buttons.
+It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 
 If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page.
 
-If you want to customize the icon/app name/etc, follow the Build & Installation instructions below.
+If you want to customize the icon/app name/etc, you will need to modify the XCode project and build it yourself. Instructions are provided below.
+
+Finally, thanks to @jatoben for the gracious sharing of his Swift [CommandLine](https://github.com/jatoben/CommandLine) library/Framework on GitHub.
 
 ### Build & Installation
+You only need to follow these instructions if you want to build the app yourself. Obviously, you'll need a recent XCode.
+
 1. Clone the project.
-2. Open the project in XCode and set the App Icon to your desired icon. See the Icon section below for more info on this.
+2. Open the project in XCode and set the App Icon to your desired icon. Please read the Icon section below for more info on what is going on here. To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.
 3. Build. (CMD-B)
-4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although ```/Applications/Utilities``` seems like a suitable place.
+4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although ```/Applications/Utilities``` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
 
 Note: If you Run/(CMD-R) from XCode, it will just report back usage with a commandline parsing error. Just ignore that and run from the commandline.
 
@@ -63,11 +67,25 @@ Notes:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -o "Accept"
 ```
 
-### Application Icon
-Notification Center is picky about the icon it displays for your notification. Without using a private API, the icon is set via the application's icon. However, if a notification has been sent previously, a subsequent icon change will not be detected or updated by Notification Center.
+### Application Icon, Caveats, and Nerdery
+#### Icons
+Most organizations will probably want yo to display a custom icon in the notification. There are a couple of different ways notifications determine what to use for the icon:
+1. By default, a notification uses the icon for the application sending the notification.
+2. Using a private API, an application can specify an image file to use for the icon.
+
+yo uses option 2 if you use the --icon option. However, since this is a private mechanism used by Apple to show album art in iTunes notifications, the application icon will *still* show up, just smaller, and to the side of the primary icon.
+
+So if you really just want to use *your* icon, you need to build the project in XCode yourself. And even so, there are some issues about getting it to "know" that you've changed the icon.
+
+Notification Center is picky about the icon it displays for your notification. If a notification has been sent previously, a subsequent icon change will not be detected or updated by Notification Center.
 
 Therefore, my recommendation is to apply the icon you want before sending any notifications for the first time to avoid any hassles. If you get stuck with the wrong icon, you should be able to change the project Bundle Identifier in the project->General pane; or you can increment the build number in the same place.
 
 See [here](http://stackoverflow.com/questions/11856766/osx-notification-center-icon) for more info.
 
-To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.
+#### The other nerdery
+Normally, for a notification to be persistent (meaning, it stays onscreen until a button is clicked on the notification), the notification needs to be an "alert" style notification. However, Apple does not allow just anyone to make alerts. To use an alert in your app, the app has to be signed with a developer ID.
+
+Or does it... There's another private API key that allows you to show buttons on a "banner", which is the default type, and available for unsigned apps. So that's what yo uses.
+
+If that makes you nervous, add a key "NSUserNotificationAlertStyle" with value "alert" to the project's Info.plist and build the app, signed with your own developer ID.

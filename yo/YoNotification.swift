@@ -20,6 +20,12 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         notification.subtitle = arguments.subtitle.value?
         notification.informativeText = arguments.informativeText.value?
         
+        // Alternate icon handling
+        if let iconPath = arguments.icon.value {
+            notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: iconPath)!), forKey: "_identityImage")
+            notification.setValue(false, forKey: "_identityImageHasBorder")
+        }
+        
         // Add action button and text if a value is supplied.
         if let btnText = arguments.actionBtnText.value {
             notification.hasActionButton = true
@@ -35,9 +41,8 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
             notification.otherButtonTitle = otherBtnTitle
         }
 
+        // TODO: Add contentImage, _poofsOnCancel, _ignoresDoNotDisturb, _lockscreenOnly, delivery sound
 //        notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!)
-//        notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!), forKey: "_identityImage")
-//        notification.setValue(false, forKey: "_identityImageHasBorder")
 
         // Overrides default notification style of "banner" to show buttons.
         // Otherwise, to change to an "alert", app needs to be signed with a developer ID.

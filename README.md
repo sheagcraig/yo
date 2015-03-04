@@ -27,21 +27,23 @@ Note: If you Run/(CMD-R) from XCode, it will just report back usage with a comma
 You must call the app from the commandline, from the actual binary inside. Feel free to alias or ln to this file to avoid the long filename in the future.
 
 ```
-Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
-  -t, --title:
-      Title for notification
-  -s, --subtitle:
-      Subtitle for notification
-  -i, --itext:
-      Informative text.
-  -b, --btext:
-	  Include an action button, with the button label text supplied to this argument.
-  -o, --obtext:  
-      Alternate label for cancel button text.
-  -a, --action:  
-      Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action_btn is also specified. Defaults to opening nothing.
-  -h, --help:
-	  Show help.
+Usage: /Users/scraig/Library/Developer/Xcode/DerivedData/yo-fdmllzzfcwyljsbbpwhduzpfxeqe/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
+-t, --title:      
+Title for notification
+-s, --subtitle:   
+Subtitle for notification
+-n, --info:       
+Informative text.
+-b, --action_btn: 
+Include an action button, with the button label text supplied to this argument.
+-o, --other_btn:  
+Alternate label for cancel button text.
+-i, --icon:       
+Complete path to an alternate icon to use for the notification.
+-a, --action_path:
+Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action_btn is also specified. Defaults to opening nothing.
+-h, --help:       
+Show help.
 ```
 
 Notes:

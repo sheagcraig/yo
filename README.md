@@ -57,7 +57,7 @@ Notes:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time"
 
 # Example with lots of text:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -s "Chorizo is best." -i "Although I also enjoy al pastor of course."
+/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -s "Chorizo is best." -n "Although I also enjoy al pastor of course."
 
 # Example with action button, opening a webpage in your default browser:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
@@ -67,6 +67,10 @@ Notes:
 
 # Example-What if you want a one-button persistent notification that doesn't *do* anything?
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -o "Accept"
+
+# Example-alternate icon using the -i argument
+/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -i "/Users/blanconino/Pictures/taco.png"
+
 ```
 
 ### Application Icon, Caveats, and Nerdery

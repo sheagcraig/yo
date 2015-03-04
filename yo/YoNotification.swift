@@ -3,7 +3,7 @@
 //  yo
 //
 //  Created by Shea Craig on 3/3/15.
-//  Copyright (c) 2015 Soap Zombie. All rights reserved.
+//  Copyright (c) 2015 Shea Craig. All rights reserved.
 //
 
 import Foundation
@@ -38,6 +38,11 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
 //        notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!)
 //        notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!), forKey: "_identityImage")
 //        notification.setValue(false, forKey: "_identityImageHasBorder")
+
+        // Overrides default notification style of "banner" to show buttons.
+        // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
+        // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
+        notification.setValue(true, forKey: "_showsButtons")
         
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self

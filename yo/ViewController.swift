@@ -3,7 +3,7 @@
 //  yo
 //
 //  Created by Shea Craig on 2/24/15.
-//  Copyright (c) 2015 Soap Zombie. All rights reserved.
+//  Copyright (c) 2015 Shea Craig. All rights reserved.
 //
 
 import Cocoa

@@ -16,16 +16,33 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         super.init()
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
-        notification.title = arguments.title.value
-        notification.subtitle = arguments.subtitle.value
-        notification.informativeText = arguments.informativeText.value
+
+        // Overrides default notification style of "banner" to show buttons.
+        // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
+        // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
+        notification.setValue(true, forKey: "_showsButtons")
+
+        // Image elements.
         
-        // Alternate icon handling
+        // Alternate icon handling.
         if let iconPath = arguments.icon.value {
             notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: iconPath)!), forKey: "_identityImage")
             notification.setValue(false, forKey: "_identityImageHasBorder")
         }
         
+        // Content image.
+        if let contentImagePath = arguments.contentImage.value {
+            notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: contentImagePath)!)
+        }
+        
+        // Text elements.
+        notification.title = arguments.title.value
+        notification.subtitle = arguments.subtitle.value
+        notification.informativeText = arguments.informativeText.value
+        
+        
+        // Button elements.
+
         // Add action button and text if a value is supplied.
         if let btnText = arguments.actionBtnText.value {
             notification.hasActionButton = true
@@ -41,13 +58,11 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
             notification.otherButtonTitle = otherBtnTitle
         }
 
-        // TODO: Add contentImage, _poofsOnCancel, _ignoresDoNotDisturb, _lockscreenOnly, delivery sound
-//        notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: "/Users/scraig/Desktop/OracleJava8.png")!)
+        notification.setValue(arguments.poofsOnCancel.value, forKey: "_poofsOnCancel")
 
-        // Overrides default notification style of "banner" to show buttons.
-        // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
-        // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
-        notification.setValue(true, forKey: "_showsButtons")
+        // TODO: Add _ignoresDoNotDisturb, _lockscreenOnly, delivery sound
+
+
         
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self

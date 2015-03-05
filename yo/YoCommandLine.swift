@@ -15,15 +15,17 @@ class YoCommandLine {
     let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
     let subtitle = StringOption(shortFlag: "s", longFlag: "subtitle", required: false, helpMessage: "Subtitle for notification")
     let informativeText = StringOption(shortFlag: "n", longFlag: "info", required: false, helpMessage: "Informative text.")
-    let actionBtnText = StringOption(shortFlag: "b", longFlag: "action_btn", required: false, helpMessage: "Include an action button, with the button label text supplied to this argument.")
-    let otherBtnText = StringOption(shortFlag: "o", longFlag: "other_btn", required: false, helpMessage: "Alternate label for cancel button text.")
+    let actionBtnText = StringOption(shortFlag: "b", longFlag: "action-btn", required: false, helpMessage: "Include an action button, with the button label text supplied to this argument.")
+    let otherBtnText = StringOption(shortFlag: "o", longFlag: "other-btn", required: false, helpMessage: "Alternate label for cancel button text.")
+    let poofsOnCancel = BoolOption(shortFlag: "p", longFlag: "poofs-on-cancel", helpMessage: "Set to make your notification 'poof' when the cancel button is hit.")
     let icon = StringOption(shortFlag: "i", longFlag: "icon", required: false, helpMessage: "Complete path to an alternate icon to use for the notification.")
-    let action = StringOption(shortFlag: "a", longFlag: "action_path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action_btn is also specified. Defaults to opening nothing.")
+    let contentImage = StringOption(shortFlag: "c", longFlag: "content-image", required: false, helpMessage: "Path to an image to use for the notification's 'contentImage' property.")
+    let action = StringOption(shortFlag: "a", longFlag: "action-path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.")
     let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
     
     init () {
         // Add arguments to commandline object and handle errors or help requests.
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, icon, action, help)
+        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, help)
         let (success, error) = cli.parse()
         if help.value {
             cli.printUsage()

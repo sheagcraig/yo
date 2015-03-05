@@ -25,17 +25,17 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>6A2008a</string>
+	<string>6D532l</string>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
-	<string>14A382</string>
+	<string>14A389a</string>
 	<key>DTSDKName</key>
 	<string>macosx10.10</string>
 	<key>DTXcode</key>
-	<string>0611</string>
+	<string>0630</string>
 	<key>DTXcodeBuild</key>
-	<string>6A2008a</string>
+	<string>6D532l</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014 Ben Gollmer. Licensed under the Apache License, Version 2.0.</string>
 </dict>

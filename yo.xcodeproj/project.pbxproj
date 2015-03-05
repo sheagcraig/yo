@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		9A24BD151AA6138B00713742 /* YoCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A24BD141AA6138B00713742 /* YoCommandLine.swift */; };
 		9A24BD171AA6212500713742 /* YoNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A24BD161AA6212500713742 /* YoNotification.swift */; };
-		9A66BB621A9E26C600CFCF90 /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; };
-		9A66BB631A9E2F4D00CFCF90 /* CommandLine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A66BB611A9E26C600CFCF90 /* CommandLine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A66BB651A9E5EEF00CFCF90 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 9A66BB641A9E5EEF00CFCF90 /* README.md */; };
 		9A95F6241A9D18300080D5B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6231A9D18300080D5B4 /* AppDelegate.swift */; };
 		9A95F6261A9D18300080D5B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6251A9D18300080D5B4 /* ViewController.swift */; };
@@ -18,6 +16,9 @@
 		9A95F62B1A9D18300080D5B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A95F6291A9D18300080D5B4 /* Main.storyboard */; };
 		9A95F6371A9D18300080D5B4 /* yoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A95F6361A9D18300080D5B4 /* yoTests.swift */; };
 		9AAC16A71A9E205800A9E18E /* yo.psd in Resources */ = {isa = PBXBuildFile; fileRef = 9AAC16A61A9E205800A9E18E /* yo.psd */; };
+		9ABB09421AA8B69400717EED /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ABB09411AA8B69400717EED /* CommandLine.framework */; };
+		9ABB09431AA8B69A00717EED /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ABB09411AA8B69400717EED /* CommandLine.framework */; };
+		9ABB09441AA8B69A00717EED /* CommandLine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9ABB09411AA8B69400717EED /* CommandLine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9A66BB631A9E2F4D00CFCF90 /* CommandLine.framework in Embed Frameworks */,
+				9ABB09441AA8B69A00717EED /* CommandLine.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,7 +48,6 @@
 /* Begin PBXFileReference section */
 		9A24BD141AA6138B00713742 /* YoCommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoCommandLine.swift; sourceTree = "<group>"; };
 		9A24BD161AA6212500713742 /* YoNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoNotification.swift; sourceTree = "<group>"; };
-		9A66BB611A9E26C600CFCF90 /* CommandLine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CommandLine.framework; sourceTree = "<group>"; };
 		9A66BB641A9E5EEF00CFCF90 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9A95F61E1A9D18300080D5B4 /* yo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A95F6221A9D18300080D5B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +59,7 @@
 		9A95F6351A9D18300080D5B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A95F6361A9D18300080D5B4 /* yoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = yoTests.swift; sourceTree = "<group>"; };
 		9AAC16A61A9E205800A9E18E /* yo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = yo.psd; sourceTree = "<group>"; };
+		9ABB09411AA8B69400717EED /* CommandLine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CommandLine.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +67,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A66BB621A9E26C600CFCF90 /* CommandLine.framework in Frameworks */,
+				9ABB09431AA8B69A00717EED /* CommandLine.framework in Frameworks */,
+				9ABB09421AA8B69400717EED /* CommandLine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +85,7 @@
 		9A95F6151A9D18300080D5B4 = {
 			isa = PBXGroup;
 			children = (
-				9A66BB611A9E26C600CFCF90 /* CommandLine.framework */,
+				9ABB09411AA8B69400717EED /* CommandLine.framework */,
 				9A95F6201A9D18300080D5B4 /* yo */,
 				9A95F6331A9D18300080D5B4 /* yoTests */,
 				9A95F61F1A9D18300080D5B4 /* Products */,

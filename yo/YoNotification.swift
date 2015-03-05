@@ -17,8 +17,8 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
         notification.title = arguments.title.value
-        notification.subtitle = arguments.subtitle.value?
-        notification.informativeText = arguments.informativeText.value?
+        notification.subtitle = arguments.subtitle.value
+        notification.informativeText = arguments.informativeText.value
         
         // Alternate icon handling
         if let iconPath = arguments.icon.value {
@@ -54,7 +54,7 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         nc.deliverNotification(notification)
     }
     
-    func userNotificationCenter(center: NSUserNotificationCenter!, didActivateNotification notification: NSUserNotification!) {
+    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         // Open something if configured.
         if action != nil {
             let task = NSTask()
@@ -64,11 +64,11 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
-    func userNotificationCenter(center: NSUserNotificationCenter!, didDeliverNotification notification: NSUserNotification!) {
+    func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {
         // Pass
     }
     
-    func userNotificationCenter(center: NSUserNotificationCenter!, shouldPresentNotification notification: NSUserNotification!) -> Bool {
+    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
         // Ensure that notification is shown, even if app is active.
         return true
     }

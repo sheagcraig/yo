@@ -28,28 +28,46 @@ You must call the app from the commandline, from the actual binary inside. Feel 
 
 ```
 Usage: /Users/scraig/Library/Developer/Xcode/DerivedData/yo-fdmllzzfcwyljsbbpwhduzpfxeqe/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
--t, --title:      
+-m, --banner-mode:           
+Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
+-t, --title:                 
 Title for notification
--s, --subtitle:   
+-d, --ignores-do-not-disturb:
+Set to make your notification appear even if computer is in do-not-disturb mode.
+-l, --lockscreen-only:       
+Set to make your notification appear only if computer is locked. If set, no buttons will be available.
+-s, --subtitle:              
 Subtitle for notification
--n, --info:       
+-n, --info:                  
 Informative text.
--b, --action_btn: 
+-b, --action-btn:            
 Include an action button, with the button label text supplied to this argument.
--o, --other_btn:  
+-o, --other-btn:             
 Alternate label for cancel button text.
--i, --icon:       
+-p, --poofs-on-cancel:       
+Set to make your notification 'poof' when the cancel button is hit.
+-i, --icon:                  
 Complete path to an alternate icon to use for the notification.
--a, --action_path:
-Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action_btn is also specified. Defaults to opening nothing.
--h, --help:       
+-c, --content-image:         
+Path to an image to use for the notification's 'contentImage' property.
+-a, --action-path:           
+Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
+-z, --delivery-sound:        
+The name of the sound to play when delivering. Usually this is the filename of a system sound minus the extension. See the README for more info.
+-h, --help:                  
 Show help.
 ```
 
 Notes:
 - Title is mandatory. All other arguments are optional.
+- -m/--banner-mode does not seem to work at this time.
 - The action argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here.
 - If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use ```-o/--obtext``` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no ```-b/--btext```.
+- Sounds! If you want to use a different sound, you must provide the name of the sound to the -z argument, not the filename. I.e. "Sosumi". The search path is:
+    - ~/Library/Sounds
+    - /Library/Sounds
+    - /Network/Library/Sounds
+    - /System/Library/Sounds
 
 ### Examples
 ```

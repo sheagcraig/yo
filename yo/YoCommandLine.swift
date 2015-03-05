@@ -12,6 +12,7 @@ import CommandLine
 class YoCommandLine {
     // Set up our commandline arguments.
     let cli = CommandLine()
+    let banner = BoolOption(shortFlag: "m", longFlag: "banner-mode", helpMessage: "Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.")
     let ignoresDoNotDisturb = BoolOption(shortFlag: "d", longFlag: "ignores-do-not-disturb", helpMessage: "Set to make your notification appear even if computer is in do-not-disturb mode.")
     let lockscreenOnly = BoolOption(shortFlag: "l", longFlag: "lockscreen-only", helpMessage: "Set to make your notification appear only if computer is locked. If set, no buttons will be available.")
     let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
@@ -22,12 +23,13 @@ class YoCommandLine {
     let poofsOnCancel = BoolOption(shortFlag: "p", longFlag: "poofs-on-cancel", helpMessage: "Set to make your notification 'poof' when the cancel button is hit.")
     let icon = StringOption(shortFlag: "i", longFlag: "icon", required: false, helpMessage: "Complete path to an alternate icon to use for the notification.")
     let contentImage = StringOption(shortFlag: "c", longFlag: "content-image", required: false, helpMessage: "Path to an image to use for the notification's 'contentImage' property.")
+    let deliverySound = StringOption(shortFlag: "z", longFlag: "delivery-sound", required: false, helpMessage: "The name of the sound to play when delivering. Usually this is the filename of a system sound minus the extension. See the README for more info.")
     let action = StringOption(shortFlag: "a", longFlag: "action-path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.")
     let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
     
     init () {
         // Add arguments to commandline object and handle errors or help requests.
-        cli.addOptions(title, ignoresDoNotDisturb, lockscreenOnly, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, help)
+        cli.addOptions(banner, title, ignoresDoNotDisturb, lockscreenOnly, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, deliverySound, help)
         let (success, error) = cli.parse()
         if help.value {
             cli.printUsage()

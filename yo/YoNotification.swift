@@ -19,16 +19,24 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
 
         // General properties.
         
-        // Overrides default notification style of "banner" to show buttons.
-        // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
-        // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
-        notification.setValue(true, forKey: "_showsButtons")
-
+        // This option does not currently work to make a banner.
+        if !arguments.banner.value {
+            // Overrides default notification style of "banner" to show buttons.
+            // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
+            // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
+            notification.setValue(true, forKey: "_showsButtons")
+        }
+        
         // If set, _ignoreDoNotDisturb will deliver a notification even when in DND mode.
         notification.setValue(arguments.ignoresDoNotDisturb.value, forKey: "_ignoresDoNotDisturb")
         // If set, _lockscreenOnly will ONLY deliver a notification to a locked screen.
         // Lockscreen notifications cannot have buttons (so if configured, they won't show up).
         notification.setValue(arguments.lockscreenOnly.value, forKey: "_lockscreenOnly")
+        
+        // Delivery sound.
+        if let deliverySound = arguments.deliverySound.value {
+            notification.soundName = deliverySound
+        }
         
         // Image elements.
         
@@ -48,7 +56,6 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         notification.subtitle = arguments.subtitle.value
         notification.informativeText = arguments.informativeText.value
         
-        
         // Button elements.
 
         // Add action button and text if a value is supplied.
@@ -67,11 +74,7 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         }
 
         notification.setValue(arguments.poofsOnCancel.value, forKey: "_poofsOnCancel")
-
-        // TODO: Add _ignoresDoNotDisturb, _lockscreenOnly, delivery sound
-
-
-        
+       
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self
         nc.deliverNotification(notification)

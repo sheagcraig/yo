@@ -17,11 +17,19 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         // Create a user notification object and set it's properties.
         let notification = NSUserNotification()
 
+        // General properties.
+        
         // Overrides default notification style of "banner" to show buttons.
         // Otherwise, to change to an "alert", app needs to be signed with a developer ID.
         // See http://stackoverflow.com/a/23087567 and http://stackoverflow.com/a/12012934
         notification.setValue(true, forKey: "_showsButtons")
 
+        // If set, _ignoreDoNotDisturb will deliver a notification even when in DND mode.
+        notification.setValue(arguments.ignoresDoNotDisturb.value, forKey: "_ignoresDoNotDisturb")
+        // If set, _lockscreenOnly will ONLY deliver a notification to a locked screen.
+        // Lockscreen notifications cannot have buttons (so if configured, they won't show up).
+        notification.setValue(arguments.lockscreenOnly.value, forKey: "_lockscreenOnly")
+        
         // Image elements.
         
         // Alternate icon handling.

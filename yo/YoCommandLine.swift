@@ -12,6 +12,8 @@ import CommandLine
 class YoCommandLine {
     // Set up our commandline arguments.
     let cli = CommandLine()
+    let ignoresDoNotDisturb = BoolOption(shortFlag: "d", longFlag: "ignores-do-not-disturb", helpMessage: "Set to make your notification appear even if computer is in do-not-disturb mode.")
+    let lockscreenOnly = BoolOption(shortFlag: "l", longFlag: "lockscreen-only", helpMessage: "Set to make your notification appear only if computer is locked. If set, no buttons will be available.")
     let title = StringOption(shortFlag: "t", longFlag: "title", required: true, helpMessage: "Title for notification")
     let subtitle = StringOption(shortFlag: "s", longFlag: "subtitle", required: false, helpMessage: "Subtitle for notification")
     let informativeText = StringOption(shortFlag: "n", longFlag: "info", required: false, helpMessage: "Informative text.")
@@ -25,7 +27,7 @@ class YoCommandLine {
     
     init () {
         // Add arguments to commandline object and handle errors or help requests.
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, help)
+        cli.addOptions(title, ignoresDoNotDisturb, lockscreenOnly, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, help)
         let (success, error) = cli.parse()
         if help.value {
             cli.printUsage()

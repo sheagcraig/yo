@@ -1,3 +1,0 @@
-framework module CommandLine {
-    header "CommandLine-Swift.h"
-}

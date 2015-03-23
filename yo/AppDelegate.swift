@@ -9,22 +9,36 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
     var yoNotification: YoNotification?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         let args = YoCommandLine()
         let yoNotification = YoNotification(arguments: args)
-        
-        // Wait a bit for the notification to post, then quit the app.
-        sleep(2)
-        exit(0)
-        
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
-
+    
+    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
+        // Open something if configured.
+//        if action != nil {
+//            let task = NSTask()
+//            task.launchPath = "/usr/bin/open"
+//            task.arguments = [action!]
+//            task.launch()
+//        }
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {
+        // Work is done, time to quit.
+        exit(0)
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
+        // Ensure that notification is shown, even if app is active.
+        return true
+    }
 }
 

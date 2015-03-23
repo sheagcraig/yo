@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-class YoNotification: NSObject, NSUserNotificationCenterDelegate {
+class YoNotification: NSObject {
     var action: String?
     
     init (arguments: YoCommandLine) {
@@ -79,24 +79,4 @@ class YoNotification: NSObject, NSUserNotificationCenterDelegate {
         nc.delegate = self
         nc.deliverNotification(notification)
     }
-    
-    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
-        // Open something if configured.
-        if action != nil {
-            let task = NSTask()
-            task.launchPath = "/usr/bin/open"
-            task.arguments = [action!]
-            task.launch()
-        }
-    }
-    
-    func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {
-        // Pass
-    }
-    
-    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
-        // Ensure that notification is shown, even if app is active.
-        return true
-    }
-
 }

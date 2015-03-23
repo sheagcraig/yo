@@ -10,7 +10,6 @@ import Foundation
 import Cocoa
 
 class YoNotification: NSObject {
-    var action: String?
     
     init (arguments: YoCommandLine) {
         super.init()
@@ -66,7 +65,10 @@ class YoNotification: NSObject {
         else {
             notification.hasActionButton = false
         }
-        action = arguments.action.value
+        // Store the action (if provided) so we can retrieve it later.
+        if let action = arguments.action.value {
+            notification.userInfo = ["action": action]
+        }
         
         // Optional Other button (defaults to "Cancel")
         if let otherBtnTitle = arguments.otherBtnText.value {
@@ -76,6 +78,6 @@ class YoNotification: NSObject {
         notification.setValue(arguments.poofsOnCancel.value, forKey: "_poofsOnCancel")
        
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
-        nc.deliverNotification(notification)
+        nc.scheduleNotification(notification)
     }
 }

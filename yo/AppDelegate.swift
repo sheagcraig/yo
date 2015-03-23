@@ -14,24 +14,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     @IBOutlet weak var window: NSWindow!
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        let args = YoCommandLine()
-        let yoNotification = YoNotification(arguments: args)
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
-        nc.delegate = self
+
+        // If notification is activated (i.e. user clicked the action button) the app will relaunch.
+        // Test for that, and if so, execute the option tucked away in the userInfo dict.
+        if let notification: NSUserNotification = aNotification.userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
+            let task = NSTask()
+            task.launchPath = "/usr/bin/open"
+            if let action = notification.userInfo!["action"] as? String {
+                task.arguments = [action]
+            }
+
+            task.launch()
+            // We're done.
+            exit(0)
+        }
+        else {
+            let args = YoCommandLine()
+            let yoNotification = YoNotification(arguments: args)
+            nc.delegate = self
+        }
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
-    }
-    
-    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
-        // Open something if configured.
-//        if action != nil {
-//            let task = NSTask()
-//            task.launchPath = "/usr/bin/open"
-//            task.arguments = [action!]
-//            task.launch()
-//        }
     }
     
     func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {

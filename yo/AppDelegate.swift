@@ -10,11 +10,14 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
-    var yoNotification: YoNotification?
+
+    @IBOutlet weak var window: NSWindow!
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         let args = YoCommandLine()
         let yoNotification = YoNotification(arguments: args)
+        let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+        nc.delegate = self
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

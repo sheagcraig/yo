@@ -76,7 +76,6 @@ class YoNotification: NSObject {
         notification.setValue(arguments.poofsOnCancel.value, forKey: "_poofsOnCancel")
        
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
-        nc.delegate = self
         nc.deliverNotification(notification)
     }
 }

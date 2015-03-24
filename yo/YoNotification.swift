@@ -67,6 +67,7 @@ class YoNotification: NSObject {
         }
         // Store the action (if provided) so we can retrieve it later.
         if let action = arguments.action.value {
+            notification.userInfo = ["sender": "org.da.yo"]
             notification.userInfo = ["action": action]
         }
         

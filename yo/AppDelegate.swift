@@ -15,13 +15,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+        nc.delegate = self
 
         // If notification is activated (i.e. user clicked the action button) the app will relaunch.
         // Test for that, and if so, execute the option tucked away in the userInfo dict.
-        if let notification: NSUserNotification = aNotification.userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
+        if let notification = aNotification.userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
             let task = NSTask()
             task.launchPath = "/usr/bin/open"
             if let action = notification.userInfo!["action"] as? String {
+                NSLog("User activated notification with action: \(action)")
                 task.arguments = [action]
             }
 
@@ -30,9 +32,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
             exit(0)
         }
         else {
+            NSLog("Posting notification.")
             let args = YoCommandLine()
             let yoNotification = YoNotification(arguments: args)
-            nc.delegate = self
         }
     }
 

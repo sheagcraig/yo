@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CommandLine
 
 class YoCommandLine {
     // Set up our commandline arguments.

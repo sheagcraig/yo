@@ -14,9 +14,12 @@
 		841717B71ABCA11300150A32 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841717B31ABCA11300150A32 /* ViewController.swift */; };
 		841717B81ABCA11300150A32 /* YoCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841717B41ABCA11300150A32 /* YoCommandLine.swift */; };
 		841717B91ABCA11300150A32 /* YoNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841717B51ABCA11300150A32 /* YoNotification.swift */; };
-		841717BC1ABCA16100150A32 /* CommandLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841717BA1ABCA15200150A32 /* CommandLine.framework */; };
-		841717BD1ABCA16100150A32 /* CommandLine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 841717BA1ABCA15200150A32 /* CommandLine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		841717C21ABCA40200150A32 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 841717C11ABCA40200150A32 /* README.md */; };
+		9A16F3161AEAA2AC001336EA /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3131AEAA2AC001336EA /* CommandLine.swift */; };
+		9A16F3171AEAA2AC001336EA /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3141AEAA2AC001336EA /* Option.swift */; };
+		9A16F3181AEAA2AC001336EA /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3151AEAA2AC001336EA /* StringExtensions.swift */; };
+		9A16F31A1AEAA335001336EA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9A16F3191AEAA335001336EA /* LICENSE */; };
+		9A16F32F1AEACCFC001336EA /* yo.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9A16F32E1AEACCFC001336EA /* yo.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +39,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				841717BD1ABCA16100150A32 /* CommandLine.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,8 +57,12 @@
 		841717B31ABCA11300150A32 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		841717B41ABCA11300150A32 /* YoCommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoCommandLine.swift; sourceTree = "<group>"; };
 		841717B51ABCA11300150A32 /* YoNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoNotification.swift; sourceTree = "<group>"; };
-		841717BA1ABCA15200150A32 /* CommandLine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CommandLine.framework; sourceTree = "<group>"; };
 		841717C11ABCA40200150A32 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9A16F3131AEAA2AC001336EA /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
+		9A16F3141AEAA2AC001336EA /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		9A16F3151AEAA2AC001336EA /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		9A16F3191AEAA335001336EA /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		9A16F32E1AEACCFC001336EA /* yo.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = yo.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +70,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				841717BC1ABCA16100150A32 /* CommandLine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,8 +86,9 @@
 		841717891ABCA0CE00150A32 = {
 			isa = PBXGroup;
 			children = (
+				9A16F3191AEAA335001336EA /* LICENSE */,
+				9A16F32E1AEACCFC001336EA /* yo.sh */,
 				841717C11ABCA40200150A32 /* README.md */,
-				841717BA1ABCA15200150A32 /* CommandLine.framework */,
 				841717941ABCA0CE00150A32 /* yo */,
 				841717A51ABCA0CE00150A32 /* yoTests */,
 				841717931ABCA0CE00150A32 /* Products */,
@@ -101,6 +107,9 @@
 		841717941ABCA0CE00150A32 /* yo */ = {
 			isa = PBXGroup;
 			children = (
+				9A16F3131AEAA2AC001336EA /* CommandLine.swift */,
+				9A16F3141AEAA2AC001336EA /* Option.swift */,
+				9A16F3151AEAA2AC001336EA /* StringExtensions.swift */,
 				841717B21ABCA11300150A32 /* AppDelegate.swift */,
 				841717B31ABCA11300150A32 /* ViewController.swift */,
 				841717B41ABCA11300150A32 /* YoCommandLine.swift */,
@@ -218,7 +227,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A16F31A1AEAA335001336EA /* LICENSE in Resources */,
 				8417179A1ABCA0CE00150A32 /* Images.xcassets in Resources */,
+				9A16F32F1AEACCFC001336EA /* yo.sh in Resources */,
 				8417179D1ABCA0CE00150A32 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -237,10 +248,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A16F3171AEAA2AC001336EA /* Option.swift in Sources */,
 				841717B71ABCA11300150A32 /* ViewController.swift in Sources */,
+				9A16F3181AEAA2AC001336EA /* StringExtensions.swift in Sources */,
 				841717B61ABCA11300150A32 /* AppDelegate.swift in Sources */,
 				841717C21ABCA40200150A32 /* README.md in Sources */,
 				841717B91ABCA11300150A32 /* YoNotification.swift in Sources */,
+				9A16F3161AEAA2AC001336EA /* CommandLine.swift in Sources */,
 				841717B81ABCA11300150A32 /* YoCommandLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +451,7 @@
 				841717AE1ABCA0CE00150A32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		841717AF1ABCA0CE00150A32 /* Build configuration list for PBXNativeTarget "yoTests" */ = {
 			isa = XCConfigurationList;
@@ -445,6 +460,7 @@
 				841717B11ABCA0CE00150A32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

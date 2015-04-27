@@ -24,10 +24,14 @@ You only need to follow these instructions if you want to build the app yourself
 Note: If you Run/(CMD-R) from XCode, it will just report back usage with a commandline parsing error. Just ignore that and run from the commandline.
 
 ### Usage
-You must call the app from the commandline, from the actual binary inside. Feel free to alias or ln to this file to avoid the long filename in the future.
+You must call the app from the commandline, from the actual binary inside (not from running or calling the "yo.app"). The path depends on where you install it, but the recommended location is in ```/Applications/Utilities```. If you install it there, the full path to call yo is ```/Applications/Utilities/yo.app/Contents/MacOS/yo```.
+
+If you run yo and there is no logged-in GUI user, yo will hang, probably indefinitely. This could occur if you're scripting yo to run prior to Login, or perhaps you SSH into a machine booted to the loginwindow.
+
+A shell script is provided (installed to ```/usr/local/bin/yo``` if you use the installer package) that will test for a console user prior to execution. Due to its install location being in the default PATH, you can then call yo by simply typing ```yo -t "This is amazing"```.
 
 ```
-Usage: /Users/scraig/Library/Developer/Xcode/DerivedData/yo-fdmllzzfcwyljsbbpwhduzpfxeqe/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
+Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
   -m, --banner-mode:           
       Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
   -t, --title:                 
@@ -68,6 +72,7 @@ Notes:
     - /Library/Sounds
     - /Network/Library/Sounds
     - /System/Library/Sounds
+- Remember, this is (probably) a Bash shell. If you don't escape reserved characters like ```!``` you may get unexpected results. (```!``` is the Bash history expansion operator!)
 
 ### Examples
 ```
@@ -103,7 +108,7 @@ So if you really just want to use *your* icon, you need to build the project in 
 
 Notification Center is picky about the icon it displays for your notification. If a notification has been sent previously, a subsequent icon change will not be detected or updated by Notification Center, as the original one has been cached.
 
-Therefore, it is easieste to apply the icon you want before sending any notifications for the first time to avoid any hassles. If you get stuck with the wrong icon, you should be able to change the project Bundle Identifier in the project->General pane; or you can increment the build number in the same place. Arguably, you would want to change the Bundle Identifier to match your organization anyway.
+Therefore, it is easiest to apply the icon you want before sending any notifications for the first time to avoid any hassles. If you get stuck with the wrong icon, you should be able to change the project Bundle Identifier in the project->General pane; or you can increment the build number in the same place. Arguably, you would want to change the Bundle Identifier to match your organization anyway.
 
 See [here](http://stackoverflow.com/questions/11856766/osx-notification-center-icon) for more info.
 

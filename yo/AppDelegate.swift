@@ -32,12 +32,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         // Test for that, and if so, execute the option tucked away in the userInfo dict.
         if let notification = aNotification.userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
             let task = NSTask()
+            // It's safe to just open nothing, so this is the default.
             task.launchPath = "/usr/bin/open"
             if let action = notification.userInfo!["action"] as? String {
                 NSLog("User activated notification with action: \(action)")
                 task.arguments = [action]
             }
 
+            if let bashAction = notification.userInfo!["bashAction"] as? String {
+                task.launchPath = "/bin/bash"
+                NSLog("User activated notification with action: \(bashAction)")
+                task.arguments = ["-c"] + [bashAction]
+            }
+            
             task.launch()
             // We're done.
             exit(0)

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+## [1.0.2] - 2015-04-28
+### Added
+- Ability to execute bash scripts using the ```-B/--bash-action``` argument.
+
+### Changed
+- Clarified instructions for specifying sounds.
+- Defaults to using the default notification sound now.
+- If you set a sound to None, i.e. ```-z None``` there will be no sound.
+
 ## [1.0.1] - 2015-04-27
 ### Added
 - License added to all source.
@@ -20,5 +29,6 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 - Initial commit.
 
-[unreleased]: https://github.com/sheagcraig/yo/compare/1.0.1...HEAD
+[unreleased]: https://github.com/sheagcraig/yo/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/sheagcraig/yo/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/sheagcraig/yo/compare/1.0...1.0.1

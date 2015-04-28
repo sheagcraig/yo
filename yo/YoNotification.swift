@@ -45,7 +45,17 @@ class YoNotification: NSObject {
         
         // Delivery sound.
         if let deliverySound = arguments.deliverySound.value {
-            notification.soundName = deliverySound
+            // If you pass a name that doesn't exist it will be nil anyway, but this allows us
+            // to set None explicitly.
+            if deliverySound == "None" {
+                notification.soundName = nil
+            }
+            else {
+                notification.soundName = deliverySound
+            }
+        }
+        else {
+            notification.soundName = NSUserNotificationDefaultSoundName
         }
         
         // Image elements.
@@ -80,6 +90,10 @@ class YoNotification: NSObject {
         if let action = arguments.action.value {
             notification.userInfo = ["sender": "org.da.yo"]
             notification.userInfo = ["action": action]
+        }
+        if let bashAction = arguments.bashAction.value {
+            notification.userInfo = ["sender": "org.da.yo"]
+            notification.userInfo = ["bashAction": bashAction]
         }
         
         // Optional Other button (defaults to "Cancel")

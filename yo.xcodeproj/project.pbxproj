@@ -15,12 +15,15 @@
 		841717B81ABCA11300150A32 /* YoCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841717B41ABCA11300150A32 /* YoCommandLine.swift */; };
 		841717B91ABCA11300150A32 /* YoNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841717B51ABCA11300150A32 /* YoNotification.swift */; };
 		841717C21ABCA40200150A32 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 841717C11ABCA40200150A32 /* README.md */; };
+		9A024C6B1AF009B800C34EE4 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 9A024C6A1AF009B800C34EE4 /* CHANGELOG.md */; };
+		9A024C6C1AF00ADE00C34EE4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 841717C11ABCA40200150A32 /* README.md */; };
+		9A024C6D1AF00AE200C34EE4 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 9A024C6A1AF009B800C34EE4 /* CHANGELOG.md */; };
 		9A16F3161AEAA2AC001336EA /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3131AEAA2AC001336EA /* CommandLine.swift */; };
 		9A16F3171AEAA2AC001336EA /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3141AEAA2AC001336EA /* Option.swift */; };
 		9A16F3181AEAA2AC001336EA /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3151AEAA2AC001336EA /* StringExtensions.swift */; };
 		9A16F31A1AEAA335001336EA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9A16F3191AEAA335001336EA /* LICENSE */; };
 		9A16F32F1AEACCFC001336EA /* yo.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9A16F32E1AEACCFC001336EA /* yo.sh */; };
-		9A16F3311AEE9076001336EA /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 9A16F3301AEE9076001336EA /* CHANGELOG.md */; };
+		9A16F3311AEE9076001336EA /* (null) in Sources */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,7 @@
 		841717B41ABCA11300150A32 /* YoCommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoCommandLine.swift; sourceTree = "<group>"; };
 		841717B51ABCA11300150A32 /* YoNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoNotification.swift; sourceTree = "<group>"; };
 		841717C11ABCA40200150A32 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9A024C6A1AF009B800C34EE4 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		9A16F3131AEAA2AC001336EA /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		9A16F3141AEAA2AC001336EA /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		9A16F3151AEAA2AC001336EA /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -87,10 +91,10 @@
 		841717891ABCA0CE00150A32 = {
 			isa = PBXGroup;
 			children = (
-				9A16F3301AEE9076001336EA /* CHANGELOG.md */,
 				9A16F3191AEAA335001336EA /* LICENSE */,
 				9A16F32E1AEACCFC001336EA /* yo.sh */,
 				841717C11ABCA40200150A32 /* README.md */,
+				9A024C6A1AF009B800C34EE4 /* CHANGELOG.md */,
 				841717941ABCA0CE00150A32 /* yo */,
 				841717A51ABCA0CE00150A32 /* yoTests */,
 				841717931ABCA0CE00150A32 /* Products */,
@@ -229,6 +233,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A024C6D1AF00AE200C34EE4 /* CHANGELOG.md in Resources */,
+				9A024C6C1AF00ADE00C34EE4 /* README.md in Resources */,
 				9A16F31A1AEAA335001336EA /* LICENSE in Resources */,
 				8417179A1ABCA0CE00150A32 /* Images.xcassets in Resources */,
 				9A16F32F1AEACCFC001336EA /* yo.sh in Resources */,
@@ -251,13 +257,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A16F3171AEAA2AC001336EA /* Option.swift in Sources */,
+				9A024C6B1AF009B800C34EE4 /* CHANGELOG.md in Sources */,
 				841717B71ABCA11300150A32 /* ViewController.swift in Sources */,
 				9A16F3181AEAA2AC001336EA /* StringExtensions.swift in Sources */,
 				841717B61ABCA11300150A32 /* AppDelegate.swift in Sources */,
 				841717C21ABCA40200150A32 /* README.md in Sources */,
 				841717B91ABCA11300150A32 /* YoNotification.swift in Sources */,
 				9A16F3161AEAA2AC001336EA /* CommandLine.swift in Sources */,
-				9A16F3311AEE9076001336EA /* CHANGELOG.md in Sources */,
+				9A16F3311AEE9076001336EA /* (null) in Sources */,
 				841717B81ABCA11300150A32 /* YoCommandLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

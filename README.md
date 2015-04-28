@@ -32,34 +32,36 @@ A shell script is provided (installed to ```/usr/local/bin/yo``` if you use the 
 
 ```
 Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
-  -m, --banner-mode:           
-      Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
-  -t, --title:                 
-      Title for notification. REQUIRED.
-  -d, --ignores-do-not-disturb:
-      Set to make your notification appear even if computer is in do-not-disturb mode.
-  -l, --lockscreen-only:       
-      Set to make your notification appear only if computer is locked. If set, no buttons will be available.
-  -s, --subtitle:              
-      Subtitle for notification.
-  -n, --info:                  
-      Informative text.
-  -b, --action-btn:            
-      Include an action button, with the button label text supplied to this argument.
-  -o, --other-btn:             
-      Alternate label for cancel button text.
-  -p, --poofs-on-cancel:       
-      Set to make your notification 'poof' when the cancel button is hit.
-  -i, --icon:                  
-      Complete path to an alternate icon to use for the notification.
-  -c, --content-image:         
-      Path to an image to use for the notification's 'contentImage' property.
-  -a, --action-path:           
-      Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
-  -z, --delivery-sound:        
-      The name of the sound to play when delivering. Usually this is the filename of a system sound minus the extension. See the README for more info.
-  -h, --help:                  
-      Show help.
+-t, --title:                 
+Title for notification. REQUIRED.
+-s, --subtitle:              
+Subtitle for notification.
+-n, --info:                  
+Informative text.
+-b, --action-btn:            
+Include an action button, with the button label text supplied to this argument.
+-a, --action-path:           
+Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.
+-B, --bash-action:           
+Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
+-o, --other-btn:             
+Alternate label for cancel button text.
+-i, --icon:                  
+Complete path to an alternate icon to use for the notification.
+-c, --content-image:         
+Path to an image to use for the notification's 'contentImage' property.
+-z, --delivery-sound:        
+Optional (Defaults to the system's default notification sound). The name of the sound to play when delivering or 'None'. The name must not include the extension, nor any path components, and should be located in '/Library/Sounds' or '~/Library/Sounds'. See the README for more info.
+-d, --ignores-do-not-disturb:
+Set to make your notification appear even if computer is in do-not-disturb mode.
+-l, --lockscreen-only:       
+Set to make your notification appear only if computer is locked. If set, no buttons will be available.
+-p, --poofs-on-cancel:       
+Set to make your notification 'poof' when the cancel button is hit.
+-m, --banner-mode:           
+Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
+-h, --help:                  
+Show help.
 ```
 
 Notes:
@@ -67,12 +69,21 @@ Notes:
 - -m/--banner-mode does not seem to work at this time.
 - The action argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here.
 - If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use ```-o/--other-btn``` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no ```-b/--btext```.
-- Sounds! If you want to use a different sound, you must provide the name of the sound to the -z argument, not the filename. I.e. "Sosumi". The search path is:
-    - ~/Library/Sounds
-    - /Library/Sounds
-    - /Network/Library/Sounds
-    - /System/Library/Sounds
 - Remember, this is (probably) a Bash shell. If you don't escape reserved characters like ```!``` you may get unexpected results. (```!``` is the Bash history expansion operator!)
+
+### Sound
+If you want to use a different sound, you must provide the *name* of the sound to the -z argument, not the filename, and not the path. I.e "Sosumi", not "Sosumi.aiff" or "/System/Library/Sosumi.aiff".
+
+The search path is:
+- ~/Library/Sounds
+- /Library/Sounds
+- /Network/Library/Sounds
+- /System/Library/Sounds (This is where all of the builtin sounds live)
+
+If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to ```/Library/Sounds``` (which may not exist by default), and use the delivery sound option like this: 
+```yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"
+
+Sounds must be a aiff; extension .aif is not valid.
 
 ### Examples
 ```

@@ -81,6 +81,10 @@ class YoNotification: NSObject {
             notification.userInfo = ["sender": "org.da.yo"]
             notification.userInfo = ["action": action]
         }
+        if let bashAction = arguments.bashAction.value {
+            notification.userInfo = ["sender": "org.da.yo"]
+            notification.userInfo = ["bashAction": bashAction]
+        }
         
         // Optional Other button (defaults to "Cancel")
         if let otherBtnTitle = arguments.otherBtnText.value {

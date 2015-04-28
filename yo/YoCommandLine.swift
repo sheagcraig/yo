@@ -34,12 +34,13 @@ class YoCommandLine {
     let icon = StringOption(shortFlag: "i", longFlag: "icon", required: false, helpMessage: "Complete path to an alternate icon to use for the notification.")
     let contentImage = StringOption(shortFlag: "c", longFlag: "content-image", required: false, helpMessage: "Path to an image to use for the notification's 'contentImage' property.")
     let deliverySound = StringOption(shortFlag: "z", longFlag: "delivery-sound", required: false, helpMessage: "The name of the sound to play when delivering. Usually this is the filename of a system sound minus the extension. See the README for more info.")
-    let action = StringOption(shortFlag: "a", longFlag: "action-path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.")
+    let action = StringOption(shortFlag: "a", longFlag: "action-path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.")
+    let bashAction = StringOption(shortFlag: "B", longFlag: "bash-action", required: false, helpMessage: "Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.")
     let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
     
     init () {
         // Add arguments to commandline object and handle errors or help requests.
-        cli.addOptions(banner, title, ignoresDoNotDisturb, lockscreenOnly, subtitle, informativeText, actionBtnText, otherBtnText, poofsOnCancel, icon, contentImage, action, deliverySound, help)
+        cli.addOptions(title, subtitle, informativeText, actionBtnText, action, bashAction, otherBtnText, icon, contentImage,  deliverySound, ignoresDoNotDisturb, lockscreenOnly, poofsOnCancel,banner, help)
         let (success, error) = cli.parse()
         if help.value {
             cli.printUsage()

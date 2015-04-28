@@ -66,8 +66,8 @@ Show help.
 
 Notes:
 - Title is mandatory. All other arguments are optional.
-- -m/--banner-mode does not seem to work at this time.
-- The action argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here.
+- ```-m/--banner-mode``` does not seem to work at this time.
+- The ```-a/--action``` argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here.
 - If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use ```-o/--other-btn``` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no ```-b/--btext```.
 - Remember, this is (probably) a Bash shell. If you don't escape reserved characters like ```!``` you may get unexpected results. (```!``` is the Bash history expansion operator!)
 
@@ -105,6 +105,8 @@ Sounds must be a aiff; extension .aif is not valid.
 # Example-alternate icon using the -i argument
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -i "/Users/blanconino/Pictures/taco.png"
 
+# Example-custom sound and bash script with escaped characters.
+/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
 
 ### Application Icon, Caveats, and Nerdery

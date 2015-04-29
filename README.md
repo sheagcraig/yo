@@ -85,6 +85,30 @@ If you want to include a custom sound, it needs to be available in one of those 
 
 Sounds must be a aiff; extension .aif is not valid.
 
+### Emoji
+Emoji characters are allowed, although getting them into a bash commandline context is tricky.
+
+You can drag an emoji from the Special Characters palette. That's the easiest way.
+
+Otherwise, if you need the hex code, find it in the Special Characters and go to bash:
+```
+echo -ne '<drag the emoji here>' | hexdump
+```
+This will print out the hex code for the emoji. It's the rightmost column of values that are in hex. You have to slap a \x before each two-characters, and then you can echo it back up as a command substitution...
+
+Complete process:
+```
+$ echo -ne '💩' | hexdump
+0000000 f0 9f 92 a9                                    
+0000004
+
+# So 'f09f92a9' is the hex value...
+$ /Applications/Utilities/yo.app/Contents/MacOS/yo -t $(echo -ne '\xf0\x9f\x92\xa9')
+```
+= Smiling poo emoji notification.
+
+You can also do ```printf '\xf0\x9f\x92\xa9'```.
+
 ### Examples
 ```
 # Example of basic notification:
@@ -92,6 +116,9 @@ Sounds must be a aiff; extension .aif is not valid.
 
 # Example with lots of text:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -s "Chorizo is best." -n "Although I also enjoy al pastor of course."
+
+# Example with emoji and tons of escaped characters:
+/Applications/Utilities/yo.app/Contents/MacOS/yo -t "$(printf "\xf0\x9f\x92\xa9\n") says, \"Let's dance$(printf \!)\""
 
 # Example with action button, opening a webpage in your default browser:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"

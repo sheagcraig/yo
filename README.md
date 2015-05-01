@@ -81,7 +81,7 @@ The search path is:
 - /System/Library/Sounds (This is where all of the builtin sounds live)
 
 If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to ```/Library/Sounds``` (which may not exist by default), and use the delivery sound option like this: 
-```yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"
+```yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"```
 
 Sounds must be a aiff; extension .aif is not valid.
 

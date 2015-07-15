@@ -3,7 +3,7 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-```yo``` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below.
+`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below.
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 
@@ -19,16 +19,21 @@ You only need to follow these instructions if you want to build the app yourself
 1. Clone the project.
 2. Open the project in XCode and set the App Icon to your desired icon. Please read the Icon section below for more info on what is going on here. To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.
 3. Build. (CMD-B)
-4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although ```/Applications/Utilities``` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
+4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although `/Applications/Utilities` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
 
 Note: If you Run/(CMD-R) from XCode, it will just report back usage with a commandline parsing error. Just ignore that and run from the commandline.
 
 ### Usage
-You must call the app from the commandline, from the actual binary inside (not from running or calling the "yo.app"). The path depends on where you install it, but the recommended location is in ```/Applications/Utilities```. If you install it there, the full path to call yo is ```/Applications/Utilities/yo.app/Contents/MacOS/yo```.
+The yo installer package adds a commandline script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
 
-If you run yo and there is no logged-in GUI user, yo will hang, probably indefinitely. This could occur if you're scripting yo to run prior to Login, or perhaps you SSH into a machine booted to the loginwindow.
+Due to its install location being in the default PATH, you can then call yo by simply typing `yo -t "This is amazing"`, for example. (`yo -h` will give you full usage information).
 
-A shell script is provided (installed to ```/usr/local/bin/yo``` if you use the installer package) that will test for a console user prior to execution. Due to its install location being in the default PATH, you can then call yo by simply typing ```yo -t "This is amazing"```.
+The yo script will test for a console user prior to execution and bail if nobody is logged in. If there is no console user, there is no notification center, and yo can't do anything. Therefore, this script ensures it only runs when possible to succeed.
+
+#### Note:
+The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is exectuable. However, this only works if a user is currently logged in.
+
+If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
 
 ```
 Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
@@ -66,10 +71,10 @@ Show help.
 
 Notes:
 - Title is mandatory. All other arguments are optional.
-- ```-m/--banner-mode``` does not seem to work at this time.
-- The ```-a/--action``` argument needs a path or URL. yo just calls ```open```, so anything that would work there, should work here.
-- If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use ```-o/--other-btn``` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no ```-b/--btext```.
-- Remember, this is (probably) a Bash shell. If you don't escape reserved characters like ```!``` you may get unexpected results. (```!``` is the Bash history expansion operator!)
+- `-m/--banner-mode` does not seem to work at this time.
+- The `-a/--action` argument needs a path or URL. yo just calls `open`, so anything that would work there, should work here.
+- If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use `-o/--other-btn` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no `-b/--btext`.
+- Remember, this is (probably) a Bash shell. If you don't escape reserved characters like `!` you may get unexpected results. (`!` is the Bash history expansion operator!)
 
 ### Sound
 If you want to use a different sound, you must provide the *name* of the sound to the -z argument, not the filename, and not the path. I.e "Sosumi", not "Sosumi.aiff" or "/System/Library/Sosumi.aiff".
@@ -80,8 +85,8 @@ The search path is:
 - /Network/Library/Sounds
 - /System/Library/Sounds (This is where all of the builtin sounds live)
 
-If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to ```/Library/Sounds``` (which may not exist by default), and use the delivery sound option like this: 
-```yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"```
+If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this: 
+`yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"`
 
 Sounds must be a aiff; extension .aif is not valid.
 
@@ -107,7 +112,7 @@ $ /Applications/Utilities/yo.app/Contents/MacOS/yo -t $(echo -ne '\xf0\x9f\x92\x
 ```
 = Smiling poo emoji notification.
 
-You can also do ```printf '\xf0\x9f\x92\xa9'```.
+You can also do `printf '\xf0\x9f\x92\xa9'`.
 
 ### Examples
 ```

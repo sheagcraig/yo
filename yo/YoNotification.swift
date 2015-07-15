@@ -28,6 +28,8 @@ class YoNotification: NSObject {
         let notification = NSUserNotification()
 
         // General properties.
+        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
+        println(bundleIdentifier)
         
         // This option does not currently work to make a banner.
         if !arguments.banner.value {
@@ -88,11 +90,11 @@ class YoNotification: NSObject {
         }
         // Store the action (if provided) so we can retrieve it later.
         if let action = arguments.action.value {
-            notification.userInfo = ["sender": "org.da.yo"]
+            notification.userInfo = ["sender": bundleIdentifier]
             notification.userInfo = ["action": action]
         }
         if let bashAction = arguments.bashAction.value {
-            notification.userInfo = ["sender": "org.da.yo"]
+            notification.userInfo = ["sender": bundleIdentifier]
             notification.userInfo = ["bashAction": bashAction]
         }
         

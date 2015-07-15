@@ -35,6 +35,7 @@ The yo app by itself, if opened via double-clicking the app, running from Spotli
 
 If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
 
+#### Arguments:
 ```
 Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
 -t, --title:                 

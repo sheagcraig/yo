@@ -4,20 +4,20 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
-## [1.0.3] - 2015-08-22
+## [1.0.3] - 2015-08-22 - Prince's Hair in Purple Rain
 ### Fixed
-- Yo now properly uses the BundleIdentifier rather than the string literal "org.da.yo". Thanks for the spot @mcfly1976. (#6)
+- Yo now properly uses the BundleIdentifier rather than the string literal `org.da.yo`. Thanks for the spot @mcfly1976. (#6)
 
-## [1.0.2] - 2015-04-28
+## [1.0.2] - 2015-04-28 - Tina Turner's Hair in Mad Max Beyond Thunderdome
 ### Added
-- Ability to execute bash scripts using the ```-B/--bash-action``` argument.
+- Ability to execute bash scripts using the `-B/--bash-action` argument.
 
 ### Changed
 - Clarified instructions for specifying sounds.
 - Defaults to using the default notification sound now.
-- If you set a sound to None, i.e. ```-z None``` there will be no sound.
+- If you set a sound to None, i.e. `-z None` there will be no sound.
 
-## [1.0.1] - 2015-04-27
+## [1.0.1] - 2015-04-27 - David Bowie's Hair in the Movie Labyrinth
 ### Added
 - License added to all source.
 - Add shell script to execute yo (and avoid running if no logged in GUI user).

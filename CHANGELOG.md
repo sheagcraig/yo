@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+## [1.0.3] - 2015-08-22
+### Fixed
+- Yo now properly uses the BundleIdentifier rather than the string literal "org.da.yo". Thanks for the spot @mcfly1976. (#6)
+
 ## [1.0.2] - 2015-04-28
 ### Added
 - Ability to execute bash scripts using the ```-B/--bash-action``` argument.
@@ -29,6 +33,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 - Initial commit.
 
-[unreleased]: https://github.com/sheagcraig/yo/compare/1.0.2...HEAD
+[unreleased]: https://github.com/sheagcraig/yo/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/sheagcraig/yo/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/sheagcraig/yo/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/sheagcraig/yo/compare/1.0...1.0.1

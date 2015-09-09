@@ -171,7 +171,7 @@ in Casper Admin to match:
 10. Other Button
 11. Icon
 
-![Casper Admin Settings for yo-casper.py](https://github.com/sheagcraig/yo/blob/casper-script-setup.png)
+![Casper Admin Settings for yo-casper.py](https://raw.githubusercontent.com/sheagcraig/yo/testing/casper-script-setup.png)
 
 Any policy posting a notification with yo should probably have the
 frequency of "Ongoing" coupled with being scoped to a smart group if you want

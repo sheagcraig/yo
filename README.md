@@ -3,7 +3,7 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below.
+`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below. Also, admins using the Casper Suite should make sure to read the Casper section below.
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 
@@ -141,6 +141,66 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 # Example-custom sound and bash script with escaped characters.
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
+
+### Casper Usage
+#### Overview
+yo provides a script, yo-casper.py which you can upload to your JSS for posting
+notifications. This script is the safest way to ensure your notifications post,
+and do so without jacking up the computer. Like the yo script installed in
+/usr/local/bin, yo-casper only runs if a GUI user is logged in.
+
+#### Why Bother?
+Running yo with the Policy/Files & Processes/Execute Command function
+of Casper results in scoped client machines becoming unable to
+check-in or run further policies. This is due to something broken in
+Casper's Execute Command function that prevents yo from ever
+completing. Furthermore, using `"` instead of `'` for quoting causes strange
+things to happen to the arguments. Therefore, do not use Execute Command.
+
+#### Using yo-casper
+yo-casper.py hardcodes the following arguments to yo in the 4th-11th
+parameter fields for Casper scripts. As such, you should rename them
+in Casper Admin to match:
+
+4. Title
+5. Subtitle
+6. Info
+7. Action Button
+8. Action Path
+9. Bash Action
+10. Other Button
+11. Icon
+
+![Casper Admin Settings for yo-casper.py](https://github.com/sheagcraig/yo/blob/casper-script-setup.png)
+
+Any policy posting a notification with yo should probably have the
+frequency of "Ongoing" coupled with being scoped to a smart group if you want
+to ensure that the notification is posted.
+
+If a computer checks in and no console user is available, yo will not post a
+notification (because it can't!). You probably are posting a notification
+because you want the user to see it, thus, a frequency of ongoing keeps trying.
+
+However, now your users are getting a notification every check-in-period, which
+quickly deadens their soul and leads to ignoring your messages. To avoid this,
+there are a couple of options:
+1. Scope to a smart group that needs the notification, and add in some method
+   for the computer to drop out of the group after it has received the
+   notification, or performed the action you notified them about in the first
+   place. For example, a notification to remove adware should no longer be
+   offered once the computer has the adware removed (via a removal policy, with
+   a followup-recon.
+2. As per above, but modify yo-casper per-usage to write a success message to a
+   location monitored by an Extension Attribute which populates the scoping
+   group.
+
+#### Recovering from Execute Command
+Affected computers can be fixed by removing the broken Execute Command
+policy from scope and running killall jamf.
+
+#### But Some of the Args Are Missing?
+Casper only allows 8 custom arguments, so if you would prefer other arguments
+as options, feel free to edit the script to use the correct argument flags.
 
 ### Application Icon, Caveats, and Nerdery
 #### Icons

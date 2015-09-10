@@ -3,11 +3,11 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below.
+`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below. Also, admins using the Casper Suite should make sure to read the Casper section below.
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 
-If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page.
+If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page. Please note, the installer package does not include the Casper scripts.
 
 If you want to customize the icon/app name/etc, you will need to modify the XCode project and build it yourself. Instructions are provided below.
 
@@ -141,6 +141,95 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 # Example-custom sound and bash script with escaped characters.
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
+
+### Casper Usage
+#### Overview
+yo provides a script, yo-casper.py which you can upload to your JSS for posting
+notifications. This script is the safest way to ensure your notifications post,
+and do so without jacking up the computer. Like the yo script installed in
+/usr/local/bin, yo-casper only runs if a GUI user is logged in.
+
+#### Why Bother?
+Running yo with the Policy/Files & Processes/Execute Command function
+of Casper results in scoped client machines becoming unable to
+check-in or run further policies. This is due to something broken in
+Casper's Execute Command function that prevents yo from ever
+completing. Furthermore, using `"` instead of `'` for quoting causes strange
+things to happen to the arguments. Therefore, do not use Execute Command.
+
+#### Where are the Casper Scripts?
+The folder containing yo-casper.py and the extension attribute to work with it are not included in the installer package, since managed client machines will not need these components. You can get them from the GitHub page by cloning the project or downloading as a zip, expanding, and then looking in the `casper` folder. Or you can just cut and paste from GitHub directly into the Scripts and Extension Attributes sections of your JSS.
+
+#### Using yo-casper
+yo-casper.py hardcodes the following arguments to yo in the 4th-11th
+parameter fields for Casper scripts. As such, you should rename them
+in Casper Admin to match:
+
+4. Title
+5. Subtitle
+6. Info
+7. Action Button
+8. Action Path
+9. Bash Action
+10. Other Button
+11. Icon
+
+![Casper Admin Settings for yo-casper.py](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/casper-script-setup.png)
+
+Any policy posting a notification with yo should probably have the
+frequency of "Ongoing" coupled with being scoped to a smart group if you want
+to ensure that the notification is posted.
+
+If a computer checks in and no console user is available, yo will not post a
+notification (because it can't!). You probably are posting a notification
+because you want the user to see it, thus, a frequency of ongoing keeps trying.
+
+However, now your users are getting a notification every check-in-period, which
+quickly deadens their soul and leads to ignoring your messages. To avoid this,
+there are a couple of options:
+1. Scope to a smart group that needs the notification, and add in some method
+   for the computer to drop out of the group after it has received the
+   notification, or performed the action you notified them about in the first
+   place. For example, a notification to remove adware should no longer be
+   offered once the computer has the adware removed (via a removal policy, with
+   a followup-recon.
+
+   Second example: You notify users about an impending OS update. Once
+   they have received the update, they fall out of the group the notification
+   is scoped to.
+2. Use an extension attribute to determine whether a notification has been
+   delivered. The yo-casper.py script logs to a file at /var/log/yo-casper.log.
+   This log file includes the datestamp, arguments, and an md5 hash generated
+   from the supplied arguments that will be consistent across all executions of
+   that notification. Included in the `casper` folder is an extension attribute
+   that can be used to determine whether a particular notification has been
+   received.
+
+   Add this EA to your JSS, and edit the `SEARCH_HASH` variable to use the hash
+   for the notification you wish to send. You can run yo-casper.py on your own
+   computer to quickly generate the hash exactly as the Policy/Scripts
+   execution will.
+
+   Then, create a smart group with criteria of that EA's value returning
+   "False" and Computer Group is whatever group(s) you're interested in scoping
+   the notification to.
+
+   Finally, create your Policy with Scripts action, enter the arguments, and
+   scope to the smart group created above.
+
+   This is a lot of moving pieces. Sorry. Being awesome isn't easy.
+
+![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent.png)
+![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent2.png)
+![Smart Group Criteria](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/Edit_Smart_Computer_Group.png)
+
+#### Recovering from Execute Command
+Affected computers can be fixed by removing the broken Execute Command
+policy from scope and running killall jamf.
+
+#### But Some of the Args Are Missing?
+Casper only allows 8 custom arguments, so if you would prefer other arguments
+as options, feel free to edit the script to use the correct argument flags.
 
 ### Application Icon, Caveats, and Nerdery
 #### Icons

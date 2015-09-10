@@ -40,7 +40,7 @@ import subprocess
 import sys
 
 
-YO_CASPER_LOG = "/var/log/yo_casper.log"
+YO_CASPER_LOG = "/var/log/yo-casper.log"
 
 
 def main():

@@ -24,7 +24,7 @@ import os
 # Change me!
 SEARCH_HASH = "f685353b7538e0c889bb6fd36974e22d"
 
-YO_CASPER_LOG = "/var/log/yo_casper.log"
+YO_CASPER_LOG = "/var/log/yo-casper.log"
 
 
 def main():

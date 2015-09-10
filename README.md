@@ -171,7 +171,7 @@ in Casper Admin to match:
 10. Other Button
 11. Icon
 
-![Casper Admin Settings for yo-casper.py](https://raw.githubusercontent.com/sheagcraig/yo/testing/casper-script-setup.png)
+![Casper Admin Settings for yo-casper.py](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/casper-script-setup.png)
 
 Any policy posting a notification with yo should probably have the
 frequency of "Ongoing" coupled with being scoped to a smart group if you want
@@ -190,9 +190,35 @@ there are a couple of options:
    place. For example, a notification to remove adware should no longer be
    offered once the computer has the adware removed (via a removal policy, with
    a followup-recon.
-2. As per above, but modify yo-casper per-usage to write a success message to a
-   location monitored by an Extension Attribute which populates the scoping
-   group.
+
+   Second example: You notify users about an impending OS update. Once
+   they have received the update, they fall out of the group the notification
+   is scoped to.
+2. Use an extension attribute to determine whether a notification has been
+   delivered. The yo-casper.py script logs to a file at /var/log/yo-casper.log.
+   This log file includes the datestamp, arguments, and an md5 hash generated
+   from the supplied arguments that will be consistent across all executions of
+   that notification. Included in the `casper` folder is an extension attribute
+   that can be used to determine whether a particular notification has been
+   received.
+
+   Add this EA to your JSS, and edit the `SEARCH_HASH` variable to use the hash
+   for the notification you wish to send. You can run yo-casper.py on your own
+   computer to quickly generate the hash exactly as the Policy/Scripts
+   execution will.
+
+   Then, create a smart group with criteria of that EA's value returning
+   "False" and Computer Group is whatever group(s) you're interested in scoping
+   the notification to.
+
+   Finally, create your Policy with Scripts action, enter the arguments, and
+   scope to the smart group created above.
+
+   This is a lot of moving pieces. Sorry. Being awesome isn't easy.
+
+![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent.png)
+![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent2.png)
+![Smart Group Criteria](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/Edit_Smart_Computer_Group.png)
 
 #### Recovering from Execute Command
 Affected computers can be fixed by removing the broken Execute Command

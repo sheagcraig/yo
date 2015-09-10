@@ -7,7 +7,7 @@
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 
-If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page.
+If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page. Please note, the installer package does not include the Casper scripts.
 
 If you want to customize the icon/app name/etc, you will need to modify the XCode project and build it yourself. Instructions are provided below.
 
@@ -156,6 +156,9 @@ check-in or run further policies. This is due to something broken in
 Casper's Execute Command function that prevents yo from ever
 completing. Furthermore, using `"` instead of `'` for quoting causes strange
 things to happen to the arguments. Therefore, do not use Execute Command.
+
+#### Where are the Casper Scripts?
+The folder containing yo-casper.py and the extension attribute to work with it are not included in the installer package, since managed client machines will not need these components. You can get them from the GitHub page by cloning the project or downloading as a zip, expanding, and then looking in the `casper` folder. Or you can just cut and paste from GitHub directly into the Scripts and Extension Attributes sections of your JSS.
 
 #### Using yo-casper
 yo-casper.py hardcodes the following arguments to yo in the 4th-11th

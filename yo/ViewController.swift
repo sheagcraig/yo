@@ -21,6 +21,7 @@ import Cocoa
 
 class ViewController: NSViewController {
 
+    @available(OSX 10.10, *)
     override func viewDidLoad() {
         super.viewDidLoad()
 

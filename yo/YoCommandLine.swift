@@ -41,13 +41,14 @@ class YoCommandLine {
     init () {
         // Add arguments to commandline object and handle errors or help requests.
         cli.addOptions(title, subtitle, informativeText, actionBtnText, action, bashAction, otherBtnText, icon, contentImage,  deliverySound, ignoresDoNotDisturb, lockscreenOnly, poofsOnCancel,banner, help)
-        let (success, error) = cli.parse()
-        if help.value {
-            cli.printUsage()
+        do {
+            try cli.parse()
+        } catch {
+            cli.printUsage(error)
             exit(EX_USAGE)
         }
-        else if !success {
-            println(error!)
+        
+        if help.value {
             cli.printUsage()
             exit(EX_USAGE)
         }

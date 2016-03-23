@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
             if let bashAction = notification.userInfo!["bashAction"] as? String {
                 task.launchPath = "/bin/bash"
                 NSLog("User activated notification with action: \(bashAction)")
-                task.arguments = ["-c"] + [bashAction]
+                task.arguments = ["-c", bashAction]
             }
             
             task.launch()
@@ -52,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         else {
             NSLog("Posting notification.")
             let args = YoCommandLine()
-            let yoNotification = YoNotification(arguments: args)
+            _ = YoNotification(arguments: args)
         }
     }
 

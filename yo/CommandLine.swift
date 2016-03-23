@@ -31,27 +31,71 @@ let ArgumentStopper = "--"
  */
 let ArgumentAttacher: Character = "="
 
+/* An output stream to stderr; used by CommandLine.printUsage(). */
+private struct StderrOutputStream: OutputStreamType {
+  static let stream = StderrOutputStream()
+  func write(s: String) {
+    fputs(s, stderr)
+  }
+}
+
 /**
  * The CommandLine class implements a command-line interface for your app.
  * 
  * To use it, define one or more Options (see Option.swift) and add them to your
- * CommandLine object, then invoke parse(). Each Option object will be populated with
+ * CommandLine object, then invoke `parse()`. Each Option object will be populated with
  * the value given by the user.
  *
- * If any required options are missing or if an invalid value is found, parse() will return
- * false. You can then call printUsage() to output an automatically-generated usage message.
+ * If any required options are missing or if an invalid value is found, `parse()` will throw
+ * a `ParseError`. You can then call `printUsage()` to output an automatically-generated usage
+ * message.
  */
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
+  private var _usedFlags: Set<String> {
+    var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
+
+    for option in _options {
+      for case let flag? in [option.shortFlag, option.longFlag] {
+        usedFlags.insert(flag)
+      }
+    }
+
+    return usedFlags
+  }
+  
+  /** A ParseError is thrown if the `parse()` method fails. */
+  public enum ParseError: ErrorType, CustomStringConvertible {
+    /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
+    case InvalidArgument(String)
+
+    /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
+    case InvalidValueForOption(Option, [String])
+    
+    /** Thrown if an Option with required: true is missing */
+    case MissingRequiredOptions([Option])
+    
+    public var description: String {
+      switch self {
+      case let .InvalidArgument(arg):
+        return "Invalid argument: \(arg)"
+      case let .InvalidValueForOption(opt, vals):
+        let vs = vals.joinWithSeparator(", ")
+        return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
+      case let .MissingRequiredOptions(opts):
+        return "Missing required options: \(opts.map { return $0.flagDescription })"
+      }
+    }
+  }
   
   /**
    * Initializes a CommandLine object.
    *
-   * :param: arguments Arguments to parse. If omitted, the arguments passed to the app
+   * - parameter arguments: Arguments to parse. If omitted, the arguments passed to the app
    *   on the command line will automatically be used.
    *
-   * :returns: An initalized CommandLine object.
+   * - returns: An initalized CommandLine object.
    */
   public init(arguments: [String] = Process.arguments) {
     self._arguments = arguments
@@ -61,7 +105,7 @@ public class CommandLine {
   }
   
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
-  private func _getFlagValues(#flagIndex: Int) -> [String] {
+  private func _getFlagValues(flagIndex: Int) -> [String] {
     var args: [String] = [String]()
     var skipFlagChecks = false
     
@@ -78,7 +122,7 @@ public class CommandLine {
           continue
         }
         
-        if _arguments[i].hasPrefix(ShortOptionPrefix) && _arguments[i].toInt() == nil &&
+        if _arguments[i].hasPrefix(ShortOptionPrefix) && Int(_arguments[i]) == nil &&
           _arguments[i].toDouble() == nil {
           break
         }
@@ -93,34 +137,43 @@ public class CommandLine {
   /**
    * Adds an Option to the command line.
    *
-   * :param: option The option to add.
+   * - parameter option: The option to add.
    */
   public func addOption(option: Option) {
+    let uf = _usedFlags
+    for case let flag? in [option.shortFlag, option.longFlag] {
+      assert(!uf.contains(flag), "Flag '\(flag)' already in use")
+    }
+
     _options.append(option)
   }
   
   /**
    * Adds one or more Options to the command line.
    *
-   * :param: options An array containing the options to add.
+   * - parameter options: An array containing the options to add.
    */
   public func addOptions(options: [Option]) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
    * Adds one or more Options to the command line.
    *
-   * :param: options The options to add.
+   * - parameter options: The options to add.
    */
   public func addOptions(options: Option...) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
    * Sets the command line Options. Any existing options will be overwritten.
    *
-   * :param: options An array containing the options to set.
+   * - parameter options: An array containing the options to set.
    */
   public func setOptions(options: [Option]) {
     _options = options
@@ -129,21 +182,20 @@ public class CommandLine {
   /**
    * Sets the command line Options. Any existing options will be overwritten.
    *
-   * :param: options The options to set.
+   * - parameter options: The options to set.
    */
   public func setOptions(options: Option...) {
     _options = options
   }
   
   /**
-   * Parses command-line arguments into their matching Option values.
+   * Parses command-line arguments into their matching Option values. Throws `ParseError` if
+   * argument parsing fails.
    *
-   * :returns: True if all arguments were parsed successfully, false if any option had an
-   *   invalid value or if a required option was missing.
+   * - parameter strict: Fail if any unrecognized arguments are present (default: false).
    */
-  public func parse() -> (Bool, String?) {
-    
-    for (idx, arg) in enumerate(_arguments) {
+  public func parse(strict: Bool = false) throws {
+    for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
         break
       }
@@ -152,80 +204,113 @@ public class CommandLine {
         continue
       }
       
-      /* Swift strings don't have substringFromIndex(). Do a little dance instead. */
-      var flag = ""
-      var skipChars =
-        arg.hasPrefix(LongOptionPrefix) ? count(LongOptionPrefix) : count(ShortOptionPrefix)
-      for c in arg {
-        if skipChars-- > 0 {
-          continue
-        }
-        
-        flag.append(c)
+      let skipChars = arg.hasPrefix(LongOptionPrefix) ?
+        LongOptionPrefix.characters.count : ShortOptionPrefix.characters.count
+      let flagWithArg = arg[Range(start: arg.startIndex.advancedBy(skipChars), end: arg.endIndex)]
+      
+      /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
+      if flagWithArg.isEmpty {
+        continue
       }
       
       /* Remove attached argument from flag */
-      flag = flag.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
+      let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
       var flagMatched = false
-      for option in _options {
-        if flag == option.shortFlag || flag == option.longFlag {
-          var vals = self._getFlagValues(flagIndex: idx)
-          if !option.match(vals) {
-            return (false, "Invalid value for \(option.longFlag)")
-          }
-          
-          flagMatched = true
-          break
+      for option in _options where option.flagMatch(flag) {
+        let vals = self._getFlagValues(idx)
+        guard option.setValue(vals) else {
+          throw ParseError.InvalidValueForOption(option, vals)
         }
+          
+        flagMatched = true
+        break
       }
       
       /* Flags that do not take any arguments can be concatenated */
+      let flagLength = flag.characters.count
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
-        for (i, c) in enumerate(flag) {
-          var flagLength = count(flag)
-          for option in _options {
-            if String(c) == option.shortFlag {
-              /* Values are allowed at the end of the concatenated flags, e.g.
-               * -xvf <file1> <file2>
-               */
-              var vals = (i == flagLength - 1) ? self._getFlagValues(flagIndex: idx) : [String]()
-              if !option.match(vals) {
-                return (false, "Invalid value for \(option.longFlag)")
-              }
-              
-              break
+        for (i, c) in flag.characters.enumerate() {
+          for option in _options where option.flagMatch(String(c)) {
+            /* Values are allowed at the end of the concatenated flags, e.g.
+            * -xvf <file1> <file2>
+            */
+            let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
+            guard option.setValue(vals) else {
+              throw ParseError.InvalidValueForOption(option, vals)
             }
+            
+            flagMatched = true
+            break
           }
         }
+      }
+
+      /* Invalid flag */
+      guard !strict || flagMatched else {
+        throw ParseError.InvalidArgument(arg)
       }
     }
 
     /* Check to see if any required options were not matched */
-    for option in _options {
-      if option.required && !option.isSet {
-        return (false, "\(option.longFlag) is required")
-      }
+    let missingOptions = _options.filter { $0.required && !$0.wasSet }
+    guard missingOptions.count == 0 else {
+      throw ParseError.MissingRequiredOptions(missingOptions)
     }
-    
-    return (true, nil)
   }
   
-  /** Prints a usage message to stdout. */
-  public func printUsage() {
+  /* printUsage() is generic for OutputStreamType because the Swift compiler crashes
+   * on inout protocol function parameters in Xcode 7 beta 1 (rdar://21372694).
+   */
+  
+  /**
+   * Prints a usage message.
+   * 
+   * - parameter to: An OutputStreamType to write the error message to.
+   */
+  public func printUsage<TargetStream: OutputStreamType>(inout to: TargetStream) {
     let name = _arguments[0]
     
     var flagWidth = 0
     for opt in _options {
-      flagWidth = max(flagWidth,
-        count("  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):"))
+      flagWidth = max(flagWidth, "  \(opt.flagDescription):".characters.count)
     }
-    
-    println("Usage: \(name) [options]")
+
+    print("Usage: \(name) [options]", toStream: &to)
     for opt in _options {
-      let flags = "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".paddedToWidth(flagWidth)
-      
-      println("\(flags)\n      \(opt.helpMessage)")
+      let flags = "  \(opt.flagDescription):".paddedToWidth(flagWidth)
+      print("\(flags)\n      \(opt.helpMessage)", toStream: &to)
     }
+  }
+  
+  /**
+   * Prints a usage message.
+   *
+   * - parameter error: An error thrown from `parse()`. A description of the error
+   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+   * - parameter to: An OutputStreamType to write the error message to.
+   */
+  public func printUsage<TargetStream: OutputStreamType>(error: ErrorType, inout to: TargetStream) {
+    print("\(error)\n", toStream: &to)
+    printUsage(&to)
+  }
+  
+  /**
+   * Prints a usage message.
+   *
+   * - parameter error: An error thrown from `parse()`. A description of the error
+   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+   */
+  public func printUsage(error: ErrorType) {
+    var out = StderrOutputStream.stream
+    printUsage(error, to: &out)
+  }
+  
+  /**
+   * Prints a usage message.
+   */
+  public func printUsage() {
+    var out = StderrOutputStream.stream
+    printUsage(&out)
   }
 }

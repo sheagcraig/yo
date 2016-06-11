@@ -225,7 +225,7 @@ there are a couple of options:
 
 #### Recovering from Execute Command
 Affected computers can be fixed by removing the broken Execute Command
-policy from scope and running killall jamf.
+policy from scope and running `killall jamf`.
 
 #### But Some of the Args Are Missing?
 Casper only allows 8 custom arguments, so if you would prefer other arguments
@@ -237,7 +237,7 @@ Most organizations will probably want yo to display a custom icon in the notific
 1. By default, a notification uses the icon for the application sending the notification.
 2. Using a private API, an application can specify an image file to use for the icon.
 
-yo uses option 2 if you use the --icon option. However, since this is a private mechanism used by Apple to show album art in iTunes notifications, the application icon will *still* show up, just smaller, and to the side of the primary icon.
+yo uses option 2 if you use the `--icon` option. However, since this is a private mechanism used by Apple to show album art in iTunes notifications, the application icon will *still* show up, just smaller, and to the side of the primary icon.
 
 So if you really just want to use *your* icon, you need to build the project in XCode yourself. And even so, there are some issues about getting it to "know" that you've changed the icon.
 

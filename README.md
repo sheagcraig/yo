@@ -21,10 +21,10 @@ You only need to follow these instructions if you want to build the app yourself
 3. Build. (CMD-B)
 4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although `/Applications/Utilities` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
 
-Note: If you Run/(CMD-R) from XCode, it will just report back usage with a commandline parsing error. Just ignore that and run from the commandline.
+Note: If you Run/(CMD-R) from XCode, it will just report back usage with a command line parsing error. Just ignore that and run from the command line.
 
 ### Usage
-The yo installer package adds a commandline script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
+The yo installer package adds a command line script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
 
 Due to its install location being in the default PATH, you can then call yo by simply typing `yo -t "This is amazing"`, for example. (`yo -h` will give you full usage information).
 
@@ -92,7 +92,7 @@ If you want to include a custom sound, it needs to be available in one of those 
 Sounds must be a aiff; extension .aif is not valid.
 
 ### Emoji
-Emoji characters are allowed, although getting them into a bash commandline context is tricky.
+Emoji characters are allowed, although getting them into a bash command line context is tricky.
 
 You can drag an emoji from the Special Characters palette. That's the easiest way.
 
@@ -199,7 +199,7 @@ there are a couple of options:
    is scoped to.
 2. Use an extension attribute to determine whether a notification has been
    delivered. The yo-casper.py script logs to a file at /var/log/yo-casper.log.
-   This log file includes the datestamp, arguments, and an md5 hash generated
+   This log file includes the date stamp, arguments, and an md5 hash generated
    from the supplied arguments that will be consistent across all executions of
    that notification. Included in the `casper` folder is an extension attribute
    that can be used to determine whether a particular notification has been

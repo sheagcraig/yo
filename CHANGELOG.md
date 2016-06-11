@@ -26,7 +26,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Removed CommandLine.framework and added the source directly to project
 	- This avoids needing to have project as a Workspace (although that may be an option in the future).
-	- Avoids needing to compile framework individuall and include in project as before.
+	- Avoids needing to compile framework individually and include in project as before.
 - Updated readme.
 
 ## [1.0] - 2015-03-24

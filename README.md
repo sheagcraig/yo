@@ -86,7 +86,7 @@ The search path is:
 - /Network/Library/Sounds
 - /System/Library/Sounds (This is where all of the builtin sounds live)
 
-If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this: 
+If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this:
 `yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"`
 
 Sounds must be a aiff; extension .aif is not valid.
@@ -129,7 +129,7 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 # Example with action button, opening a webpage in your default browser:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
 
-# Example opening an app: 
+# Example opening an app:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "/Applications/TacoParty.app"
 
 # Example-What if you want a one-button persistent notification that doesn't *do* anything?

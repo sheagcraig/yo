@@ -31,7 +31,7 @@ Due to its install location being in the default PATH, you can then call yo by s
 The yo script will test for a console user prior to execution and bail if nobody is logged in. If there is no console user, there is no notification center, and yo can't do anything. Therefore, this script ensures it only runs when possible to succeed.
 
 #### Note:
-The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is exectuable. However, this only works if a user is currently logged in.
+The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is executable. However, this only works if a user is currently logged in.
 
 If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
 

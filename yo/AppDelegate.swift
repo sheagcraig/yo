@@ -23,7 +23,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    
+
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
         nc.delegate = self
@@ -44,7 +44,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
                 NSLog("User activated notification with action: \(bashAction)")
                 task.arguments = ["-c", bashAction]
             }
-            
+
             task.launch()
             // We're done.
             exit(0)
@@ -59,15 +59,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
-    
+
     func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {
         // Work is done, time to quit.
         exit(0)
     }
-    
+
     func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
         // Ensure that notification is shown, even if app is active.
         return true
     }
 }
-

@@ -21,17 +21,17 @@ You only need to follow these instructions if you want to build the app yourself
 3. Build. (CMD-B)
 4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although `/Applications/Utilities` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
 
-Note: If you Run/(CMD-R) from XCode, it will just report back usage with a commandline parsing error. Just ignore that and run from the commandline.
+Note: If you Run/(CMD-R) from XCode, it will just report back usage with a command line parsing error. Just ignore that and run from the command line.
 
 ### Usage
-The yo installer package adds a commandline script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
+The yo installer package adds a command line script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
 
 Due to its install location being in the default PATH, you can then call yo by simply typing `yo -t "This is amazing"`, for example. (`yo -h` will give you full usage information).
 
 The yo script will test for a console user prior to execution and bail if nobody is logged in. If there is no console user, there is no notification center, and yo can't do anything. Therefore, this script ensures it only runs when possible to succeed.
 
 #### Note:
-The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is exectuable. However, this only works if a user is currently logged in.
+The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is executable. However, this only works if a user is currently logged in.
 
 If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
 
@@ -86,13 +86,13 @@ The search path is:
 - /Network/Library/Sounds
 - /System/Library/Sounds (This is where all of the builtin sounds live)
 
-If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this: 
+If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this:
 `yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"`
 
 Sounds must be a aiff; extension .aif is not valid.
 
 ### Emoji
-Emoji characters are allowed, although getting them into a bash commandline context is tricky.
+Emoji characters are allowed, although getting them into a bash command line context is tricky.
 
 You can drag an emoji from the Special Characters palette. That's the easiest way.
 
@@ -129,7 +129,7 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 # Example with action button, opening a webpage in your default browser:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
 
-# Example opening an app: 
+# Example opening an app:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "/Applications/TacoParty.app"
 
 # Example-What if you want a one-button persistent notification that doesn't *do* anything?
@@ -199,7 +199,7 @@ there are a couple of options:
    is scoped to.
 2. Use an extension attribute to determine whether a notification has been
    delivered. The yo-casper.py script logs to a file at /var/log/yo-casper.log.
-   This log file includes the datestamp, arguments, and an md5 hash generated
+   This log file includes the date stamp, arguments, and an md5 hash generated
    from the supplied arguments that will be consistent across all executions of
    that notification. Included in the `casper` folder is an extension attribute
    that can be used to determine whether a particular notification has been
@@ -225,7 +225,7 @@ there are a couple of options:
 
 #### Recovering from Execute Command
 Affected computers can be fixed by removing the broken Execute Command
-policy from scope and running killall jamf.
+policy from scope and running `killall jamf`.
 
 #### But Some of the Args Are Missing?
 Casper only allows 8 custom arguments, so if you would prefer other arguments
@@ -237,7 +237,7 @@ Most organizations will probably want yo to display a custom icon in the notific
 1. By default, a notification uses the icon for the application sending the notification.
 2. Using a private API, an application can specify an image file to use for the icon.
 
-yo uses option 2 if you use the --icon option. However, since this is a private mechanism used by Apple to show album art in iTunes notifications, the application icon will *still* show up, just smaller, and to the side of the primary icon.
+yo uses option 2 if you use the `--icon` option. However, since this is a private mechanism used by Apple to show album art in iTunes notifications, the application icon will *still* show up, just smaller, and to the side of the primary icon.
 
 So if you really just want to use *your* icon, you need to build the project in XCode yourself. And even so, there are some issues about getting it to "know" that you've changed the icon.
 

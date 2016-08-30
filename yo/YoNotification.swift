@@ -28,7 +28,7 @@ class YoNotification: NSObject {
         let notification = NSUserNotification()
 
         // General properties.
-        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
+        let bundleIdentifier = Bundle.main.bundleIdentifier!
         print(bundleIdentifier)
 
         // This option does not currently work to make a banner.
@@ -64,13 +64,13 @@ class YoNotification: NSObject {
 
         // Alternate icon handling.
         if let iconPath = arguments.icon.value {
-            notification.setValue(NSImage(byReferencingURL: NSURL(fileURLWithPath: iconPath)), forKey: "_identityImage")
+            notification.setValue(NSImage(byReferencing: URL(fileURLWithPath: iconPath)), forKey: "_identityImage")
             notification.setValue(false, forKey: "_identityImageHasBorder")
         }
 
         // Content image.
         if let contentImagePath = arguments.contentImage.value {
-            notification.contentImage = NSImage(byReferencingURL: NSURL(fileURLWithPath: contentImagePath))
+            notification.contentImage = NSImage(byReferencing: URL(fileURLWithPath: contentImagePath))
         }
 
         // Text elements.
@@ -105,7 +105,7 @@ class YoNotification: NSObject {
 
         notification.setValue(arguments.poofsOnCancel.value, forKey: "_poofsOnCancel")
 
-        let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+        let nc = NSUserNotificationCenter.default
         nc.scheduleNotification(notification)
     }
 }

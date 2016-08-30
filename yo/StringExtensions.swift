@@ -22,12 +22,12 @@ internal extension String {
   /* Retrieves locale-specified decimal separator from the environment
    * using localeconv(3).
    */
-  private func _localDecimalPoint() -> Character {
+  fileprivate func _localDecimalPoint() -> Character {
     let locale = localeconv()
     if locale != nil {
-      let decimalPoint = locale.memory.decimal_point
+      let decimalPoint = locale?.pointee.decimal_point
       if decimalPoint != nil {
-        return Character(UnicodeScalar(UInt32(decimalPoint.memory)))
+        return Character(UnicodeScalar(UInt32(decimalPoint!.pointee))!)
       }
     }
 
@@ -46,7 +46,7 @@ internal extension String {
     var isNegative: Bool = false
     let decimalPoint = self._localDecimalPoint()
 
-    for (i, c) in self.characters.enumerate() {
+    for (i, c) in self.characters.enumerated() {
       if i == 0 && c == "-" {
         isNegative = true
         continue
@@ -82,22 +82,22 @@ internal extension String {
    *
    * - returns: An array of string components.
    */
-  func splitByCharacter(splitBy: Character, maxSplits: Int = 0) -> [String] {
+  func splitByCharacter(_ splitBy: Character, maxSplits: Int = 0) -> [String] {
     var s = [String]()
     var numSplits = 0
 
     var curIdx = self.startIndex
-    for(var i = self.startIndex; i != self.endIndex; i = i.successor()) {
+    for(var i = self.startIndex; i != self.endIndex; i = <#T##Collection corresponding to `i`##Collection#>.index(after: i)) {
       let c = self[i]
       if c == splitBy && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(self[Range(start: curIdx, end: i)])
-        curIdx = i.successor()
-        numSplits++
+        s.append(self[(curIdx ..< i)])
+        curIdx = <#T##Collection corresponding to `i`##Collection#>.index(after: i)
+        numSplits += 1
       }
     }
 
     if curIdx != self.endIndex {
-      s.append(self[Range(start: curIdx, end: self.endIndex)])
+      s.append(self[(self.indices.suffix(from: curIdx))])
     }
 
     return s
@@ -111,7 +111,7 @@ internal extension String {
    *
    * - returns: A new string, padded to the given width.
    */
-  func paddedToWidth(width: Int, padBy: Character = " ") -> String {
+  func paddedToWidth(_ width: Int, padBy: Character = " ") -> String {
     var s = self
     var currentLength = self.characters.count
 
@@ -135,7 +135,7 @@ internal extension String {
    *
    * - returns: A new string, wrapped at the given width.
    */
-  func wrappedAtWidth(width: Int, wrapBy: Character = "\n", splitBy: Character = " ") -> String {
+  func wrappedAtWidth(_ width: Int, wrapBy: Character = "\n", splitBy: Character = " ") -> String {
     var s = ""
     var currentLineWidth = 0
 

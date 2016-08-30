@@ -24,14 +24,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
 
     @IBOutlet weak var window: NSWindow!
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        let nc = NSUserNotificationCenter.defaultUserNotificationCenter()
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let nc = NSUserNotificationCenter.default
         nc.delegate = self
 
         // If notification is activated (i.e. user clicked the action button) the app will relaunch.
         // Test for that, and if so, execute the option tucked away in the userInfo dict.
-        if let notification = aNotification.userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
-            let task = NSTask()
+        if let notification = (aNotification as NSNotification).userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
+            let task = Process()
             // It's safe to just open nothing, so this is the default.
             task.launchPath = "/usr/bin/open"
             if let action = notification.userInfo!["action"] as? String {
@@ -56,16 +56,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         }
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
-    func userNotificationCenter(center: NSUserNotificationCenter, didDeliverNotification notification: NSUserNotification) {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, didDeliver notification: NSUserNotification) {
         // Work is done, time to quit.
         exit(0)
     }
 
-    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool {
         // Ensure that notification is shown, even if app is active.
         return true
     }

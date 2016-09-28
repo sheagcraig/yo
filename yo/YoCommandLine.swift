@@ -36,21 +36,29 @@ class YoCommandLine {
     let deliverySound = StringOption(shortFlag: "z", longFlag: "delivery-sound", required: false, helpMessage: "The name of the sound to play when delivering or 'None'. The name must not include the extension, nor any path components, and should be located in '/Library/Sounds' or '~/Library/Sounds'. (Defaults to the system's default notification sound). See the README for more info.")
     let action = StringOption(shortFlag: "a", longFlag: "action-path", required: false, helpMessage: "Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.")
     let bashAction = StringOption(shortFlag: "B", longFlag: "bash-action", required: false, helpMessage: "Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.")
+    let version = BoolOption(shortFlag: "v", longFlag: "version", helpMessage: "Display Yo version information.")
     let help = BoolOption(shortFlag: "h", longFlag: "help", helpMessage: "Show help.")
 
     init () {
         // Add arguments to commandline object and handle errors or help requests.
-        cli.addOptions(title, subtitle, informativeText, actionBtnText, action, bashAction, otherBtnText, icon, contentImage,  deliverySound, ignoresDoNotDisturb, lockscreenOnly, poofsOnCancel,banner, help)
+        cli.addOptions(title, subtitle, informativeText, actionBtnText, action, bashAction, otherBtnText, icon, contentImage,  deliverySound, ignoresDoNotDisturb, lockscreenOnly, poofsOnCancel,banner, version, help)
         do {
             try cli.parse()
         } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
-        }
-
-        if help.value {
-            cli.printUsage()
-            exit(EX_USAGE)
+            if help.value {
+                cli.printUsage()
+                exit(EX_USAGE)
+            } else if version.value {
+                if let text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    print(text)
+                    exit(0)
+                }
+                
+            } else {
+                cli.printUsage(error)
+                exit(EX_USAGE)
+            }
+        
         }
     }
 }

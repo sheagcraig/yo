@@ -16,7 +16,11 @@
  */
 
 /* Required for localeconv(3) */
-import Darwin
+#if os(OSX)
+  import Darwin
+#elseif os(Linux)
+  import Glibc
+#endif
 
 internal extension String {
   /* Retrieves locale-specified decimal separator from the environment
@@ -25,10 +29,16 @@ internal extension String {
   private func _localDecimalPoint() -> Character {
     let locale = localeconv()
     if locale != nil {
-      let decimalPoint = locale.memory.decimal_point
-      if decimalPoint != nil {
-        return Character(UnicodeScalar(UInt32(decimalPoint.memory)))
-      }
+      #if swift(>=3.0)
+        if let decimalPoint = locale?.pointee.decimal_point {
+          return Character(UnicodeScalar(UInt32(decimalPoint.pointee))!)
+        }
+      #else
+        let decimalPoint = locale.memory.decimal_point
+        if decimalPoint != nil {
+          return Character(UnicodeScalar(UInt32(decimalPoint.memory)))
+        }
+      #endif
     }
 
     return "."
@@ -46,7 +56,12 @@ internal extension String {
     var isNegative: Bool = false
     let decimalPoint = self._localDecimalPoint()
 
-    for (i, c) in self.characters.enumerate() {
+    #if swift(>=3.0)
+      let charactersEnumerator = self.characters.enumerated()
+    #else
+      let charactersEnumerator = self.characters.enumerate()
+    #endif
+    for (i, c) in charactersEnumerator {
       if i == 0 && c == "-" {
         isNegative = true
         continue
@@ -69,54 +84,90 @@ internal extension String {
       }
     }
 
-    return (Double(Int(characteristic)!) +
+    let doubleCharacteristic = Double(Int(characteristic)!)
+    return (doubleCharacteristic +
       Double(Int(mantissa)!) / pow(Double(10), Double(mantissa.characters.count - 1))) *
       (isNegative ? -1 : 1)
   }
 
+  #if swift(>=3.0)
   /**
    * Splits a string into an array of string components.
    *
-   * - parameter splitBy:  The character to split on.
-   * - parameter maxSplit: The maximum number of splits to perform. If 0, all possible splits are made.
+   * - parameter by:        The character to split on.
+   * - parameter maxSplits: The maximum number of splits to perform. If 0, all possible splits are made.
    *
    * - returns: An array of string components.
    */
-  func splitByCharacter(splitBy: Character, maxSplits: Int = 0) -> [String] {
+  func split(by: Character, maxSplits: Int = 0) -> [String] {
     var s = [String]()
     var numSplits = 0
 
     var curIdx = self.startIndex
-    for(var i = self.startIndex; i != self.endIndex; i = i.successor()) {
+    for i in self.characters.indices {
       let c = self[i]
-      if c == splitBy && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(self[Range(start: curIdx, end: i)])
-        curIdx = i.successor()
-        numSplits++
+      if c == by && (maxSplits == 0 || numSplits < maxSplits) {
+        s.append(self[curIdx..<i])
+        curIdx = self.index(after: i)
+        numSplits += 1
       }
     }
 
     if curIdx != self.endIndex {
-      s.append(self[Range(start: curIdx, end: self.endIndex)])
+      s.append(self[curIdx..<self.endIndex])
     }
 
     return s
   }
 
+  #else
+
+  /**
+   * Splits a string into an array of string components.
+   *
+   * - parameter by:        The character to split on.
+   * - parameter maxSplits: The maximum number of splits to perform. If 0, all possible splits are made.
+   *
+   * - returns: An array of string components.
+   */
+  func split(by by: Character, maxSplits: Int = 0) -> [String] {
+    var s = [String]()
+    var numSplits = 0
+
+    var curIdx = self.startIndex
+    for i in self.characters.indices {
+      let c = self[i]
+      if c == by && (maxSplits == 0 || numSplits < maxSplits) {
+        s.append(self[curIdx..<i])
+        curIdx = i.successor()
+        numSplits += 1
+      }
+    }
+
+    if curIdx != self.endIndex {
+      s.append(self[curIdx..<self.endIndex])
+    }
+
+    return s
+  }
+
+  #endif
+
   /**
    * Pads a string to the specified width.
    *
-   * - parameter width: The width to pad the string to.
-   * - parameter padBy: The character to use for padding.
+   * - parameter toWidth: The width to pad the string to.
+   * - parameter by: The character to use for padding.
    *
    * - returns: A new string, padded to the given width.
    */
-  func paddedToWidth(width: Int, padBy: Character = " ") -> String {
+  func padded(toWidth width: Int, with padChar: Character = " ") -> String {
     var s = self
     var currentLength = self.characters.count
 
-    while currentLength++ < width {
-      s.append(padBy)
+    while currentLength < width {
+      s.append(padChar)
+      currentLength += 1
     }
 
     return s
@@ -129,17 +180,17 @@ internal extension String {
    * If a single word is longer than the line width, it will be placed (unsplit)
    * on a line by itself.
    *
-   * - parameter width:   The maximum length of a line.
+   * - parameter atWidth: The maximum length of a line.
    * - parameter wrapBy:  The line break character to use.
    * - parameter splitBy: The character to use when splitting the string into words.
    *
    * - returns: A new string, wrapped at the given width.
    */
-  func wrappedAtWidth(width: Int, wrapBy: Character = "\n", splitBy: Character = " ") -> String {
+  func wrapped(atWidth width: Int, wrapBy: Character = "\n", splitBy: Character = " ") -> String {
     var s = ""
     var currentLineWidth = 0
 
-    for word in self.splitByCharacter(splitBy) {
+    for word in self.split(by: splitBy) {
       let wordLength = word.characters.count
 
       if currentLineWidth + wordLength + 1 > width {

@@ -37,37 +37,39 @@ If you are experiencing weird hanging or no notifications being sent, check to m
 
 #### Arguments:
 ```
-Usage: /Applications/Utilities/yo.app/Contents/MacOS/yo [options]
--t, --title:                 
-Title for notification. REQUIRED.
--s, --subtitle:              
-Subtitle for notification.
--n, --info:                  
-Informative text.
--b, --action-btn:            
-Include an action button, with the button label text supplied to this argument.
--a, --action-path:           
-Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.
--B, --bash-action:           
-Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
--o, --other-btn:             
-Alternate label for cancel button text.
--i, --icon:                  
-Complete path to an alternate icon to use for the notification.
--c, --content-image:         
-Path to an image to use for the notification's 'contentImage' property.
--z, --delivery-sound:        
-Optional (Defaults to the system's default notification sound). The name of the sound to play when delivering or 'None'. The name must not include the extension, nor any path components, and should be located in '/Library/Sounds' or '~/Library/Sounds'. See the README for more info.
--d, --ignores-do-not-disturb:
-Set to make your notification appear even if computer is in do-not-disturb mode.
--l, --lockscreen-only:       
-Set to make your notification appear only if computer is locked. If set, no buttons will be available.
--p, --poofs-on-cancel:       
-Set to make your notification 'poof' when the cancel button is hit.
--m, --banner-mode:           
-Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
--h, --help:                  
-Show help.
+Usage: /Users/shcrai/Library/Developer/Xcode/DerivedData/yo-dmleuiivjmidrrfzyhbmtcwsvqkm/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
+  -t, --title:
+      Title for notification. REQUIRED.
+  -s, --subtitle:
+      Subtitle for notification.
+  -n, --info:
+      Informative text.
+  -b, --action-btn:
+      Include an action button, with the button label text supplied to this argument.
+  -a, --action-path:
+      Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.
+  -B, --bash-action:
+      Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
+  -o, --other-btn:
+      Alternate label for cancel button text.
+  -i, --icon:
+      Complete path to an alternate icon to use for the notification.
+  -c, --content-image:
+      Path to an image to use for the notification's 'contentImage' property.
+  -z, --delivery-sound:
+      The name of the sound to play when delivering or 'None'. The name must not include the extension, nor any path components, and should be located in '/Library/Sounds' or '~/Library/Sounds'. (Defaults to the system's default notification sound). See the README for more info.
+  -d, --ignores-do-not-disturb:
+      Set to make your notification appear even if computer is in do-not-disturb mode.
+  -l, --lockscreen-only:
+      Set to make your notification appear only if computer is locked. If set, no buttons will be available.
+  -p, --poofs-on-cancel:
+      Set to make your notification 'poof' when the cancel button is hit.
+  -m, --banner-mode:
+      Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
+  -v, --version:
+      Display Yo version information.
+  -h, --help:
+      Show help.
 ```
 
 Notes:

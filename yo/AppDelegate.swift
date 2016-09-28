@@ -50,8 +50,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
             exit(0)
         }
         else {
-            NSLog("Posting notification.")
             let args = YoCommandLine()
+            NSLog("Posting notification.")
             _ = YoNotification(arguments: args)
         }
     }

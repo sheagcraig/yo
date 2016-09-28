@@ -45,20 +45,24 @@ class YoCommandLine {
         do {
             try cli.parse()
         } catch {
-            if help.value {
-                cli.printUsage()
-                exit(EX_USAGE)
-            } else if version.value {
-                if let text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                    print(text)
-                    exit(0)
-                }
-                
-            } else {
+            // Due to the way required options work in CommandLine, make sure
+            // the user wasn't actually trying to get help or version info.
+            if !help.value && !version.value {
                 cli.printUsage(error)
                 exit(EX_USAGE)
             }
+        }
         
+        // Help and version flags short-circuit other commands and exit:
+        if help.value {
+            cli.printUsage()
+            exit(EX_USAGE)
+        } else if version.value {
+            if let text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                print(text)
+                exit(0)
+            }
+            
         }
     }
 }

@@ -63,16 +63,13 @@ YO_HELP = """\
 
 
 def main():
+    """Manage Yo notifications"""
+    # TODO: refactor so main reads as documentation of the workflow.
     # Capture commandline args.
     parser = get_argument_parser()
     launcher_args, yo_args = parser.parse_known_args()
 
-    # args = sys.argv
-    # Replace this script's path with the yo app's path.
-    # args[0] = "/Applications/Utilities/yo.app/Contents/MacOS/yo"
-
     if any(flag in yo_args for flag in ("--version", "-v")):
-        # import pdb; pdb.set_trace()
         # Skip further checks if version is requested.
         args = ["yo.py"] + yo_args
         run_yo_with_args(args)
@@ -93,6 +90,8 @@ def main():
     elif launcher_args.cleanup:
         # Yo is being called by the cleanup LaunchDaemon.
         clear_args()
+        time.sleep(5)
+        os.remove(CLEANUP_PATH)
 
     elif not is_console_user() and os.getuid() == 0:
         # Only the current console user can trigger a notification.
@@ -123,9 +122,11 @@ def get_argument_parser():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     phelp = ("Run cached notifications (must be run as console user). This "
              "option is normally run")
-    parser.add_argument("--cached", help=argparse.SUPPRESS, action="store_true")
+    parser.add_argument("--cached", help=argparse.SUPPRESS,
+                        action="store_true")
     phelp = "Clean up cached notifications (must run as root)."
-    parser.add_argument("--cleanup", help=argparse.SUPPRESS, action="store_true")
+    parser.add_argument("--cleanup", help=argparse.SUPPRESS,
+                        action="store_true")
 
     parser.epilog = YO_HELP
 

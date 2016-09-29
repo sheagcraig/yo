@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.sheagcraig.yo.on_demand</string>
+  <key>LimitLoadToSessionType</key>
+  <array>
+    <string>Aqua</string>
+  </array>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/yo</string>
+    <string>--cached</string>
+  </array>
+  <key>KeepAlive</key>
+  <dict>
+     <key>PathState</key>
+     <dict>
+       <key>/private/tmp/.com.sheagcraig.yo.on_demand.launchd</key>
+       <true/>
+     </dict>
+  </dict>
+</dict>
+</plist>

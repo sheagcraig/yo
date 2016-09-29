@@ -3,9 +3,20 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
 ### Changed
 - Updated to Swift 3 syntax.
 - Updated to a fork of CommandLine (IngmarStein's PR to update for Xcode8/Swift3)
+
+### Added
+- New yo.py launcher (package installer puts it at `/usr/local/bin/yo`).
+- New Yo launch system! LaunchDaemon and two LaunchAgents to allow reliable
+  notification triggering by the management tool of your choice. Thanks to
+  @chilcote and @grahamgilbert for the inspiration and technical assistance.
+
+### Removed
+- Removed casper directory in lieue of new launcher script system.
+- Removed yo.sh.
 
 ## [1.0.3] - 2015-08-22 - Prince's Hair in Purple Rain
 ### Fixed

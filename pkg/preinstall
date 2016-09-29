@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Weirdly, yo doesn't overwrite it's old app; instead it makes a
+# localized folder. Just erase it first.
+rm -rf /Applications/Utilities/yo.app
+rm -rf /Applications/Utilities/yo
+rm -rf /Applications/Utilities/yo.localized

@@ -12,7 +12,7 @@ from Foundation import (CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
                         kCFPreferencesCurrentHost)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
-__version__ == 2.0.0
+__version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
 CLEANUP_PATH = "/private/tmp/.com.sheagcraig.yo.cleanup.launchd"
 WATCH_PATH = "/private/tmp/.com.sheagcraig.yo.on_demand.launchd"

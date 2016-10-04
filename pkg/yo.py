@@ -94,6 +94,9 @@ def main():
         os.remove(CLEANUP_PATH)
 
     elif not is_console_user():
+        if os.getuid() != 0:
+            sys.exit("Only the root user may cache notifications for "
+                     "other users.")
         # Only the current console user can trigger a notification.
         # So we will cache the required arguments and try to trigger
         # an on_demand notification. If there is no console user, the

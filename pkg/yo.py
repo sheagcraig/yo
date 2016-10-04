@@ -93,7 +93,7 @@ def main():
         time.sleep(5)
         os.remove(CLEANUP_PATH)
 
-    elif not is_console_user() and os.getuid() == 0:
+    elif not is_console_user():
         # Only the current console user can trigger a notification.
         # So we will cache the required arguments and try to trigger
         # an on_demand notification. If there is no console user, the
@@ -121,7 +121,7 @@ def get_argument_parser():
         description=description,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     phelp = ("Run cached notifications (must be run as console user). This "
-             "option is normally run")
+             "option is normally run by the LaunchAgent.")
     parser.add_argument("--cached", help=argparse.SUPPRESS,
                         action="store_true")
     phelp = "Clean up cached notifications (must run as root)."
@@ -139,7 +139,8 @@ def run_yo_with_args(args):
 
 
 def is_console_user():
-    return os.getuid() == get_console_user()[1]
+    console_user = get_console_user()
+    return False if not console_user[0] else os.getuid() == console_user[1]
 
 
 def get_console_user():

@@ -1,8 +1,6 @@
-# yo
+# Yo: Custom User Notifications with Swift
 
-## Custom User Notifications with Swift
-
-### Overview
+## Overview
 ![Yo example](https://github.com/sheagcraig/yo/blob/testing/docs/example.png?raw=true)
 
 Yo is a simple app for sending custom, *persistent* native Cocoa notifications to the Notification
@@ -35,7 +33,7 @@ yourself. Instructions are provided below.
 Finally, thanks to @jatoben for the gracious sharing of his Swift
 [CommandLine](https://github.com/jatoben/CommandLine) library/Framework on GitHub.
 
-### Build & Installation
+## Build & Installation
 You only need to follow these instructions if you want to build the app yourself. Obviously, you'll need a recent XCode.
 
 1. Clone the project.
@@ -45,19 +43,19 @@ You only need to follow these instructions if you want to build the app yourself
 
 Note: If you Run/(CMD-R) from XCode, it will just report back usage with a command line parsing error. Just ignore that and run from the command line.
 
-### Usage
+## Usage
 The yo installer package adds a command line script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
 
 Due to its install location being in the default PATH, you can then call yo by simply typing `yo -t "This is amazing"`, for example. (`yo -h` will give you full usage information).
 
 The yo script will test for a console user prior to execution and bail if nobody is logged in. If there is no console user, there is no notification center, and yo can't do anything. Therefore, this script ensures it only runs when possible to succeed.
 
-#### Note:
+### Note:
 The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is executable. However, this only works if a user is currently logged in.
 
 If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
 
-#### Arguments:
+### Arguments:
 ```
 Usage: /Users/shcrai/Library/Developer/Xcode/DerivedData/yo-dmleuiivjmidrrfzyhbmtcwsvqkm/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
   -t, --title:
@@ -101,7 +99,7 @@ Notes:
 - If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use `-o/--other-btn` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no `-b/--btext`.
 - Remember, this is (probably) a Bash shell. If you don't escape reserved characters like `!` you may get unexpected results. (`!` is the Bash history expansion operator!)
 
-### Sound
+## Sound
 If you want to use a different sound, you must provide the *name* of the sound to the -z argument, not the filename, and not the path. I.e "Sosumi", not "Sosumi.aiff" or "/System/Library/Sosumi.aiff".
 
 The search path is:
@@ -115,7 +113,7 @@ If you want to include a custom sound, it needs to be available in one of those 
 
 Sounds must be a aiff; extension .aif is not valid.
 
-### Emoji
+## Emoji
 Emoji characters are allowed, although getting them into a bash command line context is tricky.
 
 You can drag an emoji from the Special Characters palette. That's the easiest way.
@@ -139,7 +137,7 @@ $ /Applications/Utilities/yo.app/Contents/MacOS/yo -t $(echo -ne '\xf0\x9f\x92\x
 
 You can also do `printf '\xf0\x9f\x92\xa9'`.
 
-### Examples
+## Examples
 ```
 # Example of basic notification:
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time"
@@ -166,14 +164,14 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 /Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
 
-### Casper Usage
-#### Overview
+## Casper Usage
+### Overview
 yo provides a script, yo-casper.py which you can upload to your JSS for posting
 notifications. This script is the safest way to ensure your notifications post,
 and do so without jacking up the computer. Like the yo script installed in
 /usr/local/bin, yo-casper only runs if a GUI user is logged in.
 
-#### Why Bother?
+### Why Bother?
 Running yo with the Policy/Files & Processes/Execute Command function
 of Casper results in scoped client machines becoming unable to
 check-in or run further policies. This is due to something broken in
@@ -181,10 +179,10 @@ Casper's Execute Command function that prevents yo from ever
 completing. Furthermore, using `"` instead of `'` for quoting causes strange
 things to happen to the arguments. Therefore, do not use Execute Command.
 
-#### Where are the Casper Scripts?
+### Where are the Casper Scripts?
 The folder containing yo-casper.py and the extension attribute to work with it are not included in the installer package, since managed client machines will not need these components. You can get them from the GitHub page by cloning the project or downloading as a zip, expanding, and then looking in the `casper` folder. Or you can just cut and paste from GitHub directly into the Scripts and Extension Attributes sections of your JSS.
 
-#### Using yo-casper
+### Using yo-casper
 yo-casper.py hardcodes the following arguments to yo in the 4th-11th
 parameter fields for Casper scripts. As such, you should rename them
 in Casper Admin to match:
@@ -247,16 +245,16 @@ there are a couple of options:
 ![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent2.png)
 ![Smart Group Criteria](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/Edit_Smart_Computer_Group.png)
 
-#### Recovering from Execute Command
+### Recovering from Execute Command
 Affected computers can be fixed by removing the broken Execute Command
 policy from scope and running `killall jamf`.
 
-#### But Some of the Args Are Missing?
+### But Some of the Args Are Missing?
 Casper only allows 8 custom arguments, so if you would prefer other arguments
 as options, feel free to edit the script to use the correct argument flags.
 
-### Application Icon, Caveats, and Nerdery
-#### Icons
+## Application Icon, Caveats, and Nerdery
+### Icons
 Most organizations will probably want yo to display a custom icon in the notification. There are a couple of different ways notifications determine what to use for the icon:
 1. By default, a notification uses the icon for the application sending the notification.
 2. Using a private API, an application can specify an image file to use for the icon.
@@ -271,7 +269,7 @@ Therefore, it is easiest to apply the icon you want before sending any notificat
 
 See [here](http://stackoverflow.com/questions/11856766/osx-notification-center-icon) for more info.
 
-#### The other nerdery
+### The other nerdery
 Normally, for a notification to be persistent (meaning, it stays onscreen until a button is clicked on the notification), the notification needs to be an "alert" style notification. To do this, yo sets the Info.plist key "NSUserNotificationAlertStyle" with value "alert". However, Apple does not allow just anyone to make "alerts". To use an alert in your app, the app has to be signed with a developer ID.
 
 Or does it... There's another private API key that allows you to show buttons on a "banner", which is the default type, and available for unsigned apps. So that's what yo uses.

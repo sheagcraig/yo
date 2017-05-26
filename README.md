@@ -3,7 +3,12 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-`yo` is a simple app for sending custom, *persistent* notifications to the Notification Center in OS X Yosemite and Mavericks. It allows customizing the various text fields and button labels, as well as the application to open when the (optional) action button has been clicked. Further, it allows you to configure the application icon to be displayed with the notification, although there are some caveats to this as detailed below. Also, admins using the Casper Suite should make sure to read the Casper section below.
+![Yo example](https://github.com/sheagcraig/yo/docs/example.png)
+`yo` is a simple app for sending custom, *persistent* native Cocoa notifications to the Notification Center in
+macOS 10.10+. It allows customizing the various text fields and button labels, as well
+as the application to open when the (optional) action button has been clicked. Further, it allows
+you to configure the application icon to be displayed with the notification, although there are some
+caveats to this as detailed below. 
 
 It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
 

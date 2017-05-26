@@ -4,19 +4,36 @@
 
 ### Overview
 ![Yo example](https://github.com/sheagcraig/yo/blob/testing/docs/example.png?raw=true)
-`yo` is a simple app for sending custom, *persistent* native Cocoa notifications to the Notification Center in
-macOS 10.10+. It allows customizing the various text fields and button labels, as well
-as the application to open when the (optional) action button has been clicked. Further, it allows
-you to configure the application icon to be displayed with the notification, although there are some
-caveats to this as detailed below. 
 
-It differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates persistent notifications that remain in place until clicked. As such, it allows you to customize these buttons and their actions. Also, it allows you to customize the application icon displayed (kind of... again, see below).
+Yo is a simple app for sending custom, *persistent* native Cocoa notifications to the Notification
+Center in macOS 10.10+. It allows customizing all of the various notification text fields and button labels, the sound
+effect played, and the application to open when the (optional) action button has been clicked.
+Further, it allows you to configure the application icon to be displayed with the notification (with
+caveats), and configure some of the launch properties, like whether to "poof" when clicked, and how
+to display when the screen is locked.
 
-If you just want a notification, download the current installer package from the [releases](https://github.com/sheagcraig/yo/releases) page. Please note, the installer package does not include the Casper scripts.
+Included with the Yo app is a launcher utility named `yo-yo`. Yo allows you to call it from the
+commandline, but only when a user is actively logged into a GUI session. That's where the launcher
+script steps in. `yo-yo` takes ideas from the [excellent Outset
+tool](https://github.com/chilcote/outset) to guarantee that configured notifications will be
+delivered to all users on a machine at least once. This is of critical importance to Mac
+administrators who need to reliably notify enterprise users of pending changes or critical
+information. Yo and `yo-yo` are management tool agnostic, and has been used by Munki and Casper
+administrators around the world.
 
-If you want to customize the icon/app name/etc, you will need to modify the XCode project and build it yourself. Instructions are provided below.
+Yo differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates
+persistent notifications that remain in place until clicked. As such, it allows you to customize
+these buttons and their actions. Also, it allows you to customize the application icon displayed.
 
-Finally, thanks to @jatoben for the gracious sharing of his Swift [CommandLine](https://github.com/jatoben/CommandLine) library/Framework on GitHub.
+If you just want a notification, download the current installer package from the
+[releases](https://github.com/sheagcraig/yo/releases) page.
+
+You can customize the icon used in the notifications by providing the `-i` argument. However, if you
+want to permanently customize the icon/app name/etc, you can modify the XCode project and build it
+yourself. Instructions are provided below.
+
+Finally, thanks to @jatoben for the gracious sharing of his Swift
+[CommandLine](https://github.com/jatoben/CommandLine) library/Framework on GitHub.
 
 ### Build & Installation
 You only need to follow these instructions if you want to build the app yourself. Obviously, you'll need a recent XCode.

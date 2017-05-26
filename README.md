@@ -3,7 +3,7 @@
 ## Custom User Notifications with Swift
 
 ### Overview
-![Yo example](https://github.com/sheagcraig/yo/docs/example.png)
+![Yo example](https://github.com/sheagcraig/yo/blob/testing/docs/example.png?raw=true)
 `yo` is a simple app for sending custom, *persistent* native Cocoa notifications to the Notification Center in
 macOS 10.10+. It allows customizing the various text fields and button labels, as well
 as the application to open when the (optional) action button has been clicked. Further, it allows

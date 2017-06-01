@@ -7,16 +7,19 @@ from subprocess import call
 import sys
 import time
 
-from Foundation import (CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
-                        CFPreferencesSetValue, kCFPreferencesAnyUser,
-                        kCFPreferencesCurrentHost)
+from Foundation import (
+    CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
+    CFPreferencesSetValue, kCFPreferencesAnyUser, kCFPreferencesCurrentHost)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
+
 
 __version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
 CLEANUP_PATH = "/private/tmp/.com.sheagcraig.yo.cleanup.launchd"
 WATCH_PATH = "/private/tmp/.com.sheagcraig.yo.on_demand.launchd"
 YO_BINARY = "/Applications/Utilities/yo.app/Contents/MacOS/yo"
+# This is captured straight from running the Yo binary and must be
+# updated manually.
 YO_HELP = """\
     Yo app notification options:
     -t, --title:
@@ -64,9 +67,10 @@ YO_HELP = """\
 
 def main():
     """Manage Yo notifications"""
-    # TODO: refactor so main reads as documentation of the workflow.
     # Capture commandline args.
     parser = get_argument_parser()
+    # Use the parse_known_args method to automatically separate out the
+    # yo_scheduler (this script) args from the yo app's args.
     launcher_args, yo_args = parser.parse_known_args()
 
     if any(flag in yo_args for flag in ("--version", "-v")):
@@ -89,7 +93,7 @@ def main():
 
     elif launcher_args.cleanup:
         # Yo is being called by the cleanup LaunchDaemon.
-        clear_args()
+        clear_scheduled_notifications()
         time.sleep(5)
         os.remove(CLEANUP_PATH)
 
@@ -118,7 +122,10 @@ def main():
 
 
 def get_argument_parser():
-    """Create our argument parser."""
+    """Create yo's argument parser."""
+    # This wrapper script adds the --cached and --cleanup args which
+    # are meant to be used by the associated LaunchAgents and
+    # LaunchDaemons to get their work done.
     description = "Yo launcher arguments:"
     parser = argparse.ArgumentParser(
         description=description,
@@ -131,6 +138,7 @@ def get_argument_parser():
     parser.add_argument("--cleanup", help=argparse.SUPPRESS,
                         action="store_true")
 
+    # The parser's epilog is where we put all of the real argument help.
     parser.epilog = YO_HELP
 
     return parser
@@ -162,14 +170,16 @@ def cache_args(args):
 
     notifications = notifications + [args]
 
-    CFPreferencesSetValue("Notifications", notifications, BUNDLE_ID,
-                          kCFPreferencesAnyUser, kCFPreferencesCurrentHost)
+    CFPreferencesSetValue(
+        "Notifications", notifications, BUNDLE_ID, kCFPreferencesAnyUser,
+        kCFPreferencesCurrentHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
 
-def clear_args():
-    CFPreferencesSetValue("Notifications", [], BUNDLE_ID,
-                          kCFPreferencesAnyUser, kCFPreferencesCurrentHost)
+def clear_scheduled_notifications():
+    CFPreferencesSetValue(
+        "Notifications", [], BUNDLE_ID, kCFPreferencesAnyUser,
+        kCFPreferencesCurrentHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
 

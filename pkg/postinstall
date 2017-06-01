@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Rename yo.sh to yo so we can call it like a regular cli utility.
-mv /usr/local/bin/yo.py /usr/local/bin/yo
+mv /usr/local/bin/yo_scheduler.py /usr/local/bin/yo_scheduler

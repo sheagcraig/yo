@@ -56,7 +56,8 @@ import time
 
 from Foundation import (
     CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
-    CFPreferencesSetValue, kCFPreferencesAnyUser, kCFPreferencesCurrentHost)
+    CFPreferencesCopyKeyList, CFPreferencesSetValue, kCFPreferencesAnyHost,
+    kCFPreferencesAnyUser, kCFPreferencesCurrentUser)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
 
@@ -219,14 +220,14 @@ def cache_args(args):
 
     CFPreferencesSetValue(
         "Notifications", notifications, BUNDLE_ID, kCFPreferencesAnyUser,
-        kCFPreferencesCurrentHost)
+        kCFPreferencesAnyHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
 
 def clear_scheduled_notifications():
     CFPreferencesSetValue(
         "Notifications", [], BUNDLE_ID, kCFPreferencesAnyUser,
-        kCFPreferencesCurrentHost)
+        kCFPreferencesAnyHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
 

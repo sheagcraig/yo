@@ -1,4 +1,51 @@
 #!/usr/bin/python
+# Copyright 2014-2017 Shea G. Craig
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+# implied.
+#
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+"""Manage Yo notifications
+
+This tool helps schedule yo notifications. It solves several problems
+for administrators.
+
+First, it ensures that the proper application context is available prior
+to attempting to run the yo binary, which will fail if not run as the
+current console user.
+
+The scheduler ensures that any notification is delivered at least once
+to each user. If they are not logged in when configured, the
+notification will be delivered immediately after their next login.
+
+Admins may specify a date after which notifications are no-longer
+considered deliverable, ensuring notifications aren't delivered to
+infrequently used accounts long-past their freshness date.
+
+Likewise, a list of accounts for which delivering notifications should
+be skipped may be specified on a per-notification and a global basis.
+
+Normally, the tool must be run as root. For testing purposes,  you may
+trigger a notification for the current console user by running this tool
+with that user's account.
+
+Unless cleared, the `com.sheagcraig.yo` preference domain caches
+all notifications so that they may be delivered to any user of the
+system without foreknowledge of their username, infinitely into the
+future. The yo_scheduler includes a flag to clear cached notifications
+while retaining any other preferences.
+"""
 
 
 import argparse
@@ -66,7 +113,7 @@ YO_HELP = """\
 
 
 def main():
-    """Manage Yo notifications"""
+    """Application main"""
     # Capture commandline args.
     parser = get_argument_parser()
     # Use the parse_known_args method to automatically separate out the

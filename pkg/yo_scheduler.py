@@ -14,8 +14,6 @@
 #
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
 """Manage Yo notifications
 
 This tool helps schedule yo notifications. It solves several problems
@@ -130,21 +128,16 @@ def main():
         # Post all of the stored notifications!
         process_notifications()
 
-        # TODO: Remove code for triggering cleanup LD.
-        # Trigger the LaunchDaemon to clean up.
-        # with open(CLEANUP_PATH, "w") as ofile:
-        #     ofile.write("Yo!")
-
     elif launcher_args.cleanup:
         # Yo is being called by the cleanup LaunchDaemon.
+        exit_if_not_root()
         clear_scheduled_notifications()
 
     elif not is_console_user():
+        # Schedule notifications for delivery.
         # Yo is being called by someone other than the logged in console
         # user. Check for root privileges, and cache notifications.
-        if os.getuid() != 0:
-            sys.exit("Only the root user may schedule notifications.")
-
+        exit_if_not_root()
         cache_args(yo_args)
 
         # If there is a console user, go ahead and trigger the
@@ -155,7 +148,7 @@ def main():
     else:
         # Yo has been run by the current user directly
         # Non-root users cannot get the cached notifications, so just
-        # run the one provided on the commandline.
+        # run the one provided on the commandline (Do not add a receipt.
         run_yo_with_args(yo_args)
 
 
@@ -168,14 +161,12 @@ def get_argument_parser():
     parser = argparse.ArgumentParser(
         description=description,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    # TODO: Unsuppress help.
     phelp = ("Run cached notifications (must be run as console user). This "
-             "option is normally run by the LaunchAgent.")
-    parser.add_argument("--cached", help=argparse.SUPPRESS,
-                        action="store_true")
-    phelp = "Clean up cached notifications (must run as root)."
-    parser.add_argument("--cleanup", help=argparse.SUPPRESS,
-                        action="store_true")
+             "option is normally run by the LaunchAgent and is not intended "
+             "for interactive use.")
+    parser.add_argument("--cached", help=phelp, action="store_true")
+    phelp = "Remove all cached notifications (must be run as root)."
+    parser.add_argument("--cleanup", help=phelp, action="store_true")
 
     # The parser's epilog is where we put all of the real argument help.
     parser.epilog = YO_HELP
@@ -280,6 +271,11 @@ def touch_watch_path(path):
     # Give the LaunchDaemon a chance to work before cleaning up.
     time.sleep(5)
     os.remove(path)
+
+
+def exit_if_not_root():
+    if os.getuid() != 0:
+        sys.exit("Only the root user may schedule notifications.")
 
 
 if __name__ == "__main__":

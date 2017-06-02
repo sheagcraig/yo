@@ -138,7 +138,7 @@ def main():
         # Yo is being called by someone other than the logged in console
         # user. Check for root privileges, and cache notifications.
         exit_if_not_root()
-        cache_args(yo_args)
+        schedule_notifications(yo_args)
 
         # If there is a console user, go ahead and trigger the
         # notification immediately for them.
@@ -179,23 +179,25 @@ def run_yo_with_args(args):
     call(args)
 
 
-def is_console_user():
-    console_user = get_console_user()
-    return False if not console_user[0] else os.getuid() == console_user[1]
+def process_notifications():
+    cached_args = get_scheduled_notifications()
+    receipts = get_receipts()
+
+    for arg_set in cached_args:
+        if arg_set not in receipts:
+            args = eval(arg_set) # pylint: disable=eval-used
+            run_yo_with_args(args)
+            add_receipt(args)
 
 
-def get_console_user():
-    return SCDynamicStoreCopyConsoleUser(None, None, None)
-
-
-def get_cached_args():
+def get_scheduled_notifications():
     # We _can_ use CopyAppValue here because the preferences have been
     # set for AnyUser.
     notifications = CFPreferencesCopyAppValue("Notifications", BUNDLE_ID)
     return notifications or {}
 
 
-def cache_args(args):
+def schedule_notifications(args):
     # Get the arguments from the system-level preferences (i.e.
     # /Library/Preferences/com.sheagcraig.yo.plist). This precludes us
     # from using the _slightly_ shorter CFPreferencesCopyAppValue.
@@ -246,15 +248,13 @@ def add_receipt(yo_args):
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
 
-def process_notifications():
-    cached_args = get_cached_args()
-    receipts = get_receipts()
+def is_console_user():
+    console_user = get_console_user()
+    return False if not console_user[0] else os.getuid() == console_user[1]
 
-    for arg_set in cached_args:
-        if arg_set not in receipts:
-            args = eval(arg_set) # pylint: disable=eval-used
-            run_yo_with_args(args)
-            add_receipt(args)
+
+def get_console_user():
+    return SCDynamicStoreCopyConsoleUser(None, None, None)
 
 
 def touch_watch_path(path):

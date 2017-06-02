@@ -56,8 +56,8 @@ import time
 
 from Foundation import (
     CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
-    CFPreferencesCopyKeyList, CFPreferencesSetValue, kCFPreferencesAnyHost,
-    kCFPreferencesAnyUser, kCFPreferencesCurrentUser)
+    CFPreferencesCopyValue, CFPreferencesSetAppValue, CFPreferencesSetValue,
+    kCFPreferencesAnyHost, kCFPreferencesAnyUser, NSDate)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
 
@@ -123,44 +123,34 @@ def main():
 
     if any(flag in yo_args for flag in ("--version", "-v")):
         # Skip further checks if version is requested.
-        args = ["yo.py"] + yo_args
-        run_yo_with_args(args)
+        run_yo_with_args(yo_args)
 
     elif launcher_args.cached:
         # Yo is being run by a LaunchAgent for the current console user.
-        cached_args = get_cached_args()
-        all_args = cached_args + [yo_args]
-
         # Post all of the stored notifications!
-        for arg_set in all_args:
-            run_yo_with_args(arg_set)
+        process_notifications()
 
+        # TODO: Remove code for triggering cleanup LD.
         # Trigger the LaunchDaemon to clean up.
-        with open(CLEANUP_PATH, "w") as ofile:
-            ofile.write("Yo!")
+        # with open(CLEANUP_PATH, "w") as ofile:
+        #     ofile.write("Yo!")
 
     elif launcher_args.cleanup:
         # Yo is being called by the cleanup LaunchDaemon.
         clear_scheduled_notifications()
-        time.sleep(5)
-        os.remove(CLEANUP_PATH)
 
     elif not is_console_user():
+        # Yo is being called by someone other than the logged in console
+        # user. Check for root privileges, and cache notifications.
         if os.getuid() != 0:
-            sys.exit("Only the root user may cache notifications for "
-                     "other users.")
-        # Only the current console user can trigger a notification.
-        # So we will cache the required arguments and try to trigger
-        # an on_demand notification. If there is no console user, the
-        # notification will trigger on the next login.
+            sys.exit("Only the root user may schedule notifications.")
+
         cache_args(yo_args)
 
+        # If there is a console user, go ahead and trigger the
+        # notification immediately for them.
         if get_console_user()[0]:
-            with open(WATCH_PATH, "w") as ofile:
-                ofile.write("Yo!")
-
-            time.sleep(5)
-            os.remove(WATCH_PATH)
+            touch_watch_path(WATCH_PATH)
 
     else:
         # Yo has been run by the current user directly
@@ -178,6 +168,7 @@ def get_argument_parser():
     parser = argparse.ArgumentParser(
         description=description,
         formatter_class=argparse.RawDescriptionHelpFormatter)
+    # TODO: Unsuppress help.
     phelp = ("Run cached notifications (must be run as console user). This "
              "option is normally run by the LaunchAgent.")
     parser.add_argument("--cached", help=argparse.SUPPRESS,
@@ -207,28 +198,88 @@ def get_console_user():
 
 
 def get_cached_args():
+    # We _can_ use CopyAppValue here because the preferences have been
+    # set for AnyUser.
     notifications = CFPreferencesCopyAppValue("Notifications", BUNDLE_ID)
-    return notifications or []
+    return notifications or {}
 
 
 def cache_args(args):
-    notifications = CFPreferencesCopyAppValue("Notifications", BUNDLE_ID)
-    if not notifications:
-        notifications = []
+    # Get the arguments from the system-level preferences (i.e.
+    # /Library/Preferences/com.sheagcraig.yo.plist). This precludes us
+    # from using the _slightly_ shorter CFPreferencesCopyAppValue.
+    notifications = CFPreferencesCopyValue(
+        "Notifications", BUNDLE_ID, kCFPreferencesAnyUser,
+        kCFPreferencesAnyHost)
+    # We get an immutable NSCFDictionary back from CFPreferences, so
+    # copy it to a mutable python dict.
+    notifications = dict(notifications) if notifications else {}
 
-    notifications = notifications + [args]
+    # Convert args to string representation of a python list for later
+    # reconversion back to python.
+    notifications[repr(args)] = NSDate.alloc().init()
 
     CFPreferencesSetValue(
         "Notifications", notifications, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
+    # TODO:
+    # This works, despite needing to do the primitive Set and Copy
+    # methods above.
     CFPreferencesAppSynchronize(BUNDLE_ID)
+    # Here's the other form.
+    # CFPreferencesSynchronize(
+    #    BUNDLE_ID, kCFPreferencesAnyUser, kCFPreferencesAnyHost)
 
 
 def clear_scheduled_notifications():
     CFPreferencesSetValue(
-        "Notifications", [], BUNDLE_ID, kCFPreferencesAnyUser,
+        "Notifications", {}, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
+
+
+def get_receipts():
+    # receipts = CFPreferencesCopyAppValue("DeliveryReceipts", BUNDLE_ID)
+    receipts = CFPreferencesCopyValue(
+        "DeliveryReceipts", BUNDLE_ID, get_console_user()[0],
+        kCFPreferencesAnyHost)
+    # Convert result into a mutable python dict.
+    return dict(receipts) if receipts else {}
+
+
+def add_receipt(yo_args):
+    """Add a receipt to current user's receipt preferences.
+
+    Args:
+        yo_args (list of str): Arguments to yo app as for a subprocess.
+    """
+    receipts = get_receipts()
+    receipts[repr(yo_args)] = NSDate.alloc().init()
+    CFPreferencesSetAppValue("DeliveryReceipts", receipts, BUNDLE_ID)
+    # TODO: Fix this.
+    # CFPreferencesAppSynchronize(BUNDLE_ID)
+
+
+def process_notifications():
+    cached_args = get_cached_args()
+    receipts = get_receipts()
+
+    for arg_set in cached_args:
+        if arg_set not in receipts:
+            args = eval(arg_set) # pylint: disable=eval-used
+            run_yo_with_args(args)
+            add_receipt(args)
+    # TODO: This is here to try to avoid double-notifying because the sync
+    # doesn't happen quick enough. Or something.
+    CFPreferencesAppSynchronize(BUNDLE_ID)
+
+
+def touch_watch_path(path):
+    with open(path, "w") as ofile:
+        ofile.write("Yo!")
+    # Give the LaunchDaemon a chance to work before cleaning up.
+    time.sleep(5)
+    os.remove(path)
 
 
 if __name__ == "__main__":

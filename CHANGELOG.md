@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 - Updated to a fork of CommandLine (IngmarStein's PR to update for Xcode8/Swift3)
 
 ### Added
-- New yo.py launcher (package installer puts it at `/usr/local/bin/yo`).
+- New `yo_scheduler` tool (package installer puts it at `/usr/local/bin/yo_scheduler`). Please see documentation for full details.
 - New Yo launch system! LaunchDaemon and two LaunchAgents to allow reliable
   notification triggering by the management tool of your choice. Thanks to
   @chilcote and @grahamgilbert for the inspiration and technical assistance.

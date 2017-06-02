@@ -213,13 +213,10 @@ def cache_args(args):
     CFPreferencesSetValue(
         "Notifications", notifications, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
-    # TODO:
-    # This works, despite needing to do the primitive Set and Copy
-    # methods above.
+
+    # Use the simpler `AppSynchroniize`; it seems to flush all changes,
+    # despite having to use the primitive methods above.
     CFPreferencesAppSynchronize(BUNDLE_ID)
-    # Here's the other form.
-    # CFPreferencesSynchronize(
-    #    BUNDLE_ID, kCFPreferencesAnyUser, kCFPreferencesAnyHost)
 
 
 def clear_scheduled_notifications():
@@ -230,7 +227,6 @@ def clear_scheduled_notifications():
 
 
 def get_receipts():
-    # receipts = CFPreferencesCopyAppValue("DeliveryReceipts", BUNDLE_ID)
     receipts = CFPreferencesCopyValue(
         "DeliveryReceipts", BUNDLE_ID, get_console_user()[0],
         kCFPreferencesAnyHost)
@@ -247,8 +243,7 @@ def add_receipt(yo_args):
     receipts = get_receipts()
     receipts[repr(yo_args)] = NSDate.alloc().init()
     CFPreferencesSetAppValue("DeliveryReceipts", receipts, BUNDLE_ID)
-    # TODO: Fix this.
-    # CFPreferencesAppSynchronize(BUNDLE_ID)
+    CFPreferencesAppSynchronize(BUNDLE_ID)
 
 
 def process_notifications():
@@ -260,9 +255,6 @@ def process_notifications():
             args = eval(arg_set) # pylint: disable=eval-used
             run_yo_with_args(args)
             add_receipt(args)
-    # TODO: This is here to try to avoid double-notifying because the sync
-    # doesn't happen quick enough. Or something.
-    CFPreferencesAppSynchronize(BUNDLE_ID)
 
 
 def touch_watch_path(path):

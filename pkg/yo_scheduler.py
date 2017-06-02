@@ -52,11 +52,13 @@ from subprocess import call
 import sys
 import time
 
+# pylint: disable=import-error
 from Foundation import (
     CFPreferencesAppSynchronize, CFPreferencesCopyAppValue,
     CFPreferencesCopyValue, CFPreferencesSetAppValue, CFPreferencesSetValue,
     kCFPreferencesAnyHost, kCFPreferencesAnyUser, NSDate)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
+# pylint: enable=import-error
 
 
 __version__ = "2.0.0"
@@ -138,7 +140,7 @@ def main():
         # Yo is being called by someone other than the logged in console
         # user. Check for root privileges, and cache notifications.
         exit_if_not_root()
-        schedule_notifications(yo_args)
+        schedule_notification(yo_args)
 
         # If there is a console user, go ahead and trigger the
         # notification immediately for them.
@@ -175,11 +177,18 @@ def get_argument_parser():
 
 
 def run_yo_with_args(args):
+    """Run the yo binary with supplied args using subprocess"""
     args = [YO_BINARY] + args
     call(args)
 
 
 def process_notifications():
+    """Process scheduled notifications for current console user
+
+    Compare list of scheduled notifications against receipts for
+    the user, and only deliver if notification has not previously been
+    sent.
+    """
     cached_args = get_scheduled_notifications()
     receipts = get_receipts()
 
@@ -191,13 +200,15 @@ def process_notifications():
 
 
 def get_scheduled_notifications():
+    """Get a dictionary of all scheduled notification arguments"""
     # We _can_ use CopyAppValue here because the preferences have been
     # set for AnyUser.
     notifications = CFPreferencesCopyAppValue("Notifications", BUNDLE_ID)
     return notifications or {}
 
 
-def schedule_notifications(args):
+def schedule_notification(args):
+    """Schedule a notification to be delivered to users"""
     # Get the arguments from the system-level preferences (i.e.
     # /Library/Preferences/com.sheagcraig.yo.plist). This precludes us
     # from using the _slightly_ shorter CFPreferencesCopyAppValue.
@@ -222,6 +233,7 @@ def schedule_notifications(args):
 
 
 def clear_scheduled_notifications():
+    """Clear all scheduled notifications"""
     CFPreferencesSetValue(
         "Notifications", {}, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
@@ -229,6 +241,7 @@ def clear_scheduled_notifications():
 
 
 def get_receipts():
+    """Get the delivery receipts for the current console user"""
     receipts = CFPreferencesCopyValue(
         "DeliveryReceipts", BUNDLE_ID, get_console_user()[0],
         kCFPreferencesAnyHost)
@@ -249,15 +262,22 @@ def add_receipt(yo_args):
 
 
 def is_console_user():
+    """Test for whether current user is the current console user"""
     console_user = get_console_user()
     return False if not console_user[0] else os.getuid() == console_user[1]
 
 
 def get_console_user():
+    """Get informatino about the console user
+
+    Returns:
+        3-Tuple of (str) username, (int) uid, (int) gid
+    """
     return SCDynamicStoreCopyConsoleUser(None, None, None)
 
 
 def touch_watch_path(path):
+    """Touch a path to trigger a watching LaunchDaemon, then clean up"""
     with open(path, "w") as ofile:
         ofile.write("Yo!")
     # Give the LaunchDaemon a chance to work before cleaning up.
@@ -266,6 +286,7 @@ def touch_watch_path(path):
 
 
 def exit_if_not_root():
+    """Exit if executing user is not root"""
     if os.getuid() != 0:
         sys.exit("Only the root user may schedule notifications.")
 

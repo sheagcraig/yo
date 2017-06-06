@@ -10,14 +10,16 @@ Further, it allows you to configure the application icon to be displayed with th
 caveats), and configure some of the launch properties, like whether to "poof" when clicked, and how
 to display when the screen is locked.
 
-Included with the Yo app is a launcher utility named `yo-yo`. Yo allows you to call it from the
-commandline, but only when a user is actively logged into a GUI session. That's where the launcher
-script steps in. `yo-yo` takes ideas from the [excellent Outset
-tool](https://github.com/chilcote/outset) to guarantee that configured notifications will be
-delivered to all users on a machine at least once. This is of critical importance to Mac
-administrators who need to reliably notify enterprise users of pending changes or critical
-information. Yo and `yo-yo` are management tool agnostic, and has been used by Munki and Casper
-administrators around the world.
+Included with the Yo app is a launcher utility named `yo_scheduler`. Yo allows you to call it from the
+commandline, but only when a user is actively logged into a GUI session (and
+generally, by that user). That's where the launcher script steps in. `yo_scheduler`
+takes ideas from the [excellent Outset
+tool](https://github.com/chilcote/outset) to guarantee that configured
+notifications will be delivered to all users on a machine at least once. This
+is of critical importance to Mac administrators who need to reliably notify
+enterprise users of pending changes or critical information. Yo and `yo_scheduler` are
+management tool agnostic, and have been used by Munki and Casper administrators
+around the world.
 
 Yo differs from [terminal-notifier](https://github.com/alloy/terminal-notifier) in that it creates
 persistent notifications that remain in place until clicked. As such, it allows you to customize
@@ -34,84 +36,103 @@ Finally, thanks to @jatoben for the gracious sharing of his Swift
 [CommandLine](https://github.com/jatoben/CommandLine) library/Framework on GitHub.
 
 ## Build & Installation
-You only need to follow these instructions if you want to build the app yourself. Obviously, you'll need a recent XCode.
+You only need to follow these instructions if you want to build the app
+yourself. Obviously, you'll need a recent XCode.
 
-1. Clone the project.
+1. Git clone or download the project.
 2. Open the project in XCode and set the App Icon to your desired icon. Please read the Icon section below for more info on what is going on here. To change the icon provided with yo, open the project in XCode and navigate to the Images.xcassets file in the file browser. Simply drag a 128x128px replacement png over the one already in place. Optionally, if you want *more* icon sizes, feel free to go nuts and fill them all in.
 3. Build. (CMD-B)
 4. Copy the built app (Contextual-click on the Products->yo.app->Show in Finder) wherever you see fit, although `/Applications/Utilities` seems like a suitable place. Alternately, you can use the Product->Archive menu option to export a copy of the app or build an installer package (if you have a developer ID).
 
 Note: If you Run/(CMD-R) from XCode, it will just report back usage with a command line parsing error. Just ignore that and run from the command line.
 
+## Package build and deployment
+The `pkg` folder includes a Makefile for use with [the luggage](https://github.com/unixorn/luggage) that builds a package installer, should you need to build one yourself. The Makefile configures the package to install the `yo.app` bundle in `/Applications/Utilities`, and the scheduler script at `/usr/local/bin/yo_scheduler`. Feel free to customize these as you see fit.
+
 ## Usage
-The yo installer package adds a command line script to `/usr/local/bin/yo` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
+The yo installer package adds a command line script to `/usr/local/bin/yo_scheduler` which is the preferred method for calling yo. If you are building the app with custom icons, feel free to copy this script wherever is convenient, although `/usr/local/bin/` is in the default `PATH`.
 
-Due to its install location being in the default PATH, you can then call yo by simply typing `yo -t "This is amazing"`, for example. (`yo -h` will give you full usage information).
+Due to its install location being in the default PATH, you can then call yo by simply typing `yo_scheduler -t "This is amazing"`, for example. (`yo_scheduler -h` will give you full usage information).
 
-The yo script will test for a console user prior to execution and bail if nobody is logged in. If there is no console user, there is no notification center, and yo can't do anything. Therefore, this script ensures it only runs when possible to succeed.
+The `yo_scheduler` script creates a "scheduled notification". Through a system of LaunchAgents and LaunchDaemons, yo will ensure that each user gets the notification delivered to them at the soonest possible opportunity. Active console users will get the notification immediately. Other users will get the notification when they next log in.
 
 ### Note:
 The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is executable. However, this only works if a user is currently logged in.
 
-If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the script as per above. If you really want to run it "raw": from the actual binary inside (not from running or calling the "yo.app") the full path to call yo is `/Applications/Utilities/yo.app/Contents/MacOS/yo`.
+If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the scheduler script as per above. 
 
 ### Arguments:
-```
-Usage: /Users/shcrai/Library/Developer/Xcode/DerivedData/yo-dmleuiivjmidrrfzyhbmtcwsvqkm/Build/Products/Debug/yo.app/Contents/MacOS/yo [options]
-  -t, --title:
-      Title for notification. REQUIRED.
-  -s, --subtitle:
-      Subtitle for notification.
-  -n, --info:
-      Informative text.
-  -b, --action-btn:
-      Include an action button, with the button label text supplied to this argument.
-  -a, --action-path:
-      Application to open if user selects the action button. Provide the full path as the argument. This option only does something if -b/--action-btn is also specified.
-  -B, --bash-action:
-      Bash script to run. Be sure to properly escape all reserved characters. This option only does something if -b/--action-btn is also specified. Defaults to opening nothing.
-  -o, --other-btn:
-      Alternate label for cancel button text.
-  -i, --icon:
-      Complete path to an alternate icon to use for the notification.
-  -c, --content-image:
-      Path to an image to use for the notification's 'contentImage' property.
-  -z, --delivery-sound:
-      The name of the sound to play when delivering or 'None'. The name must not include the extension, nor any path components, and should be located in '/Library/Sounds' or '~/Library/Sounds'. (Defaults to the system's default notification sound). See the README for more info.
-  -d, --ignores-do-not-disturb:
-      Set to make your notification appear even if computer is in do-not-disturb mode.
-  -l, --lockscreen-only:
-      Set to make your notification appear only if computer is locked. If set, no buttons will be available.
-  -p, --poofs-on-cancel:
-      Set to make your notification 'poof' when the cancel button is hit.
-  -m, --banner-mode:
-      Does not work! Set if you would like to send a non-persistent notification. No buttons will be available if set.
-  -v, --version:
-      Display Yo version information.
-  -h, --help:
-      Show help.
-```
+Yo, as called through the `yo_scheduler`, has the following arguments. The only required argument is the `-t`/`--title` argument. Normally, admins should schedule notifications using the root user, either as a scripted action through their management framework, or using the `sudo` utility to elevate privileges. For testing purposes, you can run a notification once for the current user by executing the `yo_scheduler` as that user. No notifications will be stored for delivery.
 
-Notes:
-- Title is mandatory. All other arguments are optional.
-- `-m/--banner-mode` does not seem to work at this time.
-- The `-a/--action` argument needs a path or URL. yo just calls `open`, so anything that would work there, should work here.
-- If a "cancel" button doesn't make sense for your needs, but you don't want two buttons on your notification, just use `-o/--other-btn` with a label that seems appropriate, like "Accept", or perhaps "Confirm", but no `-b/--btext`.
-- Remember, this is (probably) a Bash shell. If you don't escape reserved characters like `!` you may get unexpected results. (`!` is the Bash history expansion operator!)
+Test all notifications prior to delivery, as the maximum line-length of characters differs for the title, subtitle, and info fields, which in turn can be compressed even shorter when the length of the action or cancel buttons grows beyond 8 characters.
 
-## Sound
-If you want to use a different sound, you must provide the *name* of the sound to the -z argument, not the filename, and not the path. I.e "Sosumi", not "Sosumi.aiff" or "/System/Library/Sosumi.aiff".
+This notification demonstrates the available content areas. Not all of these are required!
+![Yo example](https://github.com/sheagcraig/yo/blob/testing/docs/NotificationAreas.png?raw=true)
 
-The search path is:
-- ~/Library/Sounds
-- /Library/Sounds
-- /Network/Library/Sounds
-- /System/Library/Sounds (This is where all of the builtin sounds live)
+#### Notification Body Content Arguments
+The following arguments control the body text for the notification. When the buttons fit in their normal sizes, they have the below mentioned maximum character legnths. However, the layout of the notification is elastic to allow longer button text at the expense of body text.
+* `-t`, `--title`[title text] *Required*: The main title for the notification. The title is topmost in the notification, with the heaviest fontface, and has a limited length of 34 characters, after which an ellipsis (e.g. '...') is shown.
+* `-s`, `--subtitle` [subtitle text]: Subtitle for the notification. The subtitle is displayed below the title and above the "info" in a lighter, smaller font than the title, and has a maximum length of 37 characters.
+* `-n`, `--info` [info text]: Further information for the notification. The info field is displayed below both the title and the subtitle, in a lighter, smaller font than the subtitle, and has a maximum length of 38 characters.
+* `-i`, `--icon` [path]: The icon argument allows you to add an icon to the notification's leftmost area (this does not replace the main icon). This must be a complete path. PNG and JPG files work. Other image types may work, although it has not been tested. To permanently replace the main icon, you can build Yo with your own image assets (see the above section on building Yo). This is the mechanism by which iTunes displays the album art for "Now Playing" notifications. Please note, use of this argument will further reduce the space available for text to display.
+* `-c`, `--content-image` [path]: The content-image argument allows you to specify the path to an image to be used for the additional image spot at the right side of the notification, provided through Notification Center's private API. This is how NotificationCenter displays images sent as iMessages via the Messages app. Please note, use of this argument will further reduce the space available for text to display.
+* `-z`, `--delivery-sound` [Sound name]: This argument allows you to specify the _name_ of the sound to play when
+  delivering the notification. (Defaults to the system's default notification sound).
+  If you want to use a different sound, you must provide the *name* of the sound to the -z argument, not the filename, and not the path. I.e "Sosumi", not "Sosumi.aiff" or "/System/Library/Sosumi.aiff".
+  
+  The sound will be found by successively searching through each of the following paths until the sound is found:
+  - `~/Library/Sounds`
+  - `/Library/Sounds`
+  - `/Network/Library/Sounds`
+  - `/System/Library/Sounds` (This is where all of the builtin sounds live)
 
-If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this:
-`yo.ap -t "Some title" -z "TotalEclipseOfTheHeart"`
+  If you want to include a custom sound, it needs to be available in one of those paths. So for example, if you wanted to use the sound file "TotalEclipseOfTheHeart.aiff", copy it to `/Library/Sounds` (which may not exist by default), and use the delivery sound option like this:
+  `yo_scheduler.app -t "Some title" -z "TotalEclipseOfTheHeart"`
+  
+  Sounds must have an `aiff` extension `.aif` is not valid.
 
-Sounds must be a aiff; extension .aif is not valid.
+#### Notification Button Arguments
+By default, with no button arguments, notifications have a single button, labeled `Close`, which dismisses the otherwise persistent notification. The following arguments allow you to configure the "action" button text, and what it does when clicked, and to customize the cancel button's text.
+* `-b`, `--action-btn` [text]: Include an action button, with the button label text
+supplied to this argument. The maximum length of this button is 25 characters, although using more than 8 characters will result in the main notification text decreasing in maximum size to accomodate the button.
+* `-o`, `--other-btn` [text]: Specify the "Cancel" button label text. This button is always visible, and if not specified, defaults to `Close`. The maximum length of this button is 25 characters, although using more than 8 characters will result in the main notification text decreasing in maximum size to accomodate the button.
+* `-a`, `--action-path` [path]: This option allows you to specify what happens
+when the action button is pressed. Acceptable arguments are the path to an
+application to open, a URL to be opened in the default web browser, a path to a file to open in its default handler (e.g. PDF in Preview, etc), or any other file type that has a handler. Behind the scenes, Yo
+will run the `open` command with this value as its argument, so anything that
+works as an argument to `open` will behave here exactly as for that utility.
+For example, `--action-path /Applications/Managed Software Center.app` will
+open the Munki Managed Software Center when the button is clicked. `--action-path http://sheagcraig.com` will open that website when the action button is clicked. For applications, provide the
+full path to the _bundle_ as the argument (the folder that ends in the `.app`
+extension, not the executable binary contained within). This option only does
+something if `-b`/`--action-btn` is also specified. The default value is to do
+nothing.
+* `-B`, `--bash-action` [bash script]: The `--bash-action` argument allows you to
+specify any number of Bash command line actions to run when the action button
+is clicked. Provide the script as the argument to this flag, making sure to
+properly escape all reserved characters (`!`, `'`, and `"` are the most common
+offenders), delimit individual lines with a semicolon or the `&&` or `||`
+operators, and wrap the entire script in either `"` or `'`.  This option only
+does something if -b/--action-btn is also specified. Example: `--bash-action
+'touch /Users/Shared/somefile.txt; say "These are not the droids you are
+looking for". The default value is to do nothing.
+
+#### Delivery Arguments
+* `-d`, `--ignores-do-not-disturb`: This argument directs NotificationCenter to make your notification appear even if
+the computer is in do-not-disturb mode.
+* `-l`, `--lockscreen-only`: This argument directs NotificationCenter to make your notification appear only if
+the computer is locked. If set, no buttons will be available, so the button arguments will be ignored.
+* `-p`, `--poofs-on-cancel`: Set to make your notification 'poof' when the cancel
+button is hit.
+* `-m`, `--banner-mode`: This argument currently does not work! Set if you would like to send a
+non-persistent notification. Non-persistent notifications may not have buttons, so all button arguments will be ignored.
+* `--cleanup`:   Remove all scheduled notifications (must be run as root) Ignores all other arguments.
+* `--cached`: Process cached notifications and ignore all other arguments (must be run as console user). This option
+is normally run by the LaunchAgent and is not intended for interactive use.
+
+#### Other Arguments
+* `-v`, `--version`: Print version information and quit.
+* `-h`, `--help`: Print help and usage information and quit.
 
 ## Emoji
 Emoji characters are allowed, although getting them into a bash command line context is tricky.
@@ -131,7 +152,7 @@ $ echo -ne '💩' | hexdump
 0000004
 
 # So 'f09f92a9' is the hex value...
-$ /Applications/Utilities/yo.app/Contents/MacOS/yo -t $(echo -ne '\xf0\x9f\x92\xa9')
+$ yo_scheduler -t $(echo -ne '\xf0\x9f\x92\xa9')
 ```
 = Smiling poo emoji notification.
 
@@ -140,118 +161,29 @@ You can also do `printf '\xf0\x9f\x92\xa9'`.
 ## Examples
 ```
 # Example of basic notification:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time"
+yo_scheduler -t "Taco Time"
 
 # Example with lots of text:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -s "Chorizo is best." -n "Although I also enjoy al pastor of course."
+yo_scheduler -t "Taco Time" -s "Chorizo is best." -n "Although I also enjoy al pastor of course."
 
 # Example with emoji and tons of escaped characters:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "$(printf "\xf0\x9f\x92\xa9\n") says, \"Let's dance$(printf \!)\""
+yo_scheduler -t "$(printf "\xf0\x9f\x92\xa9\n") says, \"Let's dance$(printf \!)\""
 
 # Example with action button, opening a webpage in your default browser:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
+yo_scheduler -t "Taco Time" -b "Yum" -a "http://en.wikipedia.org/wiki/Taco"
 
 # Example opening an app:
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -b "Yum" -a "/Applications/TacoParty.app"
+yo_scheduler -t "Taco Time" -b "Yum" -a "/Applications/TacoParty.app"
 
 # Example-What if you want a one-button persistent notification that doesn't *do* anything?
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -o "Accept"
+yo_scheduler -t "Taco Time" -o "Accept"
 
 # Example-alternate icon using the -i argument
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -i "/Users/blanconino/Pictures/taco.png"
+yo_scheduler -t "Taco Time" -i "/Users/blanconino/Pictures/taco.png"
 
 # Example-custom sound and bash script with escaped characters.
-/Applications/Utilities/yo.app/Contents/MacOS/yo -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
+yo_scheduler -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
-
-## Casper Usage
-### Overview
-yo provides a script, yo-casper.py which you can upload to your JSS for posting
-notifications. This script is the safest way to ensure your notifications post,
-and do so without jacking up the computer. Like the yo script installed in
-/usr/local/bin, yo-casper only runs if a GUI user is logged in.
-
-### Why Bother?
-Running yo with the Policy/Files & Processes/Execute Command function
-of Casper results in scoped client machines becoming unable to
-check-in or run further policies. This is due to something broken in
-Casper's Execute Command function that prevents yo from ever
-completing. Furthermore, using `"` instead of `'` for quoting causes strange
-things to happen to the arguments. Therefore, do not use Execute Command.
-
-### Where are the Casper Scripts?
-The folder containing yo-casper.py and the extension attribute to work with it are not included in the installer package, since managed client machines will not need these components. You can get them from the GitHub page by cloning the project or downloading as a zip, expanding, and then looking in the `casper` folder. Or you can just cut and paste from GitHub directly into the Scripts and Extension Attributes sections of your JSS.
-
-### Using yo-casper
-yo-casper.py hardcodes the following arguments to yo in the 4th-11th
-parameter fields for Casper scripts. As such, you should rename them
-in Casper Admin to match:
-
-4. Title
-5. Subtitle
-6. Info
-7. Action Button
-8. Action Path
-9. Bash Action
-10. Other Button
-11. Icon
-
-![Casper Admin Settings for yo-casper.py](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/casper-script-setup.png)
-
-Any policy posting a notification with yo should probably have the
-frequency of "Ongoing" coupled with being scoped to a smart group if you want
-to ensure that the notification is posted.
-
-If a computer checks in and no console user is available, yo will not post a
-notification (because it can't!). You probably are posting a notification
-because you want the user to see it, thus, a frequency of ongoing keeps trying.
-
-However, now your users are getting a notification every check-in-period, which
-quickly deadens their soul and leads to ignoring your messages. To avoid this,
-there are a couple of options:
-1. Scope to a smart group that needs the notification, and add in some method
-   for the computer to drop out of the group after it has received the
-   notification, or performed the action you notified them about in the first
-   place. For example, a notification to remove adware should no longer be
-   offered once the computer has the adware removed (via a removal policy, with
-   a followup-recon.
-
-   Second example: You notify users about an impending OS update. Once
-   they have received the update, they fall out of the group the notification
-   is scoped to.
-2. Use an extension attribute to determine whether a notification has been
-   delivered. The yo-casper.py script logs to a file at /var/log/yo-casper.log.
-   This log file includes the date stamp, arguments, and an md5 hash generated
-   from the supplied arguments that will be consistent across all executions of
-   that notification. Included in the `casper` folder is an extension attribute
-   that can be used to determine whether a particular notification has been
-   received.
-
-   Add this EA to your JSS, and edit the `SEARCH_HASH` variable to use the hash
-   for the notification you wish to send. You can run yo-casper.py on your own
-   computer to quickly generate the hash exactly as the Policy/Scripts
-   execution will.
-
-   Then, create a smart group with criteria of that EA's value returning
-   "False" and Computer Group is whatever group(s) you're interested in scoping
-   the notification to.
-
-   Finally, create your Policy with Scripts action, enter the arguments, and
-   scope to the smart group created above.
-
-   This is a lot of moving pieces. Sorry. Being awesome isn't easy.
-
-![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent.png)
-![Extension Attribute](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/OSUpdateNotificationSent2.png)
-![Smart Group Criteria](https://raw.githubusercontent.com/sheagcraig/yo/master/casper/Edit_Smart_Computer_Group.png)
-
-### Recovering from Execute Command
-Affected computers can be fixed by removing the broken Execute Command
-policy from scope and running `killall jamf`.
-
-### But Some of the Args Are Missing?
-Casper only allows 8 custom arguments, so if you would prefer other arguments
-as options, feel free to edit the script to use the correct argument flags.
 
 ## Application Icon, Caveats, and Nerdery
 ### Icons

@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-## [2.0.0]- 2017-06-06 - Kurt Russel's Hair in Big Trouble in Little China
+## [2.0.0]- 2017-06-06 - Kurt Russell's Hair in Big Trouble in Little China
 
 ### Changed
 - Updated to Swift 3 syntax.

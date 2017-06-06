@@ -208,6 +208,8 @@ Or does it... There's another private API key that allows you to show buttons on
 
 Of course, your results may vary. If you can't get the "alert" style notification to appear, try signing the project with your Developer ID and rebuilding.
 
+The scheduler stores notifications to be delivered in the CFPreferences system. The scheduled notifications are (eventually) stored in `/Library/Preferences/com.sheagcraig.yo.plist`, and the delivery receipts are stored in `~/Library/Preferences/com.sheagcraig.yo.plist`. To grow future scheduling options, the structure of these preferences will probably change, so do not rely on the current structure.
+
 ### What's next?
 The next step in Yo's development will be to get it ready for Swift 4 and macOS 10.13, and to add to the scheduling arguments provided by the `yo_scheduler` app. 
 

@@ -207,3 +207,11 @@ Normally, for a notification to be persistent (meaning, it stays onscreen until 
 Or does it... There's another private API key that allows you to show buttons on a "banner", which is the default type, and available for unsigned apps. So that's what yo uses.
 
 Of course, your results may vary. If you can't get the "alert" style notification to appear, try signing the project with your Developer ID and rebuilding.
+
+### What's next?
+The next step in Yo's development will be to get it ready for Swift 4 and macOS 10.13, and to add to the scheduling arguments provided by the `yo_scheduler` app. 
+
+* Specify a date after which scheduled notifications will no longer be delivered (for users who haven't already gotten them). 
+* Allow notifications to be delivered up to `x` number of times rather than just once.
+* Add a blacklist of users to whom notifications should not be delivered.
+* Add a delivery delay property to the scheduler. Notifications are delivered immediately to the current user, and as soon as possible after login for users not active at the time the notification is scheduled. This would allow it to be delayed slightly longer.

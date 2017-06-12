@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+## [2.0.1]- 2017-06-12 - Roddy Piper's Hair in They Live 
+
+### Fixed
+- Fixed paths to `yo_scheduler` in LaunchAgents.
+
 ## [2.0.0]- 2017-06-06 - Kurt Russell's Hair in Big Trouble in Little China
 
 ### Changed
@@ -47,7 +52,8 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 - Initial commit.
 
-[unreleased]: https://github.com/sheagcraig/yo/compare/2.0.0...HEAD
+[unreleased]: https://github.com/sheagcraig/yo/compare/2.0.1...HEAD
+[2.0.1]: https://github.com/sheagcraig/yo/compare/2.0.1...2.0.0
 [2.0.0]: https://github.com/sheagcraig/yo/compare/2.0.0...1.0.3
 [1.0.3]: https://github.com/sheagcraig/yo/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/sheagcraig/yo/compare/1.0.1...1.0.2

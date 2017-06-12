@@ -63,7 +63,6 @@ from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
 __version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
-CLEANUP_PATH = "/private/tmp/.com.sheagcraig.yo.cleanup.launchd"
 WATCH_PATH = "/private/tmp/.com.sheagcraig.yo.on_demand.launchd"
 YO_BINARY = "/Applications/Utilities/yo.app/Contents/MacOS/yo"
 # This is captured straight from running the Yo binary and must be

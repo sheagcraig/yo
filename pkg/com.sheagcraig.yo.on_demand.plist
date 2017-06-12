@@ -10,7 +10,7 @@
   </array>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/bin/yo</string>
+    <string>/usr/local/bin/yo_scheduler</string>
     <string>--cached</string>
   </array>
   <key>KeepAlive</key>

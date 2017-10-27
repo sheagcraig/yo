@@ -120,6 +120,10 @@ def main():
     # yo_scheduler (this script) args from the yo app's args.
     launcher_args, yo_args = parser.parse_known_args()
 
+    # Check if --yo-bin arg was passed with alternate binary location
+    if len(vars(launcher_args)["yo_bin"]) > 0:
+        globals().update(YO_BINARY=vars(launcher_args)["yo_bin"])
+
     if any(flag in yo_args for flag in ("--version", "-v")):
         # Skip further checks if version is requested.
         run_yo_with_args(yo_args)
@@ -168,6 +172,8 @@ def get_argument_parser():
     parser.add_argument("--cached", help=phelp, action="store_true")
     phelp = "Remove all cached notifications (must be run as root)."
     parser.add_argument("--cleanup", help=phelp, action="store_true")
+    phelp = "Provide yo_scheduler with a specific Yo binary path."
+    parser.add_argument("--yo-bin", help=phelp, action="store")
 
     # The parser's epilog is where we put all of the real argument help.
     parser.epilog = YO_HELP

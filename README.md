@@ -66,6 +66,8 @@ Yo, as called through the `yo_scheduler`, has the following arguments. The only 
 
 Test all notifications prior to delivery, as the maximum line-length of characters differs for the title, subtitle, and info fields, which in turn can be compressed even shorter when the length of the action or cancel buttons grows beyond 8 characters.
 
+For environments where `yo.app` is not available in it's standard install location of `/Applications/Utilities/`, you can pass the `--yo-bin` argument with the absolute path to your environments' `yo.app/Contents/MacOS/yo` binary.
+
 This notification demonstrates the available content areas. Not all of these are required!
 ![Yo example](https://github.com/sheagcraig/yo/blob/testing/docs/NotificationAreas.png?raw=true)
 

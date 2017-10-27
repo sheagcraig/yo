@@ -120,6 +120,14 @@ def main():
     # yo_scheduler (this script) args from the yo app's args.
     launcher_args, yo_args = parser.parse_known_args()
 
+    # Check if Yo is installed in the expected binary path
+    if os.path.isfile(YO_BINARY) == False:
+        exit_if_no_binary()
+
+    # If no args passed, print help and exit
+    if len(yo_args) == 0 :
+        exit_if_no_args()
+
     if any(flag in yo_args for flag in ("--version", "-v")):
         # Skip further checks if version is requested.
         run_yo_with_args(yo_args)
@@ -288,6 +296,16 @@ def exit_if_not_root():
     """Exit if executing user is not root"""
     if os.getuid() != 0:
         sys.exit("Only the root user may schedule notifications.")
+
+
+def exit_if_no_args():
+    """Exit if no args passed"""
+    sys.exit(YO_HELP)
+
+
+def exit_if_no_binary():
+    """Exit if the binary could be located"""
+    sys.exit("Could not locate {}".format(YO_BINARY))
 
 
 if __name__ == "__main__":

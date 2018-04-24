@@ -59,7 +59,7 @@ The `yo_scheduler` script creates a "scheduled notification". Through a system o
 ### Note:
 The yo app by itself, if opened via double-clicking the app, running from Spotlight/Launchpad, etc, does nothing. It must be called with arguments, and the actual binary `yo.app/Contents/MacOS/yo` is what is executable. However, this only works if a user is currently logged in.
 
-If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the scheduler script as per above. 
+If you are experiencing weird hanging or no notifications being sent, check to make sure yo isn't already running. For automated messaging via a management system's triggers, it is recommended that you stick to using the scheduler script as per above. If you just really don't want to use the scheduler, make sure that your tooling is running Yo in the right user context. Which logged in user is the notification _for_? Get their UID and then run yo by running launchctl: `launchctl asuser <UID> /path/to/yo.app/Contents/MacOS/yo <arguments>`. But really, use the scheduler because it solves all of these problems and more.
 
 ### Arguments:
 Yo, as called through the `yo_scheduler`, has the following arguments. The only required argument is the `-t`/`--title` argument. Normally, admins should schedule notifications using the root user, either as a scripted action through their management framework, or using the `sudo` utility to elevate privileges. For testing purposes, you can run a notification once for the current user by executing the `yo_scheduler` as that user. No notifications will be stored for delivery.

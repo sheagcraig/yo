@@ -183,19 +183,25 @@ def run_yo_with_args(args):
 
 def process_notifications():
     """Process scheduled notifications for current console user
-
+    
     Compare list of scheduled notifications against receipts for
     the user, and only deliver if notification has not previously been
     sent.
     """
     cached_args = get_scheduled_notifications()
     receipts = get_receipts()
-
     for arg_set in cached_args:
-        if arg_set not in receipts:
-            args = eval(arg_set) # pylint: disable=eval-used
-            run_yo_with_args(args)
-            add_receipt(args)
+        notification_date = cached_args[arg_set]
+        # If the notification is in the recepts for this user
+        # AND the notification was requested before the receipt time
+        # SKIP sending the notification."""
+        if arg_set in receipts:
+            receipt_date = receipts[arg_set]
+            if notification_date < receipt_date:
+                continue
+        args = eval(arg_set) # pylint: disable=eval-used
+        run_yo_with_args(args)
+        add_receipt(args)
 
 
 def get_scheduled_notifications():

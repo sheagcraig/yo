@@ -192,7 +192,8 @@ def process_notifications():
     receipts = get_receipts()
 
     for arg_set in cached_args:
-        if arg_set not in receipts:
+        if arg_set not in receipts or \
+                cached_args[arg_set] != receipts[arg_set]:
             args = eval(arg_set) # pylint: disable=eval-used
             run_yo_with_args(args)
             add_receipt(args)

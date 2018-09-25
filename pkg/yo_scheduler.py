@@ -196,7 +196,7 @@ def process_notifications():
                 cached_args[arg_set] != receipts[arg_set]:
             args = eval(arg_set) # pylint: disable=eval-used
             run_yo_with_args(args)
-            add_receipt(args)
+            add_receipt(args, cached_args[arg_set])
 
 
 def get_scheduled_notifications():
@@ -249,14 +249,16 @@ def get_receipts():
     return dict(receipts) if receipts else {}
 
 
-def add_receipt(yo_args):
+def add_receipt(yo_args, stamp=None):
     """Add a receipt to current user's receipt preferences.
 
     Args:
         yo_args (list of str): Arguments to yo app as for a subprocess.
     """
     receipts = get_receipts()
-    receipts[repr(yo_args)] = NSDate.alloc().init()
+    if stamp == None:
+        stamp = NSDate.alloc().init()
+    receipts[repr(yo_args)] = stamp
     CFPreferencesSetAppValue("DeliveryReceipts", receipts, BUNDLE_ID)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 

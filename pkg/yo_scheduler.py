@@ -63,7 +63,7 @@ from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
 __version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
-WATCH_PATH = "/private/tmp/.com.sheagcraig.yo.on_demand.launchd"
+WATCH_PATH = "/var/run/com.sheagcraig.yo.on_demand.launchd"
 YO_BINARY = "/Applications/Utilities/yo.app/Contents/MacOS/yo"
 # This is captured straight from running the Yo binary and must be
 # updated manually.
@@ -283,8 +283,8 @@ def touch_watch_path(path):
     with open(path, "w") as ofile:
         ofile.write("Yo!")
     # Give the LaunchDaemon a chance to work before cleaning up.
-    time.sleep(5)
-    os.remove(path)
+    # time.sleep(5)
+    # os.remove(path)
 
 
 def exit_if_not_root():

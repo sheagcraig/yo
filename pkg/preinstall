@@ -5,3 +5,8 @@
 rm -rf /Applications/Utilities/yo.app
 rm -rf /Applications/Utilities/yo
 rm -rf /Applications/Utilities/yo.localized
+
+WATCH_PATH="$3/var/run/com.sheagcraig.yo.on_demand.launchd"
+
+touch "$WATCH_PATH"
+chmod a+w "$WATCH_PATH"

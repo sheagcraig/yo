@@ -1,4 +1,17 @@
 #!/bin/bash
 
+[[ $3 != "/" ]] && exit 0
+
 # Rename yo.sh to yo so we can call it like a regular cli utility.
 mv /usr/local/bin/yo_scheduler.py /usr/local/bin/yo_scheduler
+
+# Load our launch agemts in the background for the logged in user
+CONSOLE_UID=`/usr/bin/stat -f%u /dev/console`
+if [ $CONSOLE_UID -gt 499 ]; then
+	/bin/launchctl asuser $CONSOLE_UID \
+		/bin/launchctl load -w \
+			/Library/LaunchAgents/com.sheagcraig.yo.login_once.plist
+	/bin/launchctl asuser $CONSOLE_UID \
+		/bin/launchctl load -w \
+			/Library/LaunchAgents/com.sheagcraig.yo.on_demand.plist
+fi

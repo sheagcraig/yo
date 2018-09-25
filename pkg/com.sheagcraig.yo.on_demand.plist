@@ -13,13 +13,9 @@
     <string>/usr/local/bin/yo_scheduler</string>
     <string>--cached</string>
   </array>
-  <key>KeepAlive</key>
-  <dict>
-     <key>PathState</key>
-     <dict>
-       <key>/private/tmp/.com.sheagcraig.yo.on_demand.launchd</key>
-       <true/>
-     </dict>
-  </dict>
+  <key>WatchPaths</key>
+  <array>
+    <string>/var/run/com.sheagcraig.yo.on_demand.launchd</string>
+  </array>
 </dict>
 </plist>

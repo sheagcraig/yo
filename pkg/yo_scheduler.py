@@ -63,7 +63,7 @@ from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 
 __version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
-WATCH_PATH = "/private/tmp/.com.sheagcraig.yo.on_demand.launchd"
+WATCH_PATH = "/var/run/com.sheagcraig.yo.on_demand.launchd"
 YO_BINARY = "/Applications/Utilities/yo.app/Contents/MacOS/yo"
 # This is captured straight from running the Yo binary and must be
 # updated manually.
@@ -192,10 +192,11 @@ def process_notifications():
     receipts = get_receipts()
 
     for arg_set in cached_args:
-        if arg_set not in receipts:
+        if arg_set not in receipts or \
+                cached_args[arg_set] != receipts[arg_set]:
             args = eval(arg_set) # pylint: disable=eval-used
             run_yo_with_args(args)
-            add_receipt(args)
+            add_receipt(args, cached_args[arg_set])
 
 
 def get_scheduled_notifications():
@@ -248,14 +249,16 @@ def get_receipts():
     return dict(receipts) if receipts else {}
 
 
-def add_receipt(yo_args):
+def add_receipt(yo_args, stamp=None):
     """Add a receipt to current user's receipt preferences.
 
     Args:
         yo_args (list of str): Arguments to yo app as for a subprocess.
     """
     receipts = get_receipts()
-    receipts[repr(yo_args)] = NSDate.alloc().init()
+    if stamp == None:
+        stamp = NSDate.alloc().init()
+    receipts[repr(yo_args)] = stamp
     CFPreferencesSetAppValue("DeliveryReceipts", receipts, BUNDLE_ID)
     CFPreferencesAppSynchronize(BUNDLE_ID)
 
@@ -280,8 +283,8 @@ def touch_watch_path(path):
     with open(path, "w") as ofile:
         ofile.write("Yo!")
     # Give the LaunchDaemon a chance to work before cleaning up.
-    time.sleep(5)
-    os.remove(path)
+    # time.sleep(5)
+    # os.remove(path)
 
 
 def exit_if_not_root():

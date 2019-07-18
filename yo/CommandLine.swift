@@ -124,7 +124,7 @@ public class CommandLine {
      */
     public var maxFlagDescriptionWidth: Int {
         if _maxFlagDescriptionWidth == 0 {
-            _maxFlagDescriptionWidth = _options.map { $0.flagDescription.characters.count }.sorted().first ?? 0
+            _maxFlagDescriptionWidth = _options.map { String($0.flagDescription).count }.sorted().first ?? 0
         }
         
         return _maxFlagDescriptionWidth
@@ -301,7 +301,8 @@ public class CommandLine {
             }
             
             let skipChars = arg.hasPrefix(longOptionPrefix) ?
-                longOptionPrefix.characters.count : shortOptionPrefix.characters.count
+                String(longOptionPrefix).count :
+                    String(shortOptionPrefix).count
             let flagWithArg = arg[arg.index(arg.startIndex, offsetBy: skipChars)..<arg.endIndex]
             
             /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
@@ -310,12 +311,12 @@ public class CommandLine {
             }
             
             /* Remove attached argument from flag */
-            let splitFlag = flagWithArg.split(by: argumentAttacher, maxSplits: 1)
+            let splitFlag = flagWithArg.split(separator: argumentAttacher, maxSplits: 1)
             let flag = splitFlag[0]
-            let attachedArg: String? = splitFlag.count == 2 ? splitFlag[1] : nil
+            let attachedArg: String? = splitFlag.count == 2 ? String(splitFlag[1]) : nil
             
             var flagMatched = false
-            for option in _options where option.flagMatch(flag) {
+            for option in _options where option.flagMatch(String(flag)) {
                 let vals = self._getFlagValues(idx, attachedArg)
                 guard option.setValue(vals) else {
                     throw ParseError.invalidValueForOption(option, vals)
@@ -332,9 +333,9 @@ public class CommandLine {
             }
             
             /* Flags that do not take any arguments can be concatenated */
-            let flagLength = flag.characters.count
+            let flagLength = String(flag).count
             if !flagMatched && !arg.hasPrefix(longOptionPrefix) {
-                let flagCharactersEnumerator = flag.characters.enumerated()
+                let flagCharactersEnumerator = String(flag).enumerated()
                 for (i, c) in flagCharactersEnumerator {
                     for option in _options where option.flagMatch(String(c)) {
                         /* Values are allowed at the end of the concatenated flags, e.g.

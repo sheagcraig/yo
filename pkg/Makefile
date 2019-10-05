@@ -7,7 +7,6 @@ PAYLOAD=\
 		pack-usr-local-bin-yo_scheduler.py \
 		pack-Library-LaunchAgents-com.sheagcraig.yo.on_demand.plist \
 		pack-Library-LaunchAgents-com.sheagcraig.yo.login_once.plist \
-		pack-Library-LaunchDaemons-com.sheagcraig.yo.cleanup.plist \
 		pack-script-postinstall \
 		pack-script-preinstall \
 

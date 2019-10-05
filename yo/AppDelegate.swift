@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
 
         // If notification is activated (i.e. user clicked the action button) the app will relaunch.
         // Test for that, and if so, execute the option tucked away in the userInfo dict.
-        if let notification = (aNotification as NSNotification).userInfo![NSApplicationLaunchUserNotificationKey] as? NSUserNotification {
+        if let notification = (aNotification as NSNotification).userInfo![NSApplication.launchUserNotificationUserInfoKey] as? NSUserNotification {
             let task = Process()
             // It's safe to just open nothing, so this is the default.
             task.launchPath = "/usr/bin/open"

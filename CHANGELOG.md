@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+N/A
+
+## [2.0.2] - 2019-10-05 - The Hair of Whitesnake
+
+### Changed
+- Updated syntax to Swift 5.
+- Update project to work with Xcode 11
+
 ## [2.0.1]- 2017-06-12 - Roddy Piper's Hair in They Live 
 
 ### Fixed

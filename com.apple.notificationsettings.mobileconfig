@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>NotificationSettings</key>
+            <!-- See https://developer.apple.com/documentation/devicemanagement/notifications/notificationsettingsitem?language=objc for payload descriptions -->
+            <array>
+                <dict>
+                    <key>AlertType</key>
+                    <integer>2</integer>
+                    <key>BadgesEnabled</key>
+                    <true/>
+                    <key>BundleIdentifier</key>
+                    <string>com.github.sheagcraig.yo</string>
+                    <key>CriticalAlertEnabled</key>
+                    <true/>
+                    <key>GroupingType</key>
+                    <integer>0</integer>
+                    <key>NotificationsEnabled</key>
+                    <true/>
+                    <key>ShowInCarPlay</key>
+                    <true/>
+                    <key>ShowInLockScreen</key>
+                    <true/>
+                    <key>ShowInNotificationCenter</key>
+                    <true/>
+                    <key>SoundsEnabled</key>
+                    <true/>
+                </dict>
+            </array>
+            <key>PayloadDescription</key>
+            <string>Configures Notification settings for macOS apps</string>
+            <key>PayloadDisplayName</key>
+            <string>Notifications</string>
+            <key>PayloadIdentifier</key>
+            <string>com.github.sheagcraig.yo.A1022253-039A-4495-B3FC-2C17308ED5A1.com.apple.notificationsettings.48B20691-3C58-4803-B254-A5A3B27EBCB7</string>
+            <key>PayloadOrganization</key>
+            <string></string>
+            <key>PayloadType</key>
+            <string>com.apple.notificationsettings</string>
+            <key>PayloadUUID</key>
+            <string>48B20691-3C58-4803-B254-A5A3B27EBCB7</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>notification settings</string>
+    <key>PayloadDisplayName</key>
+    <string>Notification Settings</string>
+    <key>PayloadIdentifier</key>
+    <string>com.github.sheagcraig.yo.A1022253-039A-4495-B3FC-2C17308ED5A1</string>
+    <key>PayloadOrganization</key>
+    <string></string>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>A1022253-039A-4495-B3FC-2C17308ED5A1</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>

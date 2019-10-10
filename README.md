@@ -185,6 +185,9 @@ yo_scheduler -t "Taco Time" -i "/Users/blanconino/Pictures/taco.png"
 yo_scheduler -t "Taco Time" -z "Taco" -b "Eat" -B "say 'I hope you enjoyed your tacos\!'"
 ```
 
+## Catalina+
+Starting with macOS 10.15 "Catalina", unmanaged software triggering user notifications will spawn a permissions dialog. Administrators can deliver a `NotificationSettings` payload from their MDM to whitelist Yo and prevent this permissions dialog from interfering with the delivery of important messages.
+
 ## Application Icon, Caveats, and Nerdery
 ### Icons
 Most organizations will probably want yo to display a custom icon in the notification. There are a couple of different ways notifications determine what to use for the icon:

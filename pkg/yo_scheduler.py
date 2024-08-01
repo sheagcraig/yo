@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # Copyright 2014-2017 Shea G. Craig
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ infrequently used accounts long-past their freshness date.
 Likewise, a list of accounts for which delivering notifications should
 be skipped may be specified on a per-notification and a global basis.
 
-Normally, the tool must be run as root. For testing purposes,  you may
+Normally, the tool must be run as root. For testing purposes, you may
 trigger a notification for the current console user by running this tool
 with that user's account.
 
@@ -44,7 +44,6 @@ system without foreknowledge of their username, infinitely into the
 future. The yo_scheduler includes a flag to clear cached notifications
 while retaining any other preferences.
 """
-
 
 import argparse
 import os
@@ -59,7 +58,6 @@ from Foundation import (
     kCFPreferencesAnyHost, kCFPreferencesAnyUser, NSDate)
 from SystemConfiguration import SCDynamicStoreCopyConsoleUser
 # pylint: enable=import-error
-
 
 __version__ = "2.0.0"
 BUNDLE_ID = "com.sheagcraig.yo"
@@ -111,7 +109,6 @@ YO_HELP = """\
     -v, --version:
         Display Yo version information."""
 
-
 def main():
     """Application main"""
     # Capture commandline args.
@@ -123,35 +120,29 @@ def main():
     if any(flag in yo_args for flag in ("--version", "-v")):
         # Skip further checks if version is requested.
         run_yo_with_args(yo_args)
-
     elif launcher_args.cached:
         # Yo is being run by a LaunchAgent for the current console user.
         # Post all of the stored notifications!
         process_notifications()
-
     elif launcher_args.cleanup:
         # Yo is being called by the cleanup LaunchDaemon.
         exit_if_not_root()
         clear_scheduled_notifications()
-
     elif not is_console_user():
         # Schedule notifications for delivery.
         # Yo is being called by someone other than the logged in console
         # user. Check for root privileges, and cache notifications.
         exit_if_not_root()
         schedule_notification(yo_args)
-
         # If there is a console user, go ahead and trigger the
         # notification immediately for them.
         if get_console_user()[0]:
             touch_watch_path(WATCH_PATH)
-
     else:
         # Yo has been run by the current user directly
         # Non-root users cannot get the cached notifications, so just
         # run the one provided on the commandline (Do not add a receipt.
         run_yo_with_args(yo_args)
-
 
 def get_argument_parser():
     """Create yo's argument parser."""
@@ -174,12 +165,10 @@ def get_argument_parser():
 
     return parser
 
-
 def run_yo_with_args(args):
     """Run the yo binary with supplied args using subprocess"""
     args = [YO_BINARY] + args
     call(args)
-
 
 def process_notifications():
     """Process scheduled notifications for current console user
@@ -192,12 +181,10 @@ def process_notifications():
     receipts = get_receipts()
 
     for arg_set in cached_args:
-        if arg_set not in receipts or \
-                cached_args[arg_set] != receipts[arg_set]:
-            args = eval(arg_set) # pylint: disable=eval-used
+        if arg_set not in receipts or cached_args[arg_set] != receipts[arg_set]:
+            args = eval(arg_set)  # pylint: disable=eval-used
             run_yo_with_args(args)
             add_receipt(args, cached_args[arg_set])
-
 
 def get_scheduled_notifications():
     """Get a dictionary of all scheduled notification arguments"""
@@ -205,7 +192,6 @@ def get_scheduled_notifications():
     # set for AnyUser.
     notifications = CFPreferencesCopyAppValue("Notifications", BUNDLE_ID)
     return notifications or {}
-
 
 def schedule_notification(args):
     """Schedule a notification to be delivered to users"""
@@ -227,10 +213,9 @@ def schedule_notification(args):
         "Notifications", notifications, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
 
-    # Use the simpler `AppSynchroniize`; it seems to flush all changes,
+    # Use the simpler `AppSynchronize`; it seems to flush all changes,
     # despite having to use the primitive methods above.
     CFPreferencesAppSynchronize(BUNDLE_ID)
-
 
 def clear_scheduled_notifications():
     """Clear all scheduled notifications"""
@@ -238,7 +223,6 @@ def clear_scheduled_notifications():
         "Notifications", {}, BUNDLE_ID, kCFPreferencesAnyUser,
         kCFPreferencesAnyHost)
     CFPreferencesAppSynchronize(BUNDLE_ID)
-
 
 def get_receipts():
     """Get the delivery receipts for the current console user"""
@@ -248,7 +232,6 @@ def get_receipts():
     # Convert result into a mutable python dict.
     return dict(receipts) if receipts else {}
 
-
 def add_receipt(yo_args, stamp=None):
     """Add a receipt to current user's receipt preferences.
 
@@ -256,27 +239,24 @@ def add_receipt(yo_args, stamp=None):
         yo_args (list of str): Arguments to yo app as for a subprocess.
     """
     receipts = get_receipts()
-    if stamp == None:
+    if stamp is None:
         stamp = NSDate.alloc().init()
     receipts[repr(yo_args)] = stamp
     CFPreferencesSetAppValue("DeliveryReceipts", receipts, BUNDLE_ID)
     CFPreferencesAppSynchronize(BUNDLE_ID)
-
 
 def is_console_user():
     """Test for whether current user is the current console user"""
     console_user = get_console_user()
     return False if not console_user[0] else os.getuid() == console_user[1]
 
-
 def get_console_user():
-    """Get informatino about the console user
+    """Get information about the console user
 
     Returns:
         3-Tuple of (str) username, (int) uid, (int) gid
     """
     return SCDynamicStoreCopyConsoleUser(None, None, None)
-
 
 def touch_watch_path(path):
     """Touch a path to trigger a watching LaunchDaemon, then clean up"""
@@ -286,12 +266,10 @@ def touch_watch_path(path):
     # time.sleep(5)
     # os.remove(path)
 
-
 def exit_if_not_root():
     """Exit if executing user is not root"""
     if os.getuid() != 0:
         sys.exit("Only the root user may schedule notifications.")
-
 
 if __name__ == "__main__":
     main()
